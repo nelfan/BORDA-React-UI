@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import '../styles/Home/home.css';
-import man_with_tablet from "../resources/images/man_with_tablet.png";
-import listPreview from "../resources/images/list-removebg-preview.png";
+import './home.css';
+import man_with_tablet from "../../assets/images/man_with_tablet.png";
+import listPreview from "../../assets/images/list-removebg-preview.png";
 
 const Home = () => {
     return (
