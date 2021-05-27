@@ -16,34 +16,26 @@ const Auth = () => {
     }
 
     return (
-        <Router>
-            <div class="main_container">
-                <div class="align_form">
-                    <div class="form" onSubmit={onSubmit}>
-                        <ul class="tab-group">
-                            <li class="tab active"><a href="#signup">Sign Up</a></li>
-                            <li class="tab"><a href="#login">Log In</a></li>
-                        </ul>
+        <div class="main_container">
+            <div class="align_form">
+                <div class="form" onSubmit={onSubmit}>
+                    <ul class="tab-group">
+                        <li class="tab active"><a href="#signup">Sign Up</a></li>
+                        <li class="tab"><a href="#login">Log In</a></li>
+                    </ul>
 
-                        <div class="tab-content">
-                            <Route
-                                path='/auth'
-                                exact
-                                render={() => (
-                                    <>
-                                        {
-                                            showLogin ? (
-                                                <Login />) : (
-                                                <Register />)
-                                        }
-                                    </>
-                                )}
-                            />
-                        </div>
+                    <div class="tab-content">
+                            <>
+                                {
+                                    showLogin ? (
+                                        <Login />) : (
+                                        <Register />)
+                                }
+                            </>
                     </div>
                 </div>
-            </div >
-        </Router>
+            </div>
+        </div >
     )
 }
 
