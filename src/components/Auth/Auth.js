@@ -1,8 +1,8 @@
-import { useState, Component } from 'react'
+import { Component } from 'react'
 import './auth.css';
 import Login from './Login/Login';
 import Register from './Register/Register';
-import { Redirect, Router, Route } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 class Auth extends Component {
 
