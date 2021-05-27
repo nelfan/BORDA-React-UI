@@ -22,7 +22,7 @@ class Auth extends Component {
             if (sessionStorage.getItem('jwtToken')) {
                 this.setState({ redirect: true })
             }
-        }, 1000);
+        }, 500);
     }
 
     render() {
