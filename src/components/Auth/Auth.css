@@ -85,9 +85,6 @@ li a:hover{
     clear: both;
 }
 
-.tab-content > div:last-child {
-    display:none;
-}
 .input_fields{
     display: flex;
     flex-direction: column;

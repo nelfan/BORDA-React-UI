@@ -38,6 +38,8 @@ const Register = () => {
 
         const data = registerUser(username, firstName, lastName, email, password)
 
+        sessionStorage.setItem('jwtToken', data.token)
+
         return data
     }
 

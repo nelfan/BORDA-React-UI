@@ -39,6 +39,8 @@ const Login = () => {
         })
         const data = await res.json()
 
+        sessionStorage.setItem('jwtToken', data.token)
+
         return data
     }
 
