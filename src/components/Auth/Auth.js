@@ -1,47 +1,55 @@
-import { useState } from 'react'
+import { useState, Component } from 'react'
 import './auth.css';
 import Login from './Login/Login';
 import Register from './Register/Register';
 import { Redirect, Router, Route } from "react-router-dom";
-import Boards from '../Boards/Boards';
 
-const Auth = () => {
+class Auth extends Component {
 
-    const onClickTabItem = () => {
-        setShowLogin(!showLogin)
+    onClickTabItem = () => {
+        this.showLogin = !this.showLogin
     }
 
-    const [showLogin, setShowLogin] = useState(false)
-    const [redirect, setRedirect] = useState(false)
+    state = {
+        showLogin: false,
+        redirect: false
+    }
 
-    const onSubmit = (e) => {
+    onSubmit = (e) => {
         e.preventDefault()
 
         if (sessionStorage.getItem('jwtToken')) {
-            setRedirect(true)
+            console.log('got token')
+            this.setState({ redirect: true })
         }
     }
 
-    return (
-        <div className="main_container">
-            <div className="align_form">
-                <div className="form" onSubmit={onSubmit}>
-                    <ul className="tab-group" onChange={onClickTabItem}>
-                        <li className={!showLogin ? "tab active" : "tab"} onClick={onClickTabItem}><a href="#signup">Sign Up</a></li>
-                        <li className={showLogin ? "tab active" : "tab"} onClick={onClickTabItem}><a href="#login">Log In</a></li>
-                    </ul>
+    render() {
+        if (this.state.redirect) {
+            console.log('got redirect')
+            return <Redirect to="/boards" />
+        }
+        return (
+            <div className="main_container" >
+                <div className="align_form">
+                    <div className="form" onSubmit={this.onSubmit}>
+                        <ul className="tab-group">
+                            <li className={!this.showLogin ? "tab active" : "tab"} onClick={this.onClickTabItem}><a href="#signup">Sign Up</a></li>
+                            <li className={this.showLogin ? "tab active" : "tab"} onClick={this.onClickTabItem}><a href="#login">Log In</a></li>
+                        </ul>
 
-                    <div>
-                        {
-                            showLogin ? (
-                                <Login />) : (
-                                <Register />)
-                        }
+                        <div>
+                            {
+                                this.showLogin ? (
+                                    <Login />) : (
+                                    <Register />)
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div >
-    )
+            </div >
+        )
+    }
 }
 
 export default Auth
