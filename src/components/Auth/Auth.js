@@ -18,15 +18,15 @@ class Auth extends Component {
     onSubmit = (e) => {
         e.preventDefault()
 
-        if (sessionStorage.getItem('jwtToken')) {
-            console.log('got token')
-            this.setState({ redirect: true })
-        }
+        setTimeout(() => {
+            if (sessionStorage.getItem('jwtToken')) {
+                this.setState({ redirect: true })
+            }
+        }, 1000);
     }
 
     render() {
         if (this.state.redirect) {
-            console.log('got redirect')
             return <Redirect to="/boards" />
         }
         return (
