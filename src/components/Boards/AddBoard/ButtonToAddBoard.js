@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import './buttonToAddBoard.css';
-import './AddBoard'
+import './InputToAddBoard'
 
 const ButtonToAddBoard = ({ color, text, onClick }) => {
     return (

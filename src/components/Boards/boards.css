@@ -30,6 +30,9 @@
     border: 5px solid #396ed8;
     border-radius: 15px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
 
 }
 
