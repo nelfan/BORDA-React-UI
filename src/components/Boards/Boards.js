@@ -11,8 +11,8 @@ const Boards = () => {
     const [showAddBoard, setShowAddBoard] = useState(true)
     const [boardsViews, setBoardViews] = useState([])
 
-    const ownBoards = boardsViews.filter(boardView => boardView.userBoardRelations[0].boardRole.name === 'OWNER');
-    const collabBoards = boardsViews.filter(boardView => boardView.userBoardRelations[0].boardRole.name !== 'OWNER');
+    const ownBoards = Object.values(boardsViews).filter(boardView => boardView.userBoardRelations[0].boardRole.name === 'OWNER');
+    const collabBoards = Object.values(boardsViews).filter(boardView => boardView.userBoardRelations[0].boardRole.name !== 'OWNER');
 
     // GET Boards
     useEffect(() => {
@@ -36,16 +36,22 @@ const Boards = () => {
 
     // Add Board
     const addBoard = async (boardsView) => {
-        const res = await fetch('http://localhost:9090/boards/1', {
+        const createBoardData = {
+            'name': boardsView.text
+        }
+
+        const res = await fetch('http://localhost:9090/boards/createBoard/1', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken') 
             },
-            body: JSON.stringify(boardsView),
+            body: JSON.stringify(createBoardData),
         })
+        console.log(JSON.stringify(createBoardData));
 
         const data = await res.json()
+        console.log(data);
         setBoardViews([...boardsViews, data])
 
     }
