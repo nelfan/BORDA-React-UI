@@ -19,15 +19,16 @@ const InputToAddBoard = ({ onAdd }) => {
     return (
         <form className='add-form' onSubmit={onSubmit}>
             <div className='form-control'>
-                <input
+                <input className='input-add-board'
                     type='text'
                     placeholder='Board name'
                     value={boardName}
                     onChange={(e) => setBoardName(e.target.value)}
                 />
+                <div>
+                <input type='submit' value='Create Board' className='btn btn-block' />
+                </div>
             </div>
-
-            <input type='submit' value='Create Board' className='btn btn-block' />
         </form>
     )
 }

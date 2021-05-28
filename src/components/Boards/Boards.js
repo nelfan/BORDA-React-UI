@@ -1,14 +1,13 @@
 import './boards.css';
 import BoardView from '../Boards/BoardView/BoardView';
 import {useEffect, useState} from "react";
-import ButtonToAddBoard from "./AddBoard/ButtonToAddBoard";
 import InputToAddBoard from "./AddBoard/InputToAddBoard";
 import AddBoard from "./AddBoard/AddBoard";
 
 
 const Boards = () => {
 
-    const [showAddBoard, setShowAddBoard] = useState(true)
+    const [showAddBoard, setShowAddBoard] = useState(false)
     const [boardsViews, setBoardViews] = useState([])
 
     const ownBoards = Object.values(boardsViews).filter(boardView => boardView.userBoardRelations[0].boardRole.name === 'OWNER');
@@ -24,15 +23,14 @@ const Boards = () => {
     }, [])
 
     const fetchBoards = async () => {
-        const res = await fetch('http://localhost:9090/users/1/boards', {
+        const res = await fetch('http://localhost:9090/users/boards', {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken') 
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
         return await res.json()
     }
-
 
     // Add Board
     const addBoard = async (boardsView) => {
@@ -40,23 +38,19 @@ const Boards = () => {
             'name': boardsView.text
         }
 
-        const res = await fetch('http://localhost:9090/boards/createBoard/1', {
+        const res = await fetch('http://localhost:9090/boards', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken') 
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             },
             body: JSON.stringify(createBoardData),
         })
 
         const data = await res.json()
-        
+
         setBoardViews([...boardsViews, data])
 
-    }
-
-    const onAddClick =() => {
-        setShowAddBoard(!showAddBoard)
     }
 
     return (
@@ -65,17 +59,18 @@ const Boards = () => {
                 <div className="header">
                     Header
                 </div>
-                <div className="creating-board">
-                    <AddBoard onAdd={() => setShowAddBoard(!showAddBoard)} showAdd={showAddBoard}/>
-                    {showAddBoard && <InputToAddBoard onAdd={addBoard}/>}
-                    <ButtonToAddBoard color='blue' text='Add' onClick={onAddClick}/>
-                </div>
                 <div className="own-boards-label" id="boards-label">
                     My own boards
                 </div>
                 <div className="own-boards" id="style-scroll">
                     <div className="own-boards-container" id="own-boards-container">
                         <>
+                            <div className="boards-info">
+                                <div className="new-board-button">
+                                    <AddBoard onAdd={() => setShowAddBoard(!showAddBoard)} showAdd={showAddBoard}/>
+                                    {showAddBoard && <InputToAddBoard onAdd={addBoard}/>}
+                                </div>
+                            </div>
                             {ownBoards.map((boardView =>
                                     <BoardView key={boardView.id} boardView={boardView}/>
                             ))}

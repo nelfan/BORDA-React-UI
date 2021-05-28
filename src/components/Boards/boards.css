@@ -1,9 +1,6 @@
 .boards_content{
     width: 100%;
-    height: 99vh;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+    height: 120vh;
 }
 
 .header {
@@ -22,18 +19,28 @@
     text-align: center;
 }
 
-.creating-board {
-    width: 30%;
-    height: 10%;
-    margin: 1% 15% 1% 15%;
-    padding-left: 2%;
-    border: 5px solid #396ed8;
-    border-radius: 15px;
-    text-align: center;
+.add-board {
+    height: 100%;
+    width: 100%;
+}
+
+.add-form {
+    width: 14.5%;
+    height: 18%;
+    background-color: #c1ffc7;
+    border: 3px solid #09b10c;
+    border-radius: 10px;
+    margin-top: 1%;
     display: flex;
     justify-content: center;
-    flex-direction: row;
+    flex-direction: column;
+    position: absolute;
+}
 
+.new-board-button {
+    width: 100%;
+    height: 100%;
+    background-color: white;
 }
 
 .own-boards {
