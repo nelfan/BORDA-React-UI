@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Register from '../Auth/Register/Register';
+import Login from '../Auth/Login/Login';
 import Home from '../Home/Home';
 import Auth from '../Auth/Auth';
 import Login from '../Auth/Login/Login';

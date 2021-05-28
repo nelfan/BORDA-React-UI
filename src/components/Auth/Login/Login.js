@@ -42,7 +42,7 @@ const Login = ({onSubmitAuth}) => {
         sessionStorage.setItem('jwtToken', data.token)
         
         onSubmitAuth(data.token)
-
+      
         return data
     }
 
