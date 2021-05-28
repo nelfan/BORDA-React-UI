@@ -15,7 +15,7 @@ html {
     overflow-y: scroll;
 }
 
-body {
+.tab-body {
     background: #c1bdba;
     font-family: 'Titillium Web', sans-serif;
 }
@@ -85,9 +85,6 @@ li a:hover{
     clear: both;
 }
 
-.tab-content > div:last-child {
-    display:none;
-}
 .input_fields{
     display: flex;
     flex-direction: column;

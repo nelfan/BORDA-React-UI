@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import '../auth.css'
 
-const Login = () => {
+const Login = ({onSubmitAuth}) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -39,6 +39,10 @@ const Login = () => {
         })
         const data = await res.json()
 
+        sessionStorage.setItem('jwtToken', data.token)
+        
+        onSubmitAuth(data.token)
+      
         return data
     }
 
