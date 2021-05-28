@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import '../auth.css';
 
-const Register = () => {
+const Register = ({onSubmitAuth}) => {
     const [username, setUsername] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -39,6 +39,8 @@ const Register = () => {
         const data = registerUser(username, firstName, lastName, email, password)
 
         sessionStorage.setItem('jwtToken', data.token)
+
+        onSubmitAuth(data.token)
 
         return data
     }
