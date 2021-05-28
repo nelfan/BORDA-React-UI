@@ -24,7 +24,12 @@ const Boards = () => {
     }, [])
 
     const fetchBoards = async () => {
-        const res = await fetch('http://localhost:9090/users/1/boards')
+        const res = await fetch('http://localhost:9090/users/1/boards', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken') 
+            }
+        })
         return await res.json()
     }
 
@@ -35,6 +40,7 @@ const Boards = () => {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken') 
             },
             body: JSON.stringify(boardsView),
         })
@@ -46,7 +52,7 @@ const Boards = () => {
 
     return (
         <div className="main_content">
-            <div class="boards_content">
+            <div className="boards_content">
                 <div className="header">
                     Header
                 </div>

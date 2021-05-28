@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import '../auth.css'
 
-const Login = () => {
+const Login = ({onSubmitAuth}) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 

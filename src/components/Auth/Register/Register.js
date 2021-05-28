@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import '../auth.css';
 
-const Register = () => {
+const Register = ({onSubmitAuth}) => {
     const [username, setUsername] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
