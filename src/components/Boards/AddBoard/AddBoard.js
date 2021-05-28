@@ -5,7 +5,7 @@ const AddBoard = ({onAdd, showAdd }) => {
         <div className='add-board'>
                 <ButtonToAddBoard
                     color={showAdd ? 'red' : 'green'}
-                    text={showAdd ? 'Close' : 'Create new board'}
+                    text={showAdd ? 'Cancel' : 'Create new board'}
                     onClick={onAdd}
                 />
         </div>
