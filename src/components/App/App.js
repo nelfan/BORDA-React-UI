@@ -6,6 +6,7 @@ import Register from '../Auth/Register/Register';
 import Boards from '../Boards/Boards';
 
 function App() {
+
   return (
     <Router>
       <Switch>
