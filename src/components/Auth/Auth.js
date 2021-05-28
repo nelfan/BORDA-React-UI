@@ -15,14 +15,10 @@ class Auth extends Component {
         redirect: false
     }
 
-    onSubmit = (e) => {
-        e.preventDefault()
-
-        setTimeout(() => {
-            if (sessionStorage.getItem('jwtToken')) {
-                this.setState({ redirect: true })
-            }
-        }, 500);
+    onSubmit = (token) => {
+        if (token) {
+            this.setState({ redirect: true })
+        }
     }
 
     render() {
@@ -32,7 +28,7 @@ class Auth extends Component {
         return (
             <div className="main_container" >
                 <div className="align_form">
-                    <div className="form" onSubmit={this.onSubmit}>
+                    <div className="form">
                         <ul className="tab-group">
                             <li className={!this.showLogin ? "tab active" : "tab"} onClick={this.onClickTabItem}><a href="#signup">Sign Up</a></li>
                             <li className={this.showLogin ? "tab active" : "tab"} onClick={this.onClickTabItem}><a href="#login">Log In</a></li>
@@ -41,8 +37,8 @@ class Auth extends Component {
                         <div>
                             {
                                 this.showLogin ? (
-                                    <Login />) : (
-                                    <Register />)
+                                    <Login onSubmitAuth={this.onSubmit} />) : (
+                                    <Register onSubmitAuth={this.onSubmit} />)
                             }
                         </div>
                     </div>

@@ -40,6 +40,8 @@ const Login = ({onSubmitAuth}) => {
         const data = await res.json()
 
         sessionStorage.setItem('jwtToken', data.token)
+        
+        onSubmitAuth(data.token)
 
         return data
     }
