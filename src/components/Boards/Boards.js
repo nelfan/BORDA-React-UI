@@ -48,12 +48,15 @@ const Boards = () => {
             },
             body: JSON.stringify(createBoardData),
         })
-        console.log(JSON.stringify(createBoardData));
 
         const data = await res.json()
-        console.log(data);
+        
         setBoardViews([...boardsViews, data])
 
+    }
+
+    const onAddClick =() => {
+        setShowAddBoard(!showAddBoard)
     }
 
     return (
@@ -65,7 +68,7 @@ const Boards = () => {
                 <div className="creating-board">
                     <AddBoard onAdd={() => setShowAddBoard(!showAddBoard)} showAdd={showAddBoard}/>
                     {showAddBoard && <InputToAddBoard onAdd={addBoard}/>}
-                    <ButtonToAddBoard color='blue' text='Add' onClick={onclick}/>
+                    <ButtonToAddBoard color='blue' text='Add' onClick={onAddClick}/>
                 </div>
                 <div className="own-boards-label" id="boards-label">
                     My own boards

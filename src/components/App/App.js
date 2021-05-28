@@ -4,6 +4,7 @@ import Auth from '../Auth/Auth';
 import Login from '../Auth/Login/Login';
 import Register from '../Auth/Register/Register';
 import Boards from '../Boards/Boards';
+import Board from '../Board/Board';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Route path='/login' exact={true} component={Login} />
         <Route path='/register' exact={true} component={Register} />
         <Route path='/boards' exact={true} component={Boards} />
+        <Route path='/board' exact={true} component={Board} />
       </Switch>
     </Router>
   );
