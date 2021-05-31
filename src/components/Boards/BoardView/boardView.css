@@ -1,0 +1,39 @@
+.boards-info {
+    width: 21%;
+    height: 16vh;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+    background-color: #279dff;
+    display: inline-block;
+    border-radius: 10px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.boards-info a {
+    text-decoration: none;
+    color: #000;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.boards-info a:hover {
+    background-color: #1a3fa3;
+    color: white;
+}
+
+.board-name {
+    width: 95%;
+    height: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
