@@ -2,24 +2,25 @@ $blue: rgba(56, 109, 216, 0.993);
 $green: rgba(52, 202, 72, 0.993);
 $white: #fff;
 $gray: #9b9b9b;
-.wrapper{
-    background-color: $white;
-    width: 30%;
-    display: flex;
-    position: absolute;
-    min-height: 50vh;
-    align-self: center;
-    flex-direction: column;
-    z-index: 1;
-    top: 10%;
-    left: 35%;
-    align-items: center;
-    filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+
+.wrapper {
+  background-color: $white;
+  width: 30%;
+  display: flex;
+  position: absolute;
+  min-height: 50vh;
+  align-self: center;
+  flex-direction: column;
+  z-index: 1;
+  top: 10%;
+  left: 35%;
+  align-items: center;
+  filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
 }
 
-.wrapper>*{
-    margin: 2%;
-    font-size: 1em;
+.wrapper > * {
+  margin: 2%;
+  font-size: 1em;
 }
 
 .form__field {
@@ -39,32 +40,35 @@ $gray: #9b9b9b;
 
 .form__label {
   display: block;
-  top:0;
+  top: 0;
   margin-left: 10%;
   align-self: start;
   transition: 0.2s;
   font-size: 1rem;
   color: $gray;
 }
-.form__field{
-  &:required,&:invalid { box-shadow:none; }
+.form__field {
+  &:required,
+  &:invalid {
+    box-shadow: none;
+  }
 }
-.edit_btn{
-    text-transform: uppercase;
-    background: $blue;
-    color: $white;
-    padding: 7px 65px;
-    border: none;
-    align-self:flex-end;
-    margin-right: 10%;
-    cursor: pointer;
+.edit_btn {
+  text-transform: uppercase;
+  background: $blue;
+  color: $white;
+  padding: 7px 65px;
+  border: none;
+  align-self: flex-end;
+  margin-right: 10%;
+  cursor: pointer;
 }
-.cancel_btn{
+.cancel_btn {
   background: $green;
   margin-right: 1%;
 }
 
-.btns{
+.btns {
   width: 100%;
   justify-content: center;
   padding: 3%;
