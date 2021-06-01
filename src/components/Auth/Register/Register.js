@@ -59,11 +59,10 @@ const Register = ({onSubmitAuth}) => {
         if (!password) {
             alert('Please add a password')
             return
+        } else if (passwordError !== '') {
+            alert('invalid password')
+            return;
         }
-        // else if (passwordError !== '') {
-        //     alert('invalid password')
-        //     return;
-        // }
 
         const data = registerUser(userName, firstName, lastName, email, password)
 
