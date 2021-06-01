@@ -15,6 +15,9 @@ const Register = ({onSubmitAuth}) => {
     const [lastNameError, setLastNameError] = useState('Last name cannot be empty')
 
     const [email, setEmail] = useState('')
+    const [emailDirty, setEmailDirty] = useState(false)
+    const [emailError, setEmailError] = useState('email cannot be empty')
+
     const [password, setPassword] = useState('')
 
     const onRegister = (e) => {
@@ -86,6 +89,9 @@ const Register = ({onSubmitAuth}) => {
             case 'lastName':
                 setLastNameDirty(true)
                 break
+            case 'email':
+                setEmailDirty(true)
+                break
         }
     }
 
@@ -128,6 +134,16 @@ const Register = ({onSubmitAuth}) => {
             setLastNameError('Last name can only contain letters and should start with Upper case')
         } else {
             setLastNameError('')
+        }
+    }
+
+    const emailHandler = (e) => {
+        setEmail(e.target.value)
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!re.test(String(e.target.value))) {
+            setEmailError('Invalid email format')
+        } else {
+            setEmailError('')
         }
     }
 
@@ -179,13 +195,18 @@ const Register = ({onSubmitAuth}) => {
                         onChange={e => lastNameHandler(e)}/>
 
                     <label htmlFor="email">Email</label>
+                    {(emailDirty && emailError) && <div style={{color: 'red'}}>{emailError}</div>}
                     <input
                         type="text"
                         id="email"
                         name="email"
                         autoComplete="off"
                         placeholder="Enter email.."
-                        onChange={(e) => setEmail(e.target.value)}/>
+                        value={email}
+                        onBlur={e => {
+                            blurHandler(e)
+                        }}
+                        onChange={e => emailHandler(e)}/>
 
                     <label htmlFor="password">Password</label>
                     <div className="eye_pswd">
