@@ -189,8 +189,8 @@ const Register = ({onSubmitAuth}) => {
         const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/;
         if (e.target.value.length < 6) {
             setPasswordError('password cannot be less than 6 characters ')
-        } else if (e.target.value.length > 15) {
-            setPasswordError('password cannot be more than 15 characters ')
+        } else if (e.target.value.length > 30) {
+            setPasswordError('password cannot be more than 30 characters ')
         } else if (!re.test(String(e.target.value))) {
             setPasswordError('password should have at least one uppercase letter, one lowercase letter and one number')
         } else {
