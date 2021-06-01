@@ -137,8 +137,8 @@ const Register = ({onSubmitAuth}) => {
         const re = /^(?!.*[_]{2})[a-zA-Z0-9_]+(?<![_.])$/;
         if (e.target.value.length < 3) {
             setUserNameError('Username cannot be less than 3 characters ')
-        } else if (e.target.value.length > 15) {
-            setUserNameError('Username cannot be more than 15 characters ')
+        } else if (e.target.value.length > 30) {
+            setUserNameError('Username cannot be more than 30 characters ')
         } else if (!re.test(String(e.target.value))) {
             setUserNameError('Username can only contain letters, numbers and "_" ')
         } else {
@@ -151,8 +151,8 @@ const Register = ({onSubmitAuth}) => {
         const re = /^[A-Z][a-z]*[-][A-Z][a-z]*$/;
         if (e.target.value.length < 2) {
             setFirstNameError('First name cannot be less than 2 characters ')
-        } else if (e.target.value.length > 15) {
-            setFirstNameError('First name cannot be more than 15 characters ')
+        } else if (e.target.value.length > 30) {
+            setFirstNameError('First name cannot be more than 30 characters ')
         } else if (!re.test(String(e.target.value))) {
             setFirstNameError('First name can only contain letters and should start with Upper case')
         } else {
@@ -165,8 +165,8 @@ const Register = ({onSubmitAuth}) => {
         const re = /^[A-Z][a-z]*[-][A-Z][a-z]*$/;
         if (e.target.value.length < 2) {
             setLastNameError('Last name cannot be less than 2 characters ')
-        } else if (e.target.value.length > 15) {
-            setLastNameError('Last name cannot be more than 15 characters ')
+        } else if (e.target.value.length > 30) {
+            setLastNameError('Last name cannot be more than 30 characters ')
         } else if (!re.test(String(e.target.value))) {
             setLastNameError('Last name can only contain letters and should start with Upper case')
         } else {
