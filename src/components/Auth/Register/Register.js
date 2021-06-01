@@ -8,17 +8,19 @@ const Register = ({onSubmitAuth}) => {
 
     const [firstName, setFirstName] = useState('')
     const [firstNameDirty, setFirstNameDirty] = useState(false)
-    const [firstNameError, setFirstNameError] = useState('First name cannot be empty')
+    const [firstNameError, setFirstNameError] = useState('first name cannot be empty')
 
     const [lastName, setLastName] = useState('')
     const [lastNameDirty, setLastNameDirty] = useState(false)
-    const [lastNameError, setLastNameError] = useState('Last name cannot be empty')
+    const [lastNameError, setLastNameError] = useState('last name cannot be empty')
 
     const [email, setEmail] = useState('')
     const [emailDirty, setEmailDirty] = useState(false)
     const [emailError, setEmailError] = useState('email cannot be empty')
 
     const [password, setPassword] = useState('')
+    const [passwordDirty, setPasswordDirty] = useState(false)
+    const [passwordError, setPasswordError] = useState('password cannot be empty')
 
     const onRegister = (e) => {
         e.preventDefault()
@@ -92,6 +94,9 @@ const Register = ({onSubmitAuth}) => {
             case 'email':
                 setEmailDirty(true)
                 break
+            case 'password':
+                setPasswordDirty(true)
+                break
         }
     }
 
@@ -144,6 +149,21 @@ const Register = ({onSubmitAuth}) => {
             setEmailError('Invalid email format')
         } else {
             setEmailError('')
+        }
+    }
+
+    const passwordHandler = (e) => {
+        setPassword(e.target.value)
+        const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/;
+        if (e.target.value.length < 6) {
+            setPasswordError('password cannot be less than 6 characters ')
+        } else if (e.target.value.length > 15) {
+            setPasswordError('password cannot be more than 15 characters ')
+            if (!re.test(String(e.target.value))) {
+                setPasswordError('password should have at least one uppercase letter, one lowercase letter and one number')
+            } else {
+                setPasswordError('')
+            }
         }
     }
 
@@ -209,6 +229,7 @@ const Register = ({onSubmitAuth}) => {
                         onChange={e => emailHandler(e)}/>
 
                     <label htmlFor="password">Password</label>
+                    {(passwordDirty && passwordError) && <div style={{color: 'red'}}>{passwordError}</div>}
                     <div className="eye_pswd">
                         <input
                             type="password"
@@ -216,7 +237,11 @@ const Register = ({onSubmitAuth}) => {
                             name="password"
                             placeholder="Enter password.."
                             autoComplete="off"
-                            onChange={(e) => setPassword(e.target.value)}/>
+                            value={password}
+                            onBlur={e => {
+                                blurHandler(e)
+                            }}
+                            onChange={e => passwordHandler(e)}/>
                     </div>
                     <div className="signUp_btn">
                         <input className="submit_signUp" type="submit" value="Submit"/>
@@ -226,5 +251,4 @@ const Register = ({onSubmitAuth}) => {
         </div>
     )
 }
-
 export default Register
