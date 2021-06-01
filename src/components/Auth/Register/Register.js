@@ -22,13 +22,17 @@ const Register = ({onSubmitAuth}) => {
     const [passwordDirty, setPasswordDirty] = useState(false)
     const [passwordError, setPasswordError] = useState('password cannot be empty')
 
+    const [passwordConfirmation, setPasswordConfirmation] = useState('')
+    const [passwordConfirmationDirty, setPasswordConfirmationDirty] = useState(false)
+    const [passwordConfirmationError, setPasswordConfirmationError] = useState('please confirm your password')
+
     const onRegister = (e) => {
         e.preventDefault()
         if (!userName) {
             alert('Please add a username')
             return
         } else if (userNameError !== '') {
-            alert('invalid username')
+            alert('Invalid username')
             return;
         }
 
@@ -36,7 +40,7 @@ const Register = ({onSubmitAuth}) => {
             alert('Please add a first name')
             return
         } else if (firstNameError !== '') {
-            alert('invalid first name')
+            alert('Invalid first name')
             return;
         }
 
@@ -44,7 +48,7 @@ const Register = ({onSubmitAuth}) => {
             alert('Please add a last name')
             return
         } else if (lastNameError !== '') {
-            alert('invalid last name')
+            alert('Invalid last name')
             return;
         }
 
@@ -52,7 +56,7 @@ const Register = ({onSubmitAuth}) => {
             alert('Please add an email')
             return
         } else if (emailError !== '') {
-            alert('invalid email')
+            alert('Invalid email')
             return;
         }
 
@@ -60,7 +64,15 @@ const Register = ({onSubmitAuth}) => {
             alert('Please add a password')
             return
         } else if (passwordError !== '') {
-            alert('invalid password')
+            alert('Invalid password')
+            return;
+        }
+
+        if (!passwordConfirmation) {
+            alert('Please confirm password')
+            return
+        } else if (passwordConfirmationError !== '') {
+            alert('The entered passwords  do not match')
             return;
         }
 
@@ -111,6 +123,11 @@ const Register = ({onSubmitAuth}) => {
                 break
             case 'password':
                 setPasswordDirty(true)
+                break
+            case 'passwordConfirmation':
+                setPasswordConfirmationDirty(true)
+                break
+            default:
                 break
         }
     }
@@ -181,89 +198,113 @@ const Register = ({onSubmitAuth}) => {
         }
     }
 
+    const passwordConfirmationHandler = (e) => {
+        setPasswordConfirmation(e.target.value)
+        if (e.target.value !== password) {
+            setPasswordConfirmationError('the entered passwords must match')
+        } else {
+            setPasswordConfirmationError('')
+        }
+    }
 
-return (
-    <div id="signup" className="signUpContent">
-        <h1>Sign Up for Free</h1>
-        <form id="SignUpForm" onSubmit={onRegister}>
-            <div className="input_fields">
-                <label htmlFor="username">Username</label>
-                {(userNameDirty && userNameError) && <div style={{color: 'red'}}>{userNameError}</div>}
-                <input
-                    type="text"
-                    id="username"
-                    autoComplete="off"
-                    name="userName"
-                    placeholder="Enter username.."
-                    value={userName}
-                    onBlur={e => {
-                        blurHandler(e)
-                    }}
-                    onChange={e => userNameHandler(e)}/>
 
-                <label htmlFor="firstName">First Name</label>
-                {(firstNameDirty && firstNameError) && <div style={{color: 'red'}}>{firstNameError}</div>}
-                <input
-                    type="text"
-                    id="firstName"
-                    utocomplete="off"
-                    name="firstName"
-                    placeholder="Enter first name.."
-                    value={firstName}
-                    onBlur={e => {
-                        blurHandler(e)
-                    }}
-                    onChange={e => firstNameHandler(e)}/>
-
-                <label htmlFor="lastName">Last Name</label>
-                {(lastNameDirty && lastNameError) && <div style={{color: 'red'}}>{lastNameError}</div>}
-                <input
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    autoComplete="off"
-                    placeholder="Enter last name.."
-                    value={lastName}
-                    onBlur={e => {
-                        blurHandler(e)
-                    }}
-                    onChange={e => lastNameHandler(e)}/>
-
-                <label htmlFor="email">Email</label>
-                {(emailDirty && emailError) && <div style={{color: 'red'}}>{emailError}</div>}
-                <input
-                    type="text"
-                    id="email"
-                    name="email"
-                    autoComplete="off"
-                    placeholder="Enter email.."
-                    value={email}
-                    onBlur={e => {
-                        blurHandler(e)
-                    }}
-                    onChange={e => emailHandler(e)}/>
-
-                <label htmlFor="password">Password</label>
-                {(passwordDirty && passwordError) && <div style={{color: 'red'}}>{passwordError}</div>}
-                <div className="eye_pswd">
+    return (
+        <div id="signup" className="signUpContent">
+            <h1>Sign Up for Free</h1>
+            <form id="SignUpForm" onSubmit={onRegister}>
+                <div className="input_fields">
+                    <label htmlFor="username">Username</label>
+                    {(userNameDirty && userNameError) && <div style={{color: 'red'}}>{userNameError}</div>}
                     <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter password.."
+                        type="text"
+                        id="username"
                         autoComplete="off"
-                        value={password}
+                        name="userName"
+                        placeholder="Enter username.."
+                        value={userName}
                         onBlur={e => {
                             blurHandler(e)
                         }}
-                        onChange={e => passwordHandler(e)}/>
+                        onChange={e => userNameHandler(e)}/>
+
+                    <label htmlFor="firstName">First Name</label>
+                    {(firstNameDirty && firstNameError) && <div style={{color: 'red'}}>{firstNameError}</div>}
+                    <input
+                        type="text"
+                        id="firstName"
+                        utocomplete="off"
+                        name="firstName"
+                        placeholder="Enter first name.."
+                        value={firstName}
+                        onBlur={e => {
+                            blurHandler(e)
+                        }}
+                        onChange={e => firstNameHandler(e)}/>
+
+                    <label htmlFor="lastName">Last Name</label>
+                    {(lastNameDirty && lastNameError) && <div style={{color: 'red'}}>{lastNameError}</div>}
+                    <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        autoComplete="off"
+                        placeholder="Enter last name.."
+                        value={lastName}
+                        onBlur={e => {
+                            blurHandler(e)
+                        }}
+                        onChange={e => lastNameHandler(e)}/>
+
+                    <label htmlFor="email">Email</label>
+                    {(emailDirty && emailError) && <div style={{color: 'red'}}>{emailError}</div>}
+                    <input
+                        type="text"
+                        id="email"
+                        name="email"
+                        autoComplete="off"
+                        placeholder="Enter email.."
+                        value={email}
+                        onBlur={e => {
+                            blurHandler(e)
+                        }}
+                        onChange={e => emailHandler(e)}/>
+
+                    <label htmlFor="password">Password</label>
+                    {(passwordDirty && passwordError) && <div style={{color: 'red'}}>{passwordError}</div>}
+                    <div className="eye_pswd">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter password.."
+                            autoComplete="off"
+                            value={password}
+                            onBlur={e => {
+                                blurHandler(e)
+                            }}
+                            onChange={e => passwordHandler(e)}/>
+                    </div>
+                    <label htmlFor="password-confirm">Password confirmation</label>
+                    {(passwordConfirmationError && passwordConfirmationDirty) && <div style={{color: 'red'}}>{passwordConfirmationError}</div>}
+                    <div className="eye_pswd">
+                        <input
+                            type="password"
+                            id="passwordConfirmation"
+                            name="passwordConfirmation"
+                            placeholder="Confirm password.."
+                            autoComplete="off"
+                            value={passwordConfirmation}
+                            onBlur={e => {
+                                blurHandler(e)
+                            }}
+                            onChange={e => passwordConfirmationHandler(e)}/>
+                    </div>
+                    <div className="signUp_btn">
+                        <input className="submit_signUp" type="submit" value="Submit"/>
+                    </div>
                 </div>
-                <div className="signUp_btn">
-                    <input className="submit_signUp" type="submit" value="Submit"/>
-                </div>
-            </div>
-        </form>
-    </div>
-)
+            </form>
+        </div>
+    )
 }
 export default Register
