@@ -11,6 +11,9 @@ const Register = ({onSubmitAuth}) => {
     const [firstNameError, setFirstNameError] = useState('First name cannot be empty')
 
     const [lastName, setLastName] = useState('')
+    const [lastNameDirty, setLastNameDirty] = useState(false)
+    const [lastNameError, setLastNameError] = useState('Last name cannot be empty')
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -80,6 +83,9 @@ const Register = ({onSubmitAuth}) => {
             case 'firstName':
                 setFirstNameDirty(true)
                 break
+            case 'lastName':
+                setLastNameDirty(true)
+                break
         }
     }
 
@@ -108,6 +114,20 @@ const Register = ({onSubmitAuth}) => {
             setFirstNameError('First name can only contain letters and should start with Upper case')
         } else {
             setFirstNameError('')
+        }
+    }
+
+    const lastNameHandler = (e) => {
+        setLastName(e.target.value)
+        const re = /^([A-Z]).([a-z])+$/;
+        if (e.target.value.length < 2) {
+            setLastNameError('Last name cannot be less than 2 characters ')
+        } else if (e.target.value.length > 15) {
+            setLastNameError('Last name cannot be more than 15 characters ')
+        } else if (!re.test(String(e.target.value))) {
+            setLastNameError('Last name can only contain letters and should start with Upper case')
+        } else {
+            setLastNameError('')
         }
     }
 
@@ -145,13 +165,18 @@ const Register = ({onSubmitAuth}) => {
                         onChange={e => firstNameHandler(e)}/>
 
                     <label htmlFor="lastName">Last Name</label>
+                    {(lastNameDirty && lastNameError) && <div style={{color: 'red'}}>{lastNameError}</div>}
                     <input
                         type="text"
                         id="lastName"
                         name="lastName"
                         autoComplete="off"
                         placeholder="Enter last name.."
-                        onChange={(e) => setLastName(e.target.value)}/>
+                        value={lastName}
+                        onBlur={e => {
+                            blurHandler(e)
+                        }}
+                        onChange={e => lastNameHandler(e)}/>
 
                     <label htmlFor="email">Email</label>
                     <input
