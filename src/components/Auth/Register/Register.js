@@ -148,7 +148,7 @@ const Register = ({onSubmitAuth}) => {
 
     const firstNameHandler = (e) => {
         setFirstName(e.target.value)
-        const re = /^([A-Z]).([a-z])+$/;
+        const re = /^[A-Z][a-z]*[-][A-Z][a-z]*$/;
         if (e.target.value.length < 2) {
             setFirstNameError('First name cannot be less than 2 characters ')
         } else if (e.target.value.length > 15) {
@@ -162,7 +162,7 @@ const Register = ({onSubmitAuth}) => {
 
     const lastNameHandler = (e) => {
         setLastName(e.target.value)
-        const re = /^([A-Z]).([a-z])+$/;
+        const re = /^[A-Z][a-z]*[-][A-Z][a-z]*$/;
         if (e.target.value.length < 2) {
             setLastNameError('Last name cannot be less than 2 characters ')
         } else if (e.target.value.length > 15) {
