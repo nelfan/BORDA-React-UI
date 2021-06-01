@@ -7,6 +7,8 @@ const Register = ({onSubmitAuth}) => {
     const [userNameError, setUserNameError] = useState('username cannot be empty')
 
     const [firstName, setFirstName] = useState('')
+    const [firstNameDirty, setFirstNameDirty] = useState(false)
+    const [firstNameError, setFirstNameError] = useState('First name cannot be empty')
 
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -14,20 +16,13 @@ const Register = ({onSubmitAuth}) => {
 
     const onRegister = (e) => {
         e.preventDefault()
-        //TODO: alerts
         if (!userName) {
             alert('Please add a username')
-            return
-        } else if (userName !== '') {
-            alert('Invalid username')
             return
         }
 
         if (!firstName) {
             alert('Please add a first name')
-            return
-        } else if (firstName !== '') {
-            alert('Invalid first name')
             return
         }
 
@@ -82,6 +77,9 @@ const Register = ({onSubmitAuth}) => {
             case 'userName':
                 setUserNameDirty(true)
                 break
+            case 'firstName':
+                setFirstNameDirty(true)
+                break
         }
     }
 
@@ -99,6 +97,20 @@ const Register = ({onSubmitAuth}) => {
         }
     }
 
+    const firstNameHandler = (e) => {
+        setFirstName(e.target.value)
+        const re = /^([A-Z]).([a-z])+$/;
+        if (e.target.value.length < 2) {
+            setFirstNameError('First name cannot be less than 2 characters ')
+        } else if (e.target.value.length > 15) {
+            setFirstNameError('First name cannot be more than 15 characters ')
+        } else if (!re.test(String(e.target.value))) {
+            setFirstNameError('First name can only contain letters and should start with Upper case')
+        } else {
+            setFirstNameError('')
+        }
+    }
+
     return (
         <div id="signup" className="signUpContent">
             <h1>Sign Up for Free</h1>
@@ -107,25 +119,30 @@ const Register = ({onSubmitAuth}) => {
                     <label htmlFor="username">Username</label>
                     {(userNameDirty && userNameError) && <div style={{color: 'red'}}>{userNameError}</div>}
                     <input
-                        value={userName}
                         type="text"
                         id="username"
                         autoComplete="off"
                         name="userName"
                         placeholder="Enter username.."
+                        value={userName}
                         onBlur={e => {
                             blurHandler(e)
                         }}
                         onChange={e => userNameHandler(e)}/>
 
                     <label htmlFor="firstName">First Name</label>
+                    {(firstNameDirty && firstNameError) && <div style={{color: 'red'}}>{firstNameError}</div>}
                     <input
                         type="text"
                         id="firstName"
                         utocomplete="off"
                         name="firstName"
                         placeholder="Enter first name.."
-                        onChange={(e) => setFirstName(e.target.value)}/>
+                        value={firstName}
+                        onBlur={e => {
+                            blurHandler(e)
+                        }}
+                        onChange={e => firstNameHandler(e)}/>
 
                     <label htmlFor="lastName">Last Name</label>
                     <input
