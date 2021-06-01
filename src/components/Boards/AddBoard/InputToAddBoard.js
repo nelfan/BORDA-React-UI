@@ -12,7 +12,7 @@ const InputToAddBoard = ({onAdd}) => {
             alert('Please enter a board name')
             return
         } else if (boardNameError !== '') {
-            alert('Board name cannot be more than 255 characters')
+            alert('Invalid board name')
             return;
         }
 
@@ -28,8 +28,13 @@ const InputToAddBoard = ({onAdd}) => {
 
     const boardNameHandler = (e) => {
         setBoardName(e.target.value)
-        if (e.target.value.length > 255) {
+        const re = /^[\s~`!@#$%^&*()_+=[\]\\{}|;':",.\/<>?a-zA-Z0-9-]+$/;
+        if (e.target.value.trim().length === 0) {
+            setBoardNameError('Board name cannot contain only whitespace characters')
+        } else if (e.target.value.length > 255) {
             setBoardNameError('Board name cannot be more than 255 characters ')
+        } else if (!re.test(String(e.target.value))) {
+            setBoardNameError('Board name can contain only english letters')
         } else {
             setBoardNameError('')
         }
