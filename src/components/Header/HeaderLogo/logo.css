@@ -1,0 +1,23 @@
+body{
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+}
+.left_side{
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.logoImage{
+    font-size: 28px;
+}
+.logoImage a{
+    color: rgba(255, 255, 255, 0.788);
+}
+.logoImage a i{
+    color: rgba(255, 255, 255, 0.788);
+    font-size: 28px;
+}
+

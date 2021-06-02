@@ -4,8 +4,8 @@
 }
 
 .header {
-    width: 100%;
-    height: 5%;
+    width: 98%;
+    height: 5vh;
     background: rgba(56, 109, 216, 0.993);
     text-align: center;
 }

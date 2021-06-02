@@ -63,7 +63,6 @@ const Register = ({onSubmitAuth}) => {
             body: JSON.stringify(regData)
         })
         const data = await res.json()
-
         return data
     }
 
