@@ -3,6 +3,8 @@ import './auth.css';
 import Login from './Login/Login';
 import Register from './Register/Register';
 import { Redirect } from "react-router-dom";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 class Auth extends Component {
 
@@ -26,24 +28,28 @@ class Auth extends Component {
             return <Redirect to="/boards" />
         }
         return (
-            <div className="main_container" >
-                <div className="align_form">
-                    <div className="form">
-                        <ul className="tab-group">
-                            <li className={!this.showLogin ? "tab active" : "tab"} onClick={this.onClickTabItem}><a href="#signup">Sign Up</a></li>
-                            <li className={this.showLogin ? "tab active" : "tab"} onClick={this.onClickTabItem}><a href="#login">Log In</a></li>
-                        </ul>
+            <div>
+                <Header/>
+                <div className="main_container">
+                    <div className="align_form">
+                        <div className="form">
+                            <ul className="tab-group">
+                                <li className={!this.showLogin ? "tab active" : "tab"} onClick={this.onClickTabItem}><a href="#signup">Sign Up</a></li>
+                                <li className={this.showLogin ? "tab active" : "tab"} onClick={this.onClickTabItem}><a href="#login">Log In</a></li>
+                            </ul>
 
-                        <div>
-                            {
-                                this.showLogin ? (
-                                    <Login onSubmitAuth={this.onSubmit} />) : (
-                                    <Register onSubmitAuth={this.onSubmit} />)
-                            }
+                            <div>
+                                {
+                                    this.showLogin ? (
+                                        <Login onSubmitAuth={this.onSubmit} />) : (
+                                        <Register onSubmitAuth={this.onSubmit} />)
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div >
+                <Footer/>
+            </div>
         )
     }
 }

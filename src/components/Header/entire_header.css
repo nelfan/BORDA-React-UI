@@ -1,0 +1,14 @@
+.alignment_of_header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: rgba(56, 109, 216, 0.993);
+}
+
+.header {
+    height: 5vh;
+    width: 98%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

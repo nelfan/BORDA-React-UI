@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "@fortawesome/fontawesome-free-regular": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -48,6 +49,8 @@
   "devDependencies": {
     "@sideway/address": "^4.1.2",
     "browserslist": "^4.16.4",
+    "form-serialize": "^0.7.2",
+    "jquery": "^3.6.0",
     "react-scripts": "^4.0.3"
   }
 }
