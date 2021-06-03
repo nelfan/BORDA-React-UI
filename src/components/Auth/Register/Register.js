@@ -7,6 +7,7 @@ const Register = ({onSubmitAuth}) => {
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [passwordEye, setStatusOnPassEye] = useState(false)
 
     const onRegister = (e) => {
         e.preventDefault()
@@ -66,6 +67,12 @@ const Register = ({onSubmitAuth}) => {
         return data
     }
 
+    const passwordToggle = (e) => {
+        let inputField = e.currentTarget.parentNode.querySelector('#password')
+        inputField.type === "password" ? inputField.type = "text" : inputField.type = "password";
+        setStatusOnPassEye(!passwordEye);
+    }
+
     return (
         <div id="signup" className="signUpContent">
             <h1>Sign Up for Free</h1>
@@ -79,7 +86,7 @@ const Register = ({onSubmitAuth}) => {
                         autoComplete="off"
                         name="username"
                         placeholder="Enter username.."
-                        onChange={(e) => setUsername(e.target.value)} />
+                        onChange={(e) => setUsername(e.target.value)} required/>
 
                     <label htmlFor="firstName">First Name</label>
                     <input
@@ -88,7 +95,7 @@ const Register = ({onSubmitAuth}) => {
                         utocomplete="off"
                         name="firstName"
                         placeholder="Enter first name.." 
-                        onChange={(e) => setFirstName(e.target.value)} />
+                        onChange={(e) => setFirstName(e.target.value)} required/>
 
                     <label htmlFor="lastName">Last Name</label>
                     <input
@@ -97,7 +104,7 @@ const Register = ({onSubmitAuth}) => {
                         name="lastName"
                         autoComplete="off"
                         placeholder="Enter last name.." 
-                        onChange={(e) => setLastName(e.target.value)} />
+                        onChange={(e) => setLastName(e.target.value)} required/>
 
                     <label htmlFor="email">Email</label>
                     <input
@@ -106,7 +113,7 @@ const Register = ({onSubmitAuth}) => {
                         name="email"
                         autoComplete="off"
                         placeholder="Enter email.." 
-                        onChange={(e) => setEmail(e.target.value)} />
+                        onChange={(e) => setEmail(e.target.value)} required/>
 
                     <label htmlFor="password">Password</label>
                     <div className="eye_pswd">
@@ -116,7 +123,8 @@ const Register = ({onSubmitAuth}) => {
                             name="password"
                             placeholder="Enter password.."
                             autoComplete="off" 
-                            onChange={(e) => setPassword(e.target.value)} />
+                            onChange={(e) => setPassword(e.target.value)} required/>
+                        {passwordEye ? <i className="fa fa-eye-slash" onClick={passwordToggle} style={{display: "flex", alignItems: "center", cursor: "pointer"}} id="togglePassword"/> : <i className="fa fa-eye" onClick={passwordToggle} style={{display: "flex", alignItems: "center", cursor: "pointer"}} id="togglePassword"/>}
                     </div>
                     <div className="signUp_btn">
                         <input className="submit_signUp" type="submit" value="Submit" />

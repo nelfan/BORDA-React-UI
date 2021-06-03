@@ -4,6 +4,7 @@ import '../auth.css'
 const Login = ({onSubmitAuth}) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [passwordEye, setStatusOnPassEye] = useState(false)
 
     const onLogin = (e) => {
         e.preventDefault()
@@ -46,6 +47,12 @@ const Login = ({onSubmitAuth}) => {
         return data
     }
 
+    const passwordToggle = (e) => {
+        let inputField = e.currentTarget.parentNode.querySelector('#pass')
+        inputField.type === "password" ? inputField.type = "text" : inputField.type = "password";
+        setStatusOnPassEye(!passwordEye);
+    }
+
     return (
         <div id="login" className="signInContent">
             <h1>Welcome Back!</h1>
@@ -68,7 +75,8 @@ const Login = ({onSubmitAuth}) => {
                             name="password"
                             placeholder="Enter password.."
                             autoComplete="off"
-                            onChange={(e) => setPassword(e.target.value)} />
+                            onChange={(e) => setPassword(e.target.value)} required/>
+                        {passwordEye ? <i className="fa fa-eye-slash" onClick={passwordToggle} style={{display: "flex", alignItems: "center", cursor: "pointer"}} id="togglePassword"/> : <i className="fa fa-eye" onClick={passwordToggle} style={{display: "flex", alignItems: "center", cursor: "pointer"}} id="togglePassword"/>}
                     </div>
                     <div className="signIn_btn">
                         <input className="submit_signIn" type="submit" value="Submit" />
