@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import "./user_header_menu.css"
 
-class UserHeaderMenu extends Component{
+class UserHeaderMenu extends Component {
     render() {
-        return  <div className="user_submenu">
+        return <div className="user_submenu">
             <ul>
                 <li className="user_profile"><span>Profile</span><i className="far fa-id-badge"/></li>
                 <li className="user_projects"><span>Projects</span><i className="far fa-folder-open"/></li>
@@ -13,4 +13,5 @@ class UserHeaderMenu extends Component{
         </div>
     }
 }
+
 export default UserHeaderMenu

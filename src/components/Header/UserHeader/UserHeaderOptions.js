@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import "./user_header_options.css"
 
-class UserHeaderOptions extends Component{
-    state={
+class UserHeaderOptions extends Component {
+    state = {
         showMenu: false,
         menuNotification: false
     }
@@ -32,7 +32,7 @@ class UserHeaderOptions extends Component{
                     <a className="notification_icon">
                         <div className="alignment">
                             <i className="fa fa-envelope" onClick={this.clickNotificationIcon}>
-                              
+
                             </i>
                         </div>
                     </a>
