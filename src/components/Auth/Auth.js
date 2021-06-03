@@ -4,6 +4,7 @@ import Login from './Login/Login';
 import Register from './Register/Register';
 import { Redirect } from "react-router-dom";
 import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 class Auth extends Component {
 
@@ -47,6 +48,7 @@ class Auth extends Component {
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
         )
     }

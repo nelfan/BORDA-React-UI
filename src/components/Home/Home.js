@@ -4,6 +4,7 @@ import './home.css';
 import man_with_tablet from "../../assets/images/man_with_tablet.png";
 import listPreview from "../../assets/images/list-removebg-preview.png";
 import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 
 const Home = () => {
     return (
@@ -29,6 +30,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            <Footer/>
         </div>
     )
 }
