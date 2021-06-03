@@ -48,6 +48,7 @@
   "devDependencies": {
     "@sideway/address": "^4.1.2",
     "browserslist": "^4.16.4",
+    "form-serialize": "^0.7.2",
     "react-scripts": "^4.0.3"
   }
 }

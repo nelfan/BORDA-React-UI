@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import "./board_list.css"
+import BoardListItem from "./BoardListItem/BoardListItem";
 
 function BoardList() {
     const [addNewBoardList, setNewBoardList] = useState(false);
@@ -43,7 +44,29 @@ function BoardList() {
         setNewBoardList(false)
     }
 
+    const deleteItem = (key) => {
+        const filteredItems = items.filter(item => item.key !== key);
+        setItems(filteredItems);
+    }
+
+    const setUpdate = (data, key) => {
+        const {title, color} = data
+
+        const items = items;
+        items.map(item => {
+            if (item.key === key) {
+                item.title = title;
+                item.color = color;
+            }
+        })
+        setItems(items);
+    }
+
+    const list = items.map(item => {
+        return <li key={item.key}><BoardListItem data={item} setUpdate={setUpdate} deleteItem={deleteItem}/></li>
+    })
     return <ul className="default_main" id="defaultMain">
+        {list}
         <li className="addNewBoardListItem" id="default">
             <div className="align_btn_add_board">
                 <div className="align_add_bord">
