@@ -1,0 +1,137 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+.default_main{
+    width: 98%;
+    display: flex;
+    height: 94vh;
+    list-style-type: none;
+    padding: 0;
+}
+.addNewBoardListItem{
+    min-width: 310px;
+    height: 100%;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+}
+.default_main li{
+    height: 100%;
+    border-radius: 4px;
+    margin: 5px;
+}
+.align_btn_add_board{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.align_add_bord{
+    margin-top: 5px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.add_board{
+    padding: 5px 0px;
+    border: 1px solid rgba(56, 109, 216, 0.993);
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+.add_board span{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    color: rgba(56, 109, 216, 0.993);
+}
+.add_board_ok_cancel{
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+.add_board_ok_cancel span{
+    display: flex;
+    justify-content: space-between;
+}
+.ok_board{
+    padding: 5px  10px;
+    color: green;
+    border: 1px solid green;
+}
+.ok_board:hover{
+    color: rgb(206, 206, 206);
+    background: green;
+    border: 1px solid rgb(206, 206, 206);
+}
+.cancel_board{
+    padding: 5px  10px;
+    color: rgb(199, 56, 12);
+    border: 1px solid rgb(199, 56, 12);
+}
+.cancel_board:hover{
+    color: rgb(206, 206, 206);
+    background: rgb(199, 56, 12);
+    border: 1px solid rgb(206, 206, 206);
+}
+.textfield_of_newboard{
+    width: 100%;
+    margin-top: 5px;
+    padding: 5px 0px;
+    border: 1px solid rgba(56, 109, 216, 0.993);
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+.align_of_board_content{
+    width: 95%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.board_title{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.board_title input{
+    font-size: 18px;
+    outline: none;
+    padding: 5px 0px 5px 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: #636363;
+    border: 1px solid #e3e3e3;
+}
+.add_board:hover{
+    background: #e3e3e3;
+    border: 1px solid rgba(41, 99, 214, 0.993);
+}
+.picker {
+    display: flex;
+    overflow: hidden;
+    border-radius: 6px;
+    outline: none;
+    box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.1);
+}
+.picker input {
+    margin-top: 5px;
+    height: 40px;
+    outline: 0;
+    border: 1px solid #e3e3e3;
+}
+.hexcolor{
+    flex: 1;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+    border: 1px solid #e3e3e3;
+}
+.colorpicker {
+    flex: 1;
+    -webkit-appearance: none;
+}

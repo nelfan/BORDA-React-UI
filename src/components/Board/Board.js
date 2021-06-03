@@ -2,6 +2,7 @@ import React from 'react';
 import "./board_page.css"
 import HeaderLogo from "../Header/HeaderLogo/HeaderLogo";
 import UserHeaderOptions from "../Header/UserHeader/UserHeaderOptions";
+import BoardList from "./BoardList/BoardList";
 
 function Board(props) {
     const boardId = props.location.state;
@@ -14,7 +15,7 @@ function Board(props) {
         </div>
         <div className="main_content">
             <div className="active_borda_items">
-
+                <BoardList/>
             </div>
         </div>
     </div>
