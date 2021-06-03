@@ -32,7 +32,6 @@ function BoardListItem(props) {
         e.preventDefault();
         let object = serialize(document.querySelector("#edit_boardList_form"), {hash: true});
         props.setUpdate(object, key);
-
         setToggleMenu(!toggleMenu);
         setEditMenu(!editMenu);
     }
@@ -41,14 +40,13 @@ function BoardListItem(props) {
         setNewTicket(!addNewTicket);
     }
 
-
     const {color, title, key} = props.data
     return <div className="default_ul">
         <div className="list_header" style={{background: color}}>
             <span>{title}</span>
             <div className="edit_conf">
                 <a href="#" onClick={toggleBoardListMenu}>
-                    <i className="fas fa-ellipsis-v"/>
+                    <i className="fa fa-ellipsis-v"/>
                     {toggleMenu ?
                         <BoardListMenu isClickedEdit={toggleEditMenu} deleteItem={props.deleteItem}
                                        data={props.data}/> : null}
@@ -76,7 +74,7 @@ function BoardListItem(props) {
         <div className="btn_add_item" onClick={toggleTicket}>
             <a href="#">
                 <span>Add a card</span>
-                <i className="far fa-plus-square"/>
+                <i className="fa fa-plus-square"/>
             </a>
         </div>
         {/*{addNewTicket ? <TicketWindow ticket={getTicket} cancelBtn={toggleTicket}/> : null}*/}

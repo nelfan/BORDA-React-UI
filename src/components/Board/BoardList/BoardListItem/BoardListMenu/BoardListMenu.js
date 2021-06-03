@@ -7,17 +7,14 @@ function BoardListMenu(props) {
         <div>
             <li className="edit_lsit" onClick={props.isClickedEdit} key={1}>
                 <span>Edit</span>
-                <i className="edit far fa-edit"/>
+                <i className="delete fa fa-edit"/>
             </li>
-            <li key={2} onClick={() => {
-                props.deleteItem(key)
-            }}>
+            <li key={2} onClick={() => {props.deleteItem(key)}}>
                 <span>Delete</span>
-                <i className="delete fas fa-trash-alt"/>
+                <i className="delete fa fa-trash-alt"/>
             </li>
         </div>
     </ul>
 }
-
 
 export default BoardListMenu

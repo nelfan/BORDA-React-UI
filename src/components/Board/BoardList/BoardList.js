@@ -52,14 +52,14 @@ function BoardList() {
     const setUpdate = (data, key) => {
         const {title, color} = data
 
-        const items = items;
-        items.map(item => {
+        const filtered = items;
+        filtered.map(item => {
             if (item.key === key) {
                 item.title = title;
                 item.color = color;
             }
         })
-        setItems(items);
+        setItems(filtered);
     }
 
     const list = items.map(item => {
