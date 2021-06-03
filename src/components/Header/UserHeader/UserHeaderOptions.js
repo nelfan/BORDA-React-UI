@@ -25,7 +25,7 @@ class UserHeaderOptions extends Component {
                 <div className="empty_block"/>
                 <div className="general-info">
                     <a href="#" className="user_icon">
-                        <i className="far fa-user-circle" onClick={this.clickUserMenu}>
+                        <i className="fa fa-user-circle" onClick={this.clickUserMenu}>
 
                         </i>
                     </a>
@@ -36,7 +36,7 @@ class UserHeaderOptions extends Component {
                             </i>
                         </div>
                     </a>
-                    <a href="#"><i className="far fa-map"/></a>
+                    <a href="#"><i className="fa fa-map"/></a>
                 </div>
             </div>
         </div>
