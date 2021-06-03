@@ -29,7 +29,7 @@ const ProfilePage = (props) => {
         const fnameval = ref_firstName.current.value.length === 0 ? user.firstName : ref_firstName.current.value;
         const lnameval = ref_lastName.current.value.length === 0 ? user.lastName : ref_lastName.current.value;
         const avatarval = user.avatar;
-        
+
         const update_user = {
             'username': user.username,
             'email': emailval,
@@ -53,7 +53,7 @@ const ProfilePage = (props) => {
         $('.file-input').click();
     }
 
-    const closeForm = () =>{
+    const closeForm = () => {
         //External method of Profile menu to hide this form
         props.onClick();
     }
@@ -61,7 +61,7 @@ const ProfilePage = (props) => {
     const renderImage = (e) => {
         var file = e.target.files[0];
         var reader = new FileReader();
-        reader.onloadend = function (){
+        reader.onloadend = function () {
             var data = (reader.result).split(',')[1];
             user.avatar = data;
             ref_image.current.src = "data:image/jpeg;base64, " + data;
