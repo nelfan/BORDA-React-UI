@@ -78,10 +78,6 @@ const Register = ({onSubmitAuth}) => {
 
         const data = registerUser(userName, firstName, lastName, email, password)
 
-        sessionStorage.setItem('jwtToken', data.token)
-
-        onSubmitAuth(data.token)
-
         return data
     }
 
@@ -103,6 +99,10 @@ const Register = ({onSubmitAuth}) => {
             body: JSON.stringify(regData)
         })
         const data = await res.json()
+
+        sessionStorage.setItem('jwtToken', data.token)
+
+        onSubmitAuth(data.token)
 
         return data
     }
