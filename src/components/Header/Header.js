@@ -1,5 +1,5 @@
 import React from "react";
-import HeaderLogo  from "./HeaderLogo/HeaderLogo";
+import HeaderLogo from "./HeaderLogo/HeaderLogo";
 import HeaderOptions from "./HeaderOptions/HeaderOptions";
 import "./entire_header.css"
 

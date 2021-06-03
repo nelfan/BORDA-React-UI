@@ -1,7 +1,7 @@
 import React from 'react'
 import "./logo.css"
 
-function HeaderLogo () {
+function HeaderLogo() {
     return <div className="left_side">
         <div className="logo.logoImage">
             <a href="#">
@@ -11,4 +11,5 @@ function HeaderLogo () {
         <span style={{padding: "0px 0px 2px 10px", fontSize: "25px", color: "white"}}>Borda</span>
     </div>
 }
+
 export default HeaderLogo
