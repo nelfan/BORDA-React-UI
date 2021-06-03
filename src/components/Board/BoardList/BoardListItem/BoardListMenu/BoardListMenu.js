@@ -7,11 +7,13 @@ function BoardListMenu(props) {
         <div>
             <li className="edit_lsit" onClick={props.isClickedEdit} key={1}>
                 <span>Edit</span>
-                <i className="delete fa fa-edit"/>
+                <i style={{color: props.color}} className="delete fa fa-edit"/>
             </li>
-            <li key={2} onClick={() => {props.deleteItem(key)}}>
+            <li key={2} onClick={() => {
+                props.deleteItem(key)
+            }}>
                 <span>Delete</span>
-                <i className="delete fa fa-trash-alt"/>
+                <i style={{color: props.color}} className="delete fa fa-trash"/>
             </li>
         </div>
     </ul>

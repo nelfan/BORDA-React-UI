@@ -48,7 +48,7 @@ function BoardListItem(props) {
                 <a href="#" onClick={toggleBoardListMenu}>
                     <i className="fa fa-ellipsis-v"/>
                     {toggleMenu ?
-                        <BoardListMenu isClickedEdit={toggleEditMenu} deleteItem={props.deleteItem}
+                        <BoardListMenu color={color} isClickedEdit={toggleEditMenu} deleteItem={props.deleteItem}
                                        data={props.data}/> : null}
                     {editMenu ? <ul className="submenu_for_list" style={{border: "1px solid" + color}}>
                         <li>
