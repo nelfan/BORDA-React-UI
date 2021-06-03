@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import "./user_header_options.css"
+import UserHeaderMenu from "./UserHeaderMenu/UserHeaderMenu";
+import UserNotifications from "./UserNotifications/UserNotifications";
 
 class UserHeaderOptions extends Component {
     state = {
@@ -26,13 +28,13 @@ class UserHeaderOptions extends Component {
                 <div className="general-info">
                     <a href="#" className="user_icon">
                         <i className="fa fa-user-circle" onClick={this.clickUserMenu}>
-
+                            {this.state.showMenu ? <UserHeaderMenu/> : null}
                         </i>
                     </a>
                     <a className="notification_icon">
                         <div className="alignment">
                             <i className="fa fa-envelope" onClick={this.clickNotificationIcon}>
-
+                                {this.state.menuNotification ? <UserNotifications/> : null}
                             </i>
                         </div>
                     </a>
