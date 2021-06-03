@@ -1,14 +1,20 @@
-import React from 'react'
+import React from 'react';
+import "./board_page.css"
 
-const Board = (props) => {
+function BoardPage(props) {
+        const boardId = props.location.state;
+        return <div className="content">
+            <div className="alignment_of_header">
+                <div className="header">
 
-    const {id} = props.location.state
+                </div>
+            </div>
+            <div className="main_content">
+                <div className="active_borda_items">
 
-    return (
-        <div>
-            Board with id: {id}
+                </div>
+            </div>
         </div>
-    )
 }
 
-export default Board
+export default BoardPage

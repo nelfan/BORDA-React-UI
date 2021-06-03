@@ -1,0 +1,28 @@
+.alignment_of_header{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: rgba(56, 109, 216, 0.993);
+}
+.header{
+    height: 50px;
+    width: 98%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.main_content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: auto;
+}
+.active_borda_items{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #e3e3e3;
+}
