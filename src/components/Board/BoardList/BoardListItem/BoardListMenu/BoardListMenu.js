@@ -9,9 +9,7 @@ function BoardListMenu(props) {
                 <span>Edit</span>
                 <i style={{color: props.color}} className="delete fa fa-edit"/>
             </li>
-            <li key={2} onClick={() => {
-                props.deleteItem(key)
-            }}>
+            <li key={2} onClick={() => {props.deleteItem(key)}}>
                 <span>Delete</span>
                 <i style={{color: props.color}} className="delete fa fa-trash"/>
             </li>

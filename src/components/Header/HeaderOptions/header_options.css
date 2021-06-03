@@ -1,21 +1,25 @@
-.general_info{
+.general_info {
     display: flex;
     justify-content: space-evenly;
 }
-.general_info a{
+
+.general_info a {
     font-size: 22px;
     color: rgba(236, 236, 236, 0.788)
 }
-.question_icon{
+
+.question_icon {
     padding-right: 15px;
 }
 
-.doc_icon{
+.doc_icon {
     padding-right: 5px;
 }
-.question_icon:hover{
+
+.question_icon:hover {
     color: #e3e3e3;
 }
-.doc_icon:hover{
+
+.doc_icon:hover {
     color: #e3e3e3;
 }

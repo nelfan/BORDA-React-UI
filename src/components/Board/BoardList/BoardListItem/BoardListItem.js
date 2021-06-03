@@ -77,7 +77,6 @@ function BoardListItem(props) {
                 <i className="fa fa-plus-square"/>
             </a>
         </div>
-        {/*{addNewTicket ? <TicketWindow ticket={getTicket} cancelBtn={toggleTicket}/> : null}*/}
     </div>
 }
 
