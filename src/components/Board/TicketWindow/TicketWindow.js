@@ -4,7 +4,7 @@ import "./ticket.css"
 import Member from "./Member/Member";
 import Tag from "./Tag/Tag";
 import Comment from "./Comment/Comment";
-import TicketOptions from "./TicketOptions/TicketOptions";
+import TicketWindowOptions from "./TicketWindowOptions/TicketWindowOptions";
 import serialize from 'form-serialize';
 
 function TicketWindow(props) {
@@ -84,7 +84,7 @@ function TicketWindow(props) {
             <div className="header_align_new">
                 <div className="header_row_addNew">
                     <span>Task</span>
-                    <i className="fas fa-times" onClick={props.cancelBtn}/>
+                    <i className="fa fa-times" onClick={props.cancelBtn}/>
                 </div>
             </div>
             <div className="align_bg_of_task">
@@ -106,14 +106,14 @@ function TicketWindow(props) {
                                 <div className="align_task_title_field">
                                     <div className="task_title_field">
                                         <div className="title_ff">
-                                            <i className="far fa-clipboard header_tit"/>
+                                            <i className="fa fa-clipboard header_tit"/>
                                             <span>Title</span>
                                         </div>
                                         <div className="align_textfield_of_task_title">
                                             <div className="textfield_of_taks_title">
                                                 <input type="text" name="task_title" placeholder="Enter title of task"
                                                        autoComplete="off" required/>
-                                                <i className="fas fa-check icon"/>
+                                                <i className="fa fa-check icon"/>
                                             </div>
                                         </div>
                                     </div>
@@ -127,7 +127,7 @@ function TicketWindow(props) {
                                              isOpen={newTagMenu} data={labelsList}/>
                                         <div className="task_due_date">
                                             <div className="task_date_tit">
-                                                <i className="far fa-clock"/>
+                                                <i className="fa fa-clock"/>
                                                 <span>Due Date</span>
                                             </div>
                                             <div className="task_date_content">
@@ -141,7 +141,7 @@ function TicketWindow(props) {
                                     <div className="task_description_field">
                                         <div className="task_description_title">
                                             <span>Description</span>
-                                            <i className="far fa-edit"/>
+                                            <i className="fa fa-edit"/>
                                         </div>
                                         <div className="task_desc_area">
                                             <textarea name="description"/>
@@ -151,7 +151,7 @@ function TicketWindow(props) {
                                 <Comment/>
                             </div>
                         </div>
-                        <TicketOptions/>
+                        <TicketWindowOptions/>
                     </div>
 
                     <input ref={background} id="ticketBg" className="bg_input" name="bg" style={{display: "none"}}
