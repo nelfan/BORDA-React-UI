@@ -3,6 +3,7 @@ import "./board_list_item.css"
 import BoardListMenu from "./BoardListMenu/BoardListMenu";
 import serialize from 'form-serialize';
 import TicketWindow from "../../TicketWindow/TicketWindow";
+import Ticket from "../Ticket/Ticket";
 
 function BoardListItem(props) {
     const background = React.createRef();
@@ -42,6 +43,10 @@ function BoardListItem(props) {
     }
 
     const {color, title, key} = props.data
+    const list = tickets.map(item => {
+        return <Ticket data={item}/>
+    })
+
     return <div className="default_ul">
         <div className="list_header" style={{background: color}}>
             <span>{title}</span>
@@ -68,6 +73,7 @@ function BoardListItem(props) {
             </div>
         </div>
         <ul data-draggable="target" className="target">
+            {list}
             <div className="btn_new_activity">
 
             </div>
