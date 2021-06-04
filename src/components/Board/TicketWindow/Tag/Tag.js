@@ -7,7 +7,7 @@ function Tag(props) {
     })
     return <div className="task_labels">
         <div className="task_labels_tit">
-            <i className="fas fa-tag"/>
+            <i className="fa fa-tag"/>
             <span>Labels</span>
         </div>
         <div className="task_labels_content">
@@ -15,7 +15,7 @@ function Tag(props) {
                 {props.addNewTag ? list : <span> No Labels </span>}
             </ul>
             <div className="add_a_labels_to_task">
-                <i className="far fa-plus-square" onClick={props.addNewTag}/>
+                <i className="fa fa-plus-square" onClick={props.addNewTag}/>
                 {props.isOpen ? <ul className="list_of_labels">
                     <li key={1} onClick={props.clickAddLabel}>
                         <div className="user_info_task_labels">
@@ -24,36 +24,6 @@ function Tag(props) {
                             </div>
                             <div className="label_value">
                                 <span style={{background: "rgb(86, 121, 236)"}}/>
-                            </div>
-                        </div>
-                    </li>
-                    <li key={2} onClick={props.clickAddLabel}>
-                        <div className="user_info_task_labels">
-                            <div className="label_name">
-                                <span>MBF</span>
-                            </div>
-                            <div className="label_value">
-                                <span style={{background: "rgb(228, 72, 60)"}}/>
-                            </div>
-                        </div>
-                    </li>
-                    <li key={3} onClick={props.clickAddLabel}>
-                        <div className="user_info_task_labels">
-                            <div className="label_name">
-                                <span>QA\QC</span>
-                            </div>
-                            <div className="label_value">
-                                <span style={{background: "rgb(175, 71, 223)"}}/>
-                            </div>
-                        </div>
-                    </li>
-                    <li key={4} onClick={props.clickAddLabel}>
-                        <div className="user_info_task_labels">
-                            <div className="label_name">
-                                <span>Implementation</span>
-                            </div>
-                            <div className="label_value">
-                                <span style={{background: "rgb(97, 150, 66)"}}/>
                             </div>
                         </div>
                     </li>
