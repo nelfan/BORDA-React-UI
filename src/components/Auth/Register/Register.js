@@ -91,20 +91,35 @@ const Register = ({onSubmitAuth}) => {
             'password': password
         }
 
-        const res = await fetch('http://localhost:9090/register', {
+        // Check username on existing
+        const rest = await fetch('http://localhost:9090/check-username', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify(regData)
+            body: JSON.stringify(regData.username),
         })
-        const data = await res.json()
+        const checkResult = await rest.json()
 
-        sessionStorage.setItem('jwtToken', data.token)
+        if (checkResult === true) {
+            setUserNameError('This username is already taken')
+        } else {
+            const res = await fetch('http://localhost:9090/register', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(regData)
+            })
+            const data = await res.json()
 
-        onSubmitAuth(data.token)
+            sessionStorage.setItem('jwtToken', data.token)
 
-        return data
+            onSubmitAuth(data.token)
+
+            return data
+        }
+
     }
 
     const blurHandler = (e) => {
@@ -132,7 +147,7 @@ const Register = ({onSubmitAuth}) => {
         }
     }
 
-    const userNameHandler = (e) => {
+    const userNameHandler = async (e) => {
         setUserName(e.target.value)
         const re = /^(?!.*[_]{2})[a-zA-Z0-9_]+(?<![_.])$/;
         if (e.target.value.length < 3) {
@@ -285,7 +300,8 @@ const Register = ({onSubmitAuth}) => {
                             onChange={e => passwordHandler(e)}/>
                     </div>
                     <label htmlFor="password-confirm">Password confirmation</label>
-                    {(passwordConfirmationError && passwordConfirmationDirty) && <div style={{color: 'red'}}>{passwordConfirmationError}</div>}
+                    {(passwordConfirmationError && passwordConfirmationDirty) &&
+                    <div style={{color: 'red'}}>{passwordConfirmationError}</div>}
                     <div className="eye_pswd">
                         <input
                             type="password"
