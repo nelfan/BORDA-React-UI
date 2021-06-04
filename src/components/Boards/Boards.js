@@ -10,8 +10,8 @@ const Boards = () => {
     const [showAddBoard, setShowAddBoard] = useState(false)
     const [boardsViews, setBoardViews] = useState([])
 
-    const ownBoards = Object.values(boardsViews).filter(boardView => boardView.userBoardRelations[0].boardRole.name === 'OWNER');
-    const collabBoards = Object.values(boardsViews).filter(boardView => boardView.userBoardRelations[0].boardRole.name !== 'OWNER');
+    const ownBoards = Object.values(boardsViews).filter(boardView => boardView.userBoardRelations[0].userBoardRole.name === 'OWNER');
+    const collabBoards = Object.values(boardsViews).filter(boardView => boardView.userBoardRelations[0].userBoardRole.name !== 'OWNER');
 
     // GET Boards
     useEffect(() => {
