@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import "./board_list_item.css"
 import BoardListMenu from "./BoardListMenu/BoardListMenu";
 import serialize from 'form-serialize';
+import TicketWindow from "../../TicketWindow/TicketWindow";
 
 function BoardListItem(props) {
     const background = React.createRef();
@@ -77,6 +78,7 @@ function BoardListItem(props) {
                 <i className="fa fa-plus-square"/>
             </a>
         </div>
+        {addNewTicket ? <TicketWindow ticket={getTicket} cancelBtn={toggleTicket}/> : null}
     </div>
 }
 

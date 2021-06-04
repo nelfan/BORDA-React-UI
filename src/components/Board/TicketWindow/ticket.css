@@ -1,0 +1,331 @@
+.align_addNewTask_window {
+    width: 100%;
+    height: auto;
+}
+
+.add_new_task_toBoard {
+    position: absolute;
+    top: 50px;
+    left: 25%;
+    right: 25%;
+    min-width: 50%;
+    background: #f3f1f1;
+    border: 1px solid rgb(168, 168, 168);
+    border-radius: 3px;
+    z-index: 2000;
+}
+
+.header_align_new {
+    width: 100%;
+    margin: 0 auto;
+    background: #999999;
+}
+
+.header_row_addNew {
+    padding: 8px 0px;
+    width: 98%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header_row_addNew span {
+    color: rgb(235, 235, 235);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.header_row_addNew i {
+    color: rgb(235, 235, 235);
+    cursor: pointer;
+}
+
+.header_row_addNew i:hover {
+    color: rgb(216, 216, 216);
+}
+
+.align_bg_of_task {
+    width: 100%;
+    margin: 0 auto;
+    height: 200px;
+    margin: 5px 0px;
+}
+
+.align_bg_of_task {
+    width: 100%;
+    margin: 0 auto;
+    height: 200px;
+    margin: 5px 0px;
+}
+
+.bg_of_task {
+    width: 98%;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.bg_of_task img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid #636363;
+}
+
+.change_bg_of_task a {
+    width: 75px;
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    padding: 5px 8px;
+    border: 1px solid rgb(109, 109, 109);
+    background: transparent;
+    color: rgb(109, 109, 109);
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.change_bg_of_task a:hover {
+    background: #e3e3e3;
+    color: rgb(83, 83, 83);
+}
+
+
+/*Task content*/
+.align_task_w_content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.task_window_content {
+    width: 96%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.general_inf_task {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.left_side {
+    width: 75%;
+    height: auto;
+}
+
+.align_left_side {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.align_task_title_field {
+    width: 50%;
+    display: flex;
+}
+
+.task_title_field {
+    margin-top: 5px;
+    width: 96%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: auto;
+}
+
+.title_ff {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 5px;
+}
+
+.title_ff span {
+    height: 100%;
+    font-size: 18px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.title_ff i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #6d6d72;
+    font-size: 20px;
+    padding-right: 5px;
+}
+
+.align_textfield_of_task_title {
+    width: 100%;
+}
+
+.textfield_of_taks_title {
+    width: 70%;
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.textfield_of_taks_title input {
+    width: 100%;
+    padding-left: 10px;
+    font-weight: 500;
+    font-size: 15px;
+    outline: none;
+    color: #242424;
+    background: transparent;
+    border: 1px solid #b9b9b9;
+    padding: 5px 10px;
+}
+
+.textfield_of_taks_title i {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 7px;
+    font-size: 14px;
+}
+
+
+/*Task Details*/
+.align_task_details {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.task_details {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/*Due date*/
+.task_due_date {
+    width: 140px;
+    height: auto;
+}
+
+.task_date_tit {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.task_date_tit i {
+    color: #636363;
+}
+
+.task_date_tit span {
+    color: #636363;
+}
+
+.task_date_content {
+    width: 100%;
+}
+
+.task_date_content input {
+    padding: 3px;
+    padding-right: 10px;
+    width: 100%;
+    outline: none;
+    border: 1px solid #e3e3e3;
+    background: transparent;
+}
+
+/*Description*/
+.align_task_description_field {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.task_description_field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.task_description_title {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+}
+
+.task_description_title span {
+    color: #636363;
+    padding-right: 10px;
+}
+
+.task_description_title i {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #636363;
+    font-size: 14px;
+}
+
+.task_description_title i:hover {
+    color: #6b7fee;
+}
+
+.task_desc_area {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.task_desc_area textarea {
+    padding: 10px 10px;
+    padding-left: 10px;
+    width: 100%;
+    resize: none;
+    outline: none;
+    background: transparent;
+    height: 100px;
+    color: #636363;
+    border: 1px solid #d6d6d6;
+}
+
+.align_addTask_btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.addTask_btn {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 15px;
+}
+
+.addTask_btn input {
+    padding: 5px 15px;
+    border: 0;
+    background: green;
+    color: #e3e3e3;
+    text-transform: uppercase;
+    outline: none;
+    cursor: pointer;
+}
