@@ -92,7 +92,7 @@ const Register = ({onSubmitAuth}) => {
         }
 
         // Check username on existing
-        const rest = await fetch('http://localhost:9090/check-username', {
+        const rest = await fetch('http://localhost:9090/users', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
