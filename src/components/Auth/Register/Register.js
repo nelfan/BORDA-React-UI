@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import '../auth.css';
 
 const Register = ({onSubmitAuth}) => {
@@ -92,14 +92,13 @@ const Register = ({onSubmitAuth}) => {
         }
 
         // Check username on existing
-        const rest = await fetch('http://localhost:9090/users', {
-            method: 'POST',
+        const res = await fetch('http://localhost:9090/' + regData.username, {
+            method: 'GET',
             headers: {
                 'Content-type': 'application/json'
-            },
-            body: JSON.stringify(regData.username),
+            }
         })
-        const checkResult = await rest.json()
+        const checkResult = await res.json()
 
         if (checkResult === true) {
             setUserNameError('This username is already taken')
@@ -119,7 +118,6 @@ const Register = ({onSubmitAuth}) => {
 
             return data
         }
-
     }
 
     const blurHandler = (e) => {
