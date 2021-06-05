@@ -61,6 +61,7 @@ function TicketWindow(props) {
             description: description,
             date: created
         });
+        props.cancelBtn();
     }
 
     const addMember = (e) => {
@@ -127,7 +128,7 @@ function TicketWindow(props) {
                                              isOpen={newTagMenu} data={labelsList}/>
                                         <div className="task_due_date">
                                             <div className="task_date_tit">
-                                                <i className="fa fa-clock"/>
+                                                <i className="far fa-clock"/>
                                                 <span>Due Date</span>
                                             </div>
                                             <div className="task_date_content">
