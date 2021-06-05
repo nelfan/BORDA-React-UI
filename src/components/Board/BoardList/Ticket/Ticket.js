@@ -24,14 +24,14 @@ function Ticket(props) {
     return <li key={props.data.date} data-draggable="item" data-task="1" className="item">
         <div className="task_header">
             <span>{props.data.title}</span>
-            <i className="fas fa-ellipsis-v" onClick={editMenu}>
+            <i className="fa fa-ellipsis-v" onClick={editMenu}>
                 {editTicket ? <ul className="edit_task_window">
-                    <li key={'view'} className="view_task"><span>View</span><i className="show_task_i fas fa-file"/>
+                    <li key={'view'} className="view_task"><span>View</span><i className="show_task_i fa fa-file"/>
                     </li>
                     <li key={'edit'} className="edit_task"><span>Edit</span><i
-                        className="edit_task_i fas fa-pen-square"/></li>
+                        className="edit_task_i fa fa-edit"/></li>
                     <li key={'delete'} className="delete_task"><span>Delete</span><i
-                        className="delete_task_i far fa-trash-alt"/>
+                        className="delete_task_i fa fa-trash"/>
                     </li>
                 </ul> : null}
             </i>

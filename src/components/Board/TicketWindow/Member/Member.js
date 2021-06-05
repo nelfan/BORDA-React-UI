@@ -12,7 +12,7 @@ function Member(props) {
 
     return <div className="task_members">
         <div className="task_members_tit">
-            <i className="fas fa-users"/>
+            <i className="fa fa-users"/>
             <span>Members</span>
         </div>
         <div className="task_members_content">
@@ -20,7 +20,7 @@ function Member(props) {
                 {props.showUsersMenu ? list : <span className="default_behaviour">No Members</span>}
             </ul>
             <div className="add_a_members_to_task">
-                <i className="far fa-plus-square" onClick={props.showUsersMenu}/>
+                <i className="fa fa-plus-square" onClick={props.showUsersMenu}/>
                 {props.isOpen ? <ul className="list_of_members">
                     <li key={1} onClick={props.clickAddMember}>
                         <div className="user_info_task_members">
@@ -42,7 +42,6 @@ function Member(props) {
                             </div>
                         </div>
                     </li>
-
                 </ul> : null}
             </div>
         </div>

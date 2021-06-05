@@ -6,7 +6,7 @@ function Comment() {
         <div className="chat_field">
             <div className="task_chat_title">
                 <span>Chat</span>
-                <i className="far fa-comment-dots"/>
+                <i className="fa fa-comment"/>
             </div>
             <div className="task_chat_area">
             </div>
