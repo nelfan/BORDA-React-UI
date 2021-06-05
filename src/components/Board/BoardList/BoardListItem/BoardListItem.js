@@ -80,7 +80,7 @@ function BoardListItem(props) {
         </ul>
         <div className="btn_add_item" onClick={toggleTicket}>
             <a href="#">
-                <span>Add a card</span>
+                <span>Add a task</span>
                 <i className="fa fa-plus-square"/>
             </a>
         </div>

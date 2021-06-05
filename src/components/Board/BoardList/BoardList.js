@@ -77,7 +77,7 @@ function BoardList() {
                                 <span className="cancel_board" onClick={cancelAddNewBoardList}> Cancel </span>
                             </div> :
                             <div className="add_board" onClick={newBoardList}>
-                                <span> Add new Board <i className="fa fa-plus"/> </span>
+                                <span> Add new Column <i className="fa fa-plus"/> </span>
                             </div>
                         }
 
@@ -86,18 +86,8 @@ function BoardList() {
                                 <div className="align_of_board_content">
                                     <div className="board_title">
                                         <input id="boardList_title" onChange={handleInput} type="text"
-                                               placeholder="Enter a board title" autoComplete="off"
+                                               placeholder="Enter a column title" autoComplete="off"
                                                value={currentItem.title} required/>
-                                    </div>
-
-                                    <div className="picker">
-                                        <input type="color" className="colorpicker" id="colorPicker"
-                                               onChange={changeColor} name="color"
-                                               pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$"
-                                               value={boardColor} required/>
-                                        <input type="text" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$"
-                                               onChange={changeColor} value={boardColor}
-                                               className="hexcolor" id="hexColor"/>
                                     </div>
                                 </div>
                             </div> : null}
