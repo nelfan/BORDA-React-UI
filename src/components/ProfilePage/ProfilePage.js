@@ -1,7 +1,7 @@
-import './profilePage.scss';
+import './profilePage.css';
 import default_user from '../../assets/images/default-user.jpg';
 import Avatar from './Avatar/Avatar';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef, useState} from 'react';
 import $ from 'jquery';
 
 const ProfilePage = (props) => {
@@ -9,20 +9,9 @@ const ProfilePage = (props) => {
     const ref_email = useRef(null);
     const ref_firstName = useRef(null);
     const ref_lastName = useRef(null);
-    const [user, setUser] = useState([])
-    useEffect(() => {
-        const getUser = async () => {
-            const res = await fetch('http://localhost:9090/users/', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-                }
-            })
-            const data = await res.json();
-            setUser(await data)
-        }
-        getUser()
-    }, [])
+    const ref_newPassword = useRef(null);
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    console.log(user);
 
     const saveUser = async () => {
         const emailval = ref_email.current.value.length === 0 || !ref_email.current.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? user.email : ref_email.current.value;
@@ -31,21 +20,22 @@ const ProfilePage = (props) => {
         const avatarval = user.avatar;
 
         const update_user = {
-            'username': user.username,
             'email': emailval,
             'firstName': fnameval,
             'lastName': lnameval,
-            'avatar': avatarval
+            'password': ref_newPassword.current.value,
+            'avatar': avatarval           
         }
 
-        const res = await fetch('http://localhost:9090/users/update', {
-            method: 'POST',
+        const res = await fetch('http://localhost:9090/users/', {
+            method: 'PUT',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             },
             body: JSON.stringify(update_user),
-        })
+        }).then(response => response.json())
+        .then(data => sessionStorage.setItem('user',JSON.stringify(data)));
 
         closeForm();
     }
@@ -69,13 +59,21 @@ const ProfilePage = (props) => {
         reader.readAsDataURL(file);
     }
 
+    const [email, setEmail] = useState(user.email);
+    const [fName, setFName] = useState(user.firstName);
+    const [lName, setLName] = useState(user.lastName);
+
     return <div className="wrapper">
         <input className="file-input" type="file" style={{ display: 'none' }} onChange={renderImage} />
-        <Avatar ref={ref_image} onClick={openFile} src={user.avatar === null ? default_user : "data:image/jpeg;base64, " + user.avatar}></Avatar>
-        <label htmlFor="username" className="form__label">username</label><input disabled type="input" className="form__field" value={user.username} name="username" id='username' />
-        <label htmlFor="email" className="form__label">e-mail</label><input type="input" ref={ref_email} className="form__field" name="email" id='email' placeholder={user.email} />
-        <label htmlFor="firstName" className="form__label">first name</label><input type="input" ref={ref_firstName} placeholder={user.firstName} className="form__field" name="firstName" id='firstName' />
-        <label htmlFor="lastname" className="form__label">last name</label><input type="input" ref={ref_lastName} placeholder={user.lastName} className="form__field" name="lastname" id='lastname' />
+        <Avatar ref={ref_image} onClick={openFile} width="20%" src={user.avatar === null ? default_user : "data:image/jpeg;base64, " + user.avatar}></Avatar>
+        <label htmlFor="username" className="form__label">username</label><input disabled type="text" className="form__field" value={user.username} name="username" id='username' />
+        <label htmlFor="email" className="form__label">e-mail</label>
+        <input type="text" ref={ref_email} onChange={e => setEmail(e.target.value)} className="form__field" name="email" id='email' value={email} />
+        <label htmlFor="firstName" className="form__label">first name</label>
+        <input type="text" ref={ref_firstName} onChange={e => setFName(e.target.value)} value={fName} className="form__field" name="firstName" id='firstName' />
+        <label htmlFor="lastname" className="form__label">last name</label>
+        <input type="text" ref={ref_lastName} value={lName} onChange={e => setLName(e.target.value)} className="form__field" name="lastname" id='lastname' />
+        <label htmlFor="newPassword" className="form__label">new password</label><input type="password" ref={ref_newPassword}  className="form__field" name="newPassword" id='newPassword' />
         <div className="btns">
             <button className="edit_btn cancel_btn" onClick={closeForm}>Cancel</button>
             <button className="edit_btn" onClick={saveUser}>Edit</button>
