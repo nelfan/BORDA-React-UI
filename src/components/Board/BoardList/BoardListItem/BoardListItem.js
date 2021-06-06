@@ -6,14 +6,30 @@ import TicketWindow from "../../TicketWindow/TicketWindow";
 import Ticket from "../Ticket/Ticket";
 
 function BoardListItem(props) {
+
     const background = React.createRef();
     const [toggleMenu, setToggleMenu] = useState(false);
     const [editMenu, setEditMenu] = useState(false);
     const [addNewTicket, setNewTicket] = useState(false);
     const [tickets, setTickets] = useState([])
 
+    const key = props.data.key
+    const name = props.data.name
+    const color = '#6aba96'
+    const boardId = props.boardId
+
     const getTicket = (data) => {
         setTickets([...tickets, data])
+    }
+
+    const fetchTickets = async () => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns' + key + 'tickets', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        return await res.json()
     }
 
     const toggleBoardListMenu = () => {
@@ -42,14 +58,13 @@ function BoardListItem(props) {
         setNewTicket(!addNewTicket);
     }
 
-    const {color, title, key} = props.data
     const list = tickets.map(item => {
         return <Ticket data={item}/>
     })
 
     return <div className="default_ul">
         <div className="list_header" style={{background: color}}>
-            <span>{title}</span>
+            <span>{name}</span>
             <div className="edit_conf">
                 <a href="#" onClick={toggleBoardListMenu}>
                     <i className="fa fa-ellipsis-v"/>
@@ -59,7 +74,7 @@ function BoardListItem(props) {
                     {editMenu ? <ul className="submenu_for_list" style={{border: "1px solid" + color}}>
                         <li>
                             <form className="edit_form_board_list" id="edit_boardList_form" action="#">
-                                <input type="text" name="title" autoComplete="off" defaultValue={title}/>
+                                <input type="text" name="title" autoComplete="off" defaultValue={name}/>
                                 <input type="color" name="color" pattern="^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$"
                                        defaultValue={color}/>
                                 <div className="buttons_container">

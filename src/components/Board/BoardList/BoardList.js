@@ -1,32 +1,66 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./board_list.css"
 import BoardListItem from "./BoardListItem/BoardListItem";
 
-function BoardList() {
+function BoardList(props) {
+
+    const boardId = props.boardId
     const [addNewBoardList, setNewBoardList] = useState(false);
     const [boardColor, setBoardColor] = useState('#6aba96');
     const [items, setItems] = useState([]);
     const [currentItem, setCurrentItem] = useState({
-        color: '',
-        title: '',
+        color: boardColor,
+        name: '',
         key: ''
     })
 
     const handleInput = (e) => {
         setCurrentItem({
             color: boardColor,
-            title: e.target.value,
+            name: e.target.value,
             key: Date.now()
         })
     }
 
-    const addItem = (e) => {
-        e.preventDefault();
-        const data = [...items, currentItem];
-        setItems(data);
+    useEffect(() => {
+        const getBoardLists = async () => {
+            const boardsListsFromServer = await fetchBoardLists()
+            setItems(boardsListsFromServer)
+        }
+        getBoardLists()
+    }, [])
+
+    const fetchBoardLists = async () => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        return await res.json()
+    }
+
+    const addItem = async () => {
+        const createBoardListData = {
+            'name': currentItem.name
+        }
+
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            },
+            body: JSON.stringify(createBoardListData),
+        })
+
+        const data = await res.json()
+
+        setItems([...items, data])
+
         setCurrentItem({
-            color: '',
-            title: '',
+            color: boardColor,
+            name: '',
             key: ''
         })
     }
@@ -50,12 +84,12 @@ function BoardList() {
     }
 
     const setUpdate = (data, key) => {
-        const {title, color} = data
+        const {name, color} = data
 
         const filtered = items;
         filtered.map(item => {
             if (item.key === key) {
-                item.title = title;
+                item.name = name;
                 item.color = color;
             }
         })
@@ -63,7 +97,7 @@ function BoardList() {
     }
 
     const list = items.map(item => {
-        return <li key={item.key}><BoardListItem data={item} setUpdate={setUpdate} deleteItem={deleteItem}/></li>
+        return <li key={item.key}><BoardListItem boardId={boardId} data={item} setUpdate={setUpdate} deleteItem={deleteItem}/></li>
     })
     return <ul className="default_main" id="defaultMain">
         {list}
@@ -87,7 +121,7 @@ function BoardList() {
                                     <div className="board_title">
                                         <input id="boardList_title" onChange={handleInput} type="text"
                                                placeholder="Enter a column title" autoComplete="off"
-                                               value={currentItem.title} required/>
+                                               value={currentItem.name} required/>
                                     </div>
                                 </div>
                             </div> : null}
