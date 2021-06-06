@@ -17,8 +17,7 @@ function BoardList(props) {
     const handleInput = (e) => {
         setCurrentItem({
             color: boardColor,
-            name: e.target.value,
-            key: Date.now()
+            name: e.target.value
         })
     }
 
@@ -65,11 +64,6 @@ function BoardList(props) {
         })
     }
 
-    const changeColor = (e) => {
-        setBoardColor(e.target.value)
-        document.getElementById("colorPicker").value = boardColor;
-    }
-
     const newBoardList = () => {
         setNewBoardList(!addNewBoardList)
     }
@@ -78,26 +72,37 @@ function BoardList(props) {
         setNewBoardList(false)
     }
 
-    const deleteItem = (key) => {
-        const filteredItems = items.filter(item => item.key !== key);
-        setItems(filteredItems);
-    }
-
-    const setUpdate = (data, key) => {
-        const {name, color} = data
-
-        const filtered = items;
-        filtered.map(item => {
-            if (item.key === key) {
-                item.name = name;
-                item.color = color;
+    const deleteItem = async (key) => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        setItems(filtered);
+
+        setItems(await fetchBoardLists());
+    }
+
+    const setUpdate = async (name, key) => {
+        const updateBoardListData = {
+            'name': name
+        }
+
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key, {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            },
+            body: JSON.stringify(updateBoardListData),
+        })
+
+        setItems(await fetchBoardLists());
     }
 
     const list = items.map(item => {
-        return <li key={item.key}><BoardListItem boardId={boardId} data={item} setUpdate={setUpdate} deleteItem={deleteItem}/></li>
+        return <li key={item.id}><BoardListItem boardId={boardId} data={item} setUpdate={setUpdate} deleteItem={deleteItem}/></li>
     })
     return <ul className="default_main" id="defaultMain">
         {list}

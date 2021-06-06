@@ -10,10 +10,10 @@ function HeaderOptions() {
         justifyContent: "flex-end"
     }}>
         <div className="general_info">
-            <a href="#" className="question_icon">
+            <a className="question_icon">
                 <i className="fa fa-question-circle"/>
             </a>
-            <a href="#" className="doc_icon">
+            <a className="doc_icon">
                 <i className="fas fa-file-alt"/>
             </a>
         </div>
