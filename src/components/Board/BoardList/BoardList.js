@@ -73,7 +73,7 @@ function BoardList(props) {
     }
 
     const deleteItem = async (key) => {
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key, {
+        await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',
@@ -86,10 +86,11 @@ function BoardList(props) {
 
     const setUpdate = async (name, key) => {
         const updateBoardListData = {
+            'id':key,
             'name': name
         }
 
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key, {
+        await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key, {
             method: 'PUT',
             headers: {
                 'Content-type': 'application/json',

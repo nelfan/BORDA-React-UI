@@ -43,8 +43,10 @@ function BoardListItem(props) {
         setToggleMenu(false);
     }
 
-    const updateBoardList = async (name, key) => {
-        await props.setUpdate(name, key);
+    const updateBoardList = async (e, key) => {
+        e.preventDefault();
+        let object = serialize(document.querySelector("#edit_boardList_form"), {hash: true});
+        await props.setUpdate(object.name, key);
         setToggleMenu(!toggleMenu);
         setEditMenu(!editMenu);
     }
@@ -69,9 +71,9 @@ function BoardListItem(props) {
                     {editMenu ? <ul className="submenu_for_list" style={{border: "1px solid" + color}}>
                         <li>
                             <form className="edit_form_board_list" id="edit_boardList_form">
-                                <input type="text" name="title" autoComplete="off" defaultValue={name}/>
+                                <input type="text" name="name" autoComplete="off" defaultValue={name}/>
                                 <div className="buttons_container">
-                                    <button type="submit" onClick={() => updateBoardList(name, key)}>Edit</button>
+                                    <button type="submit" onClick={(e) => updateBoardList(e, key)}>Edit</button>
                                     <button onClick={cancelBtnClickedEditMenu}>Cancel</button>
                                 </div>
                             </form>
