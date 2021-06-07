@@ -1,0 +1,30 @@
+.mainNotificationsWrapper{
+    background-color: white;
+    position: fixed;
+    display: flex;
+    height: 50vh;
+    min-height: 85vh;
+    max-height: 85vh;
+    width: 40%;
+    right: 30%;
+    cursor: default;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.fa-times{
+    color: firebrick;
+    font-size: 1.5em;
+    display: flex;
+    justify-self:flex-end;
+    cursor: pointer;
+}
+.mainNotificationsWrapperClose{
+    justify-content: flex-end;
+    display: flex;
+    width: 100%;
+    padding: 3%;
+}
