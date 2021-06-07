@@ -1,7 +1,6 @@
 .user_submenu {
     z-index: 5500;
     position: absolute;
-    top: 50px;
     right: 0;
     background: #e9e9e923;
     border-right: 1px solid rgba(56, 109, 216, 0.993);

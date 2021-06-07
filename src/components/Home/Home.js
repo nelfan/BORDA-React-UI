@@ -3,13 +3,11 @@ import { Link } from 'react-router-dom';
 import './home.css';
 import man_with_tablet from "../../assets/images/man_with_tablet.png";
 import listPreview from "../../assets/images/list-removebg-preview.png";
-import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
 const Home = () => {
     return (
         <div>
-            <Header/>
             <div class="main_content">
                 <div class="welcome_container">
                     <div class="man_with_tablet">

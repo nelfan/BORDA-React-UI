@@ -1,5 +1,8 @@
 import React from 'react'
 import "./header_options.css"
+import MiniAvatar from './MiniAvatar/MiniAvatar';
+import ProfileMenu from '../ProfileMenu/ProfileMenu';
+import Notifications from '../Notifications/Notification';
 
 function HeaderOptions() {
     return <div className="right_side" style={{
@@ -10,12 +13,9 @@ function HeaderOptions() {
         justifyContent: "flex-end"
     }}>
         <div className="general_info">
-            <a className="question_icon">
-                <i className="fa fa-question-circle"/>
-            </a>
-            <a className="doc_icon">
-                <i className="fas fa-file-alt"/>
-            </a>
+            <Notifications></Notifications>
+            <ProfileMenu></ProfileMenu>
+            <MiniAvatar></MiniAvatar>
         </div>
     </div>
 }
