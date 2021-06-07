@@ -1,0 +1,48 @@
+.invitationWrapper{
+    height: 10vh;
+    margin-top: 2%;
+    font: 0.7em sans-serif;
+    padding-left: 2%;
+    display:flex;
+    flex-direction: row;
+}
+
+.invitationWrapper:hover{
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.data{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.operations{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    justify-content: space-around;
+}
+
+.operations>input{
+    font: 1em sans-serif;
+    width: 80%;
+    height: 3.5vh;
+}
+.accept{
+    text-transform: uppercase;
+    background-color: rgba(52, 202, 72, 0.993);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+}
+.decline{
+    text-transform: uppercase;
+    background-color: rgba(56, 109, 216, 0.993);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+}
