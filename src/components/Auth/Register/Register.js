@@ -90,7 +90,6 @@ const Register = ({onSubmitAuth}) => {
             'email': email,
             'password': password
         }
-
         const res = await fetch('http://localhost:9090/register', {
             method: 'POST',
             headers: {
@@ -105,6 +104,7 @@ const Register = ({onSubmitAuth}) => {
         onSubmitAuth(data.token)
 
         return data
+
     }
 
     const blurHandler = (e) => {
@@ -132,15 +132,27 @@ const Register = ({onSubmitAuth}) => {
         }
     }
 
-    const userNameHandler = (e) => {
+    const userNameHandler = async (e) => {
         setUserName(e.target.value)
         const re = /^(?!.*[_]{2})[a-zA-Z0-9_]+(?<![_.])$/;
+
+        // Check username on existing
+        const res = await fetch('http://localhost:9090/usernames/' + e.target.value, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+        const checkResult = await res.json()
+
         if (e.target.value.length < 3) {
             setUserNameError('Username cannot be less than 3 characters ')
         } else if (e.target.value.length > 30) {
             setUserNameError('Username cannot be more than 30 characters ')
         } else if (!re.test(String(e.target.value))) {
             setUserNameError('Username can only contain letters, numbers and "_" ')
+        } else if (checkResult === true) {
+            setUserNameError('This username is already taken')
         } else {
             setUserNameError('')
         }
@@ -285,7 +297,8 @@ const Register = ({onSubmitAuth}) => {
                             onChange={e => passwordHandler(e)}/>
                     </div>
                     <label htmlFor="password-confirm">Password confirmation</label>
-                    {(passwordConfirmationError && passwordConfirmationDirty) && <div style={{color: 'red'}}>{passwordConfirmationError}</div>}
+                    {(passwordConfirmationError && passwordConfirmationDirty) &&
+                    <div style={{color: 'red'}}>{passwordConfirmationError}</div>}
                     <div className="eye_pswd">
                         <input
                             type="password"
