@@ -1,28 +1,45 @@
-import React, {useState} from 'react';
-import defaultIMG from "../../../assets/images/default-user.jpg";
+import React, { useEffect, useState, setState } from 'react';
 import "./ticket.css"
 import Member from "./Member/Member";
 import Tag from "./Tag/Tag";
 import Comment from "./Comment/Comment";
-import TicketWindowOptions from "./TicketWindowOptions/TicketWindowOptions";
 import serialize from 'form-serialize';
 
 function TicketWindow(props) {
+    const boardId = props.boardId
+    const columnId = props.columnId
+
     const background = React.createRef();
+    const [members, setMembers] = useState([]);
     const [membersList, setMembersList] = useState([]);
-    const [labelsList, setLabelsList] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [tagsList, settagsList] = useState([]);
     const [membersCounter, setMemberCounter] = useState(0);
     const [newTagMenu, setNewTagMenu] = useState(false);
     const [addMemberMenu, setAddMemberMenu] = useState(false);
     const [currentTicket, setCurrentTicket] = useState({
-        title: '',
-        members: [],
-        labels: [],
-        description: ''
+        id: props.ticket.id,
+        title: props.ticket.title,
+        members: props.ticket.members,
+        tags: props.ticket.tags,
+        description: props.ticket.description
     });
 
-    const [member, setMember] = useState({icon: '', name: ''});
-    const [label, setLabel] = useState({color: '', name: ''});
+    const [member, setMember] = useState({ icon: '', name: '' });
+    const [tag, settag] = useState({ color: '', name: '' });
+
+    useEffect(() => {
+        const getTags = async () => {
+            const tagsFromServer = await fetchTags()
+            setTags(tagsFromServer)
+        }
+        getTags()
+        const getMembers = async () => {
+            const membersFromServer = await fetchMembers()
+            setMembers(membersFromServer)
+        }
+        getMembers()
+    }, [])
 
     const addNewTag = () => {
         setNewTagMenu(!newTagMenu);
@@ -43,39 +60,92 @@ function TicketWindow(props) {
         }
     }
 
-    const uploadTicketBg = () => {
-        document.getElementById("ticketBg").click();
-    }
-
-    const updateTicket = (e) => {
+    const editTicket = async (e) => {
         e.preventDefault();
-        const {created, task_title, description} = serialize(document.querySelector("#taskWindow"), {hash: true});
+        const { task_title, description } = serialize(document.querySelector("#taskWindow"), { hash: true });
+
+        const createTicketData = {
+            id: props.taskId,
+            title: task_title,
+            description: description,
+            members: membersList,
+            tags: tagsList
+        }
+
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + columnId + '/tickets/' + props.ticket.id, {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            },
+            body: JSON.stringify(createTicketData),
+        })
+
+        const data = await res.json()
 
         props.ticket({
-            bg: document.getElementById("ticketBackground").src,
-            title: task_title,
-            members: membersList,
-            labels: labelsList,
-            description: description,
-            date: created
+            id: data.id,
+            title: data.title,
+            description: data.description,
+            members: data.members,
+            tags: data.tags
         });
         props.cancelBtn();
     }
 
-    const addMember = (e) => {
-        setAddMemberMenu(!addMemberMenu);
+    const fetchTags = async () => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/tags/', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        return await res.json()
+    }
+
+    const fetchMembers = async () => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/roles/' + 1, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        const owners = await res.json()
+
+        const res2 = await fetch('http://localhost:9090/boards/' + boardId + '/roles/' + 2, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+
+        const collaborators = await res2.json()
+
+        return [...owners, ...collaborators]
+    }
+
+    const addMember = (e, userId) => {
         setMembersList([...membersList, {
+            id: userId,
             icon: e.currentTarget.querySelector('.member_avatar img').src,
             name: e.currentTarget.querySelector('.member_name span').innerText
         }])
+        setAddMemberMenu(!addMemberMenu);
     }
 
-    const addLabel = (e) => {
-        setNewTagMenu(!newTagMenu);
-        setLabelsList([...labelsList, {
+    const addTag = (e, tagId) => {
+        settagsList([...tagsList, {
+            id: tagId,
             color: e.currentTarget.querySelector('.label_value span').style.background,
             name: e.currentTarget.querySelector('.label_name span').innerText
         }])
+        setNewTagMenu(!newTagMenu);
+    }
+
+    const onInputchange = (e) => {
+        setState({
+            [e.target.name]: e.target.value
+        });
     }
 
     return <div className="align_addNewTask_window">
@@ -83,9 +153,10 @@ function TicketWindow(props) {
             <div className="header_align_new">
                 <div className="header_row_addNew">
                     <span>Task</span>
-                    <i className="fa fa-times" onClick={props.cancelBtn}/>
+                    <i className="fa fa-times" onClick={props.cancelBtn} />
                 </div>
             </div>
+
             <div className="align_task_w_content">
                 <form action="#" className="task_window_content" id="taskWindow">
                     <div className="general_inf_task">
@@ -94,14 +165,14 @@ function TicketWindow(props) {
                                 <div className="align_task_title_field">
                                     <div className="task_title_field">
                                         <div className="title_ff">
-                                            <i className="fa fa-clipboard header_tit"/>
+                                            <i className="fa fa-clipboard header_tit" />
                                             <span>Title</span>
                                         </div>
                                         <div className="align_textfield_of_task_title">
                                             <div className="textfield_of_taks_title">
                                                 <input type="text" name="task_title" placeholder="Enter title of task"
-                                                       autoComplete="off" required/>
-                                                <i className="fa fa-check icon"/>
+                                                    autoComplete="off" required defaultValue={currentTicket.title}/>
+                                                <i className="fa fa-check icon" />
                                             </div>
                                         </div>
                                     </div>
@@ -109,10 +180,10 @@ function TicketWindow(props) {
                                 <div className="align_task_details">
                                     <div className="task_details">
                                         <Member counter={membersCounter} showUsersMenu={showUsersMenu}
-                                                clickAddMember={addMember} isOpen={addMemberMenu}
-                                                data={membersList}/>
-                                        <Tag addNewTag={addNewTag} clickAddLabel={addLabel}
-                                             isOpen={newTagMenu} data={labelsList}/>
+                                            clickAddMember={addMember} isOpen={addMemberMenu}
+                                            data={currentTicket.members} boardMembers={members} />
+                                        <Tag addNewTag={addNewTag} clickAddLabel={addTag}
+                                            isOpen={newTagMenu} data={currentTicket.tags} boardTags={tags} />
                                     </div>
                                 </div>
 
@@ -120,23 +191,22 @@ function TicketWindow(props) {
                                     <div className="task_description_field">
                                         <div className="task_description_title">
                                             <span>Description</span>
-                                            <i className="fa fa-edit"/>
+                                            <i className="fa fa-edit" />
                                         </div>
                                         <div className="task_desc_area">
-                                            <textarea name="description"/>
+                                            <textarea name="description" >{currentTicket.description}</textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <Comment/>
                             </div>
                         </div>
                     </div>
 
-                    <input ref={background} id="ticketBg" className="bg_input" name="bg" style={{display: "none"}}
-                           onChange={changeTicketBackground} type="file" required/>
+                    <input ref={background} id="ticketBg" className="bg_input" name="bg" style={{ display: "none" }}
+                        onChange={changeTicketBackground} type="file" required />
                     <div className="align_addTask_btn">
                         <div className="addTask_btn">
-                            <input type="submit" onClick={(e) => updateTicket(e)} value="Add"/>
+                            <input type="submit" onClick={(e) => editTicket(e)} value="Add" />
                         </div>
                     </div>
                 </form>

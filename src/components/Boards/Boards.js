@@ -50,6 +50,8 @@ const Boards = () => {
         const data = await res.json()
 
         setOwnBoards([...ownBoards, data])
+
+        setShowAddBoard(!showAddBoard)
     }
 
     return (

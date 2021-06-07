@@ -27,12 +27,13 @@ function Ticket(props) {
             <span>{props.data.title}</span>
             <i className="fa fa-ellipsis-v" onClick={editMenu}>
                 {editTicket ? <ul className="edit_task_window">
-                    <li key={'view'} className="view_task"><span>View</span><i className="show_task_i fa fa-file" />
+                    <li key={'view'} className="view_task" onClick={() => {props.moveTicket(2, props.data.id)}}><span>Move</span>
+                    <i className="show_task_i fa fa-file" />
                     </li>
-                    <li key={'edit'} className="edit_task"><span>Edit</span><i
-                        className="edit_task_i fa fa-edit" /></li>
-                    <li key={'delete'} className="delete_task"><span>Delete</span><i
-                        className="delete_task_i fa fa-trash" />
+                    <li key={'edit'} className="edit_task" onClick={() => {props.toggleTicketEdit(props.data)}}><span>Edit</span>
+                    <i className="edit_task_i fa fa-edit" /></li>
+                    <li key={'delete'} className="delete_task" onClick={() => {props.deleteTicket(props.data.id)}}><span>Delete</span>
+                    <i className="delete_task_i fa fa-trash" />
                     </li>
                 </ul> : null}
             </i>

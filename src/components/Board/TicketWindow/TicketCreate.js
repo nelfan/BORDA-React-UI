@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import "./ticket.css"
 import Member from "./Member/Member";
 import Tag from "./Tag/Tag";
-import Comment from "./Comment/Comment";
-import TicketWindowOptions from "./TicketWindowOptions/TicketWindowOptions";
 import serialize from 'form-serialize';
 
 function TicketCreate(props) {
@@ -19,15 +17,6 @@ function TicketCreate(props) {
     const [membersCounter, setMemberCounter] = useState(0);
     const [newTagMenu, setNewTagMenu] = useState(false);
     const [addMemberMenu, setAddMemberMenu] = useState(false);
-    const [currentTicket, setCurrentTicket] = useState({
-        title: '',
-        members: [],
-        tags: [],
-        description: ''
-    });
-
-    const [member, setMember] = useState({ icon: '', name: '' });
-    const [tag, settag] = useState({ color: '', name: '' });
 
     useEffect(() => {
         const getTags = async () => {
@@ -59,10 +48,6 @@ function TicketCreate(props) {
         if (file) {
             reader.readAsDataURL(file);
         }
-    }
-
-    const uploadTicketBg = () => {
-        document.getElementById("ticketBg").click();
     }
 
     const createTicket = async (e) => {
