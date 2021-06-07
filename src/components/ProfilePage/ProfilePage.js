@@ -11,7 +11,7 @@ const ProfilePage = (props) => {
     const ref_lastName = useRef(null);
     const ref_newPassword = useRef(null);
     const user = JSON.parse(sessionStorage.getItem('user'));
-    console.log(user);
+    
 
     const saveUser = async () => {
         const emailval = ref_email.current.value.length === 0 || !ref_email.current.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) ? user.email : ref_email.current.value;
