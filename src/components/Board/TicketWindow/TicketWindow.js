@@ -15,12 +15,10 @@ function TicketWindow(props) {
     const [newTagMenu, setNewTagMenu] = useState(false);
     const [addMemberMenu, setAddMemberMenu] = useState(false);
     const [currentTicket, setCurrentTicket] = useState({
-        bg: null,
         title: '',
         members: [],
         labels: [],
-        description: '',
-        date: ''
+        description: ''
     });
 
     const [member, setMember] = useState({icon: '', name: ''});
@@ -88,17 +86,6 @@ function TicketWindow(props) {
                     <i className="fa fa-times" onClick={props.cancelBtn}/>
                 </div>
             </div>
-            <div className="align_bg_of_task">
-                <div className="bg_of_task">
-                    <img id="ticketBackground"
-                         src={currentTicket.bg !== null ? currentTicket.bg : defaultIMG}
-                         alt={defaultIMG}/>
-                    <div className="change_bg_of_task">
-                        <a onClick={uploadTicketBg}>Change</a>
-                    </div>
-                </div>
-            </div>
-
             <div className="align_task_w_content">
                 <form action="#" className="task_window_content" id="taskWindow">
                     <div className="general_inf_task">
@@ -126,15 +113,6 @@ function TicketWindow(props) {
                                                 data={membersList}/>
                                         <Tag addNewTag={addNewTag} clickAddLabel={addLabel}
                                              isOpen={newTagMenu} data={labelsList}/>
-                                        <div className="task_due_date">
-                                            <div className="task_date_tit">
-                                                <i className="far fa-clock"/>
-                                                <span>Due Date</span>
-                                            </div>
-                                            <div className="task_date_content">
-                                                <input type="date" name="created" required/>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -152,7 +130,6 @@ function TicketWindow(props) {
                                 <Comment/>
                             </div>
                         </div>
-                        <TicketWindowOptions/>
                     </div>
 
                     <input ref={background} id="ticketBg" className="bg_input" name="bg" style={{display: "none"}}
