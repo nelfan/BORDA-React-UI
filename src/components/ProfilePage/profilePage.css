@@ -1,9 +1,10 @@
 .wrapper {
+  z-index: 99999;
+  position: fixed;
   background-color: #fff;
   width: 30%;
   display: flex;
-  position: absolute;
-  min-height: 50vh;
+  height: 75vh;
   align-self: center;
   flex-direction: column;
   z-index: 1;
@@ -11,6 +12,8 @@
   left: 35%;
   align-items: center;
   filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .wrapper > * {
