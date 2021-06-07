@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { Component } from "react";
+import React, { useState } from "react";
 import $ from "jquery";
 import "./profileMenu.css";
 import ProfilePage from "../../ProfilePage/ProfilePage";
@@ -32,7 +32,7 @@ const ProfileMenu = () => {
           </ul>
         </div>
       </div>
-      {this.state.seen ? <ProfilePage onClick={profile_window} /> : null}
+      {seen ? <ProfilePage onClick={profile_window} /> : null}
     </div>
   );
 };
