@@ -9,11 +9,8 @@ function TicketWindow(props) {
     const boardId = props.boardId
     const columnId = props.columnId
 
-    const background = React.createRef();
     const [members, setMembers] = useState([]);
-    const [membersList, setMembersList] = useState([]);
     const [tags, setTags] = useState([]);
-    const [tagsList, settagsList] = useState([]);
     const [membersCounter, setMemberCounter] = useState(0);
     const [newTagMenu, setNewTagMenu] = useState(false);
     const [addMemberMenu, setAddMemberMenu] = useState(false);
@@ -24,9 +21,8 @@ function TicketWindow(props) {
         tags: props.ticket.tags,
         description: props.ticket.description
     });
-
-    const [member, setMember] = useState({ icon: '', name: '' });
-    const [tag, settag] = useState({ color: '', name: '' });
+    const [membersList, setMembersList] = useState(currentTicket.members);
+    const [tagsList, settagsList] = useState(currentTicket.tags);
 
     useEffect(() => {
         const getTags = async () => {
@@ -49,23 +45,12 @@ function TicketWindow(props) {
         setAddMemberMenu(!addMemberMenu);
     }
 
-    const changeTicketBackground = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.addEventListener("load", function () {
-            document.getElementById("ticketBackground").src = reader.result
-        }, false);
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    }
-
     const editTicket = async (e) => {
         e.preventDefault();
         const { task_title, description } = serialize(document.querySelector("#taskWindow"), { hash: true });
 
-        const createTicketData = {
-            id: props.taskId,
+        const editTicketData = {
+            id: props.ticket.id,
             title: task_title,
             description: description,
             members: membersList,
@@ -78,19 +63,84 @@ function TicketWindow(props) {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             },
-            body: JSON.stringify(createTicketData),
+            body: JSON.stringify(editTicketData),
         })
+
+        for (let newMember of membersList) {
+            if (!currentTicket.members.some(item => item.id === newMember.id)) {
+                addMemberFetch(currentTicket.id, newMember.id)
+            }
+        }
+
+        for (let removeMember of currentTicket.members) {
+            if (!membersList.some(item => item.id === removeMember.id)) {
+                removeMemberFetch(currentTicket.id, removeMember.id)
+            }
+        }
+
+        for (let newTag of tagsList) {
+            if (!currentTicket.tags.some(item => item.id === newTag.id)) {
+                addTagFetch(currentTicket.id, newTag.id)
+            }
+        }
+
+        for (let removeTag of currentTicket.tags) {
+            if (!tagsList.some(item => item.id === removeTag.id)) {
+                removeTagFetch(currentTicket.id, removeTag.id)
+            }
+        }
 
         const data = await res.json()
 
-        props.ticket({
-            id: data.id,
-            title: data.title,
-            description: data.description,
-            members: data.members,
-            tags: data.tags
-        });
-        props.cancelBtn();
+        props.cancelBtn(data)
+    }
+
+    const addMemberFetch = async (ticketId, userId) => {
+        const res = await fetch('http://localhost:9090/boards/'
+            + boardId + '/columns/' + columnId + '/tickets/'
+            + ticketId + '/members/' + userId, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        return await res.json()
+    }
+
+    const removeMemberFetch = async (ticketId, userId) => {
+        const res = await fetch('http://localhost:9090/boards/'
+            + boardId + '/columns/' + columnId + '/tickets/'
+            + ticketId + '/members/' + userId, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        return await res.json()
+    }
+
+    const addTagFetch = async (ticketId, tagId) => {
+        const res = await fetch('http://localhost:9090/boards/'
+            + boardId + '/columns/' + columnId + '/tickets/'
+            + ticketId + '/tags/' + tagId, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        return await res.json()
+    }
+
+    const removeTagFetch = async (ticketId, tagId) => {
+        const res = await fetch('http://localhost:9090/boards/'
+            + boardId + '/columns/' + columnId + '/tickets/'
+            + ticketId + '/tags/' + tagId, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        return await res.json()
     }
 
     const fetchTags = async () => {
@@ -125,27 +175,21 @@ function TicketWindow(props) {
     }
 
     const addMember = (e, userId) => {
-        setMembersList([...membersList, {
-            id: userId,
-            icon: e.currentTarget.querySelector('.member_avatar img').src,
-            name: e.currentTarget.querySelector('.member_name span').innerText
-        }])
+        if (!membersList.some(item => item.id === userId)) {
+            setMembersList([...membersList, members.find(item => item.id === userId)])
+        } else {
+            setMembersList(membersList.filter(item => item.id !== userId))
+        }
         setAddMemberMenu(!addMemberMenu);
     }
 
     const addTag = (e, tagId) => {
-        settagsList([...tagsList, {
-            id: tagId,
-            color: e.currentTarget.querySelector('.label_value span').style.background,
-            name: e.currentTarget.querySelector('.label_name span').innerText
-        }])
+        if (!tagsList.some(item => item.id === tagId)) {
+            settagsList([...tagsList, tags.find(item => item.id === tagId)])
+        } else {
+            settagsList(tagsList.filter(item => item.id !== tagId))
+        }
         setNewTagMenu(!newTagMenu);
-    }
-
-    const onInputchange = (e) => {
-        setState({
-            [e.target.name]: e.target.value
-        });
     }
 
     return <div className="align_addNewTask_window">
@@ -171,7 +215,7 @@ function TicketWindow(props) {
                                         <div className="align_textfield_of_task_title">
                                             <div className="textfield_of_taks_title">
                                                 <input type="text" name="task_title" placeholder="Enter title of task"
-                                                    autoComplete="off" required defaultValue={currentTicket.title}/>
+                                                    autoComplete="off" required defaultValue={currentTicket.title} />
                                                 <i className="fa fa-check icon" />
                                             </div>
                                         </div>
@@ -181,9 +225,9 @@ function TicketWindow(props) {
                                     <div className="task_details">
                                         <Member counter={membersCounter} showUsersMenu={showUsersMenu}
                                             clickAddMember={addMember} isOpen={addMemberMenu}
-                                            data={currentTicket.members} boardMembers={members} />
+                                            data={membersList} boardMembers={members} />
                                         <Tag addNewTag={addNewTag} clickAddLabel={addTag}
-                                            isOpen={newTagMenu} data={currentTicket.tags} boardTags={tags} />
+                                            isOpen={newTagMenu} data={tagsList} boardTags={tags} />
                                     </div>
                                 </div>
 
@@ -194,7 +238,7 @@ function TicketWindow(props) {
                                             <i className="fa fa-edit" />
                                         </div>
                                         <div className="task_desc_area">
-                                            <textarea name="description" >{currentTicket.description}</textarea>
+                                            <textarea name="description" defaultValue={currentTicket.description} />
                                         </div>
                                     </div>
                                 </div>
@@ -202,11 +246,9 @@ function TicketWindow(props) {
                         </div>
                     </div>
 
-                    <input ref={background} id="ticketBg" className="bg_input" name="bg" style={{ display: "none" }}
-                        onChange={changeTicketBackground} type="file" required />
                     <div className="align_addTask_btn">
                         <div className="addTask_btn">
-                            <input type="submit" onClick={(e) => editTicket(e)} value="Add" />
+                            <input type="submit" onClick={(e) => editTicket(e)} value="Save" />
                         </div>
                     </div>
                 </form>

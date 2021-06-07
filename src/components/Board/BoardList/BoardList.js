@@ -110,7 +110,7 @@ function BoardList(props) {
         <li className="addNewBoardListItem" id="default">
             <div className="align_btn_add_board">
                 <div className="align_add_bord">
-                    <form action="#">
+                    <form>
                         {addNewBoardList ?
                             <div className="add_board_ok_cancel">
                                 <span className="ok_board" onClick={addItem}>Ok</span>

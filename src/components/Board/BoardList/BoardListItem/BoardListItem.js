@@ -75,14 +75,19 @@ function BoardListItem(props) {
         setNewTicket(!addNewTicket);
     }
 
-    const toggleTicketEdit = (ticket) => {
-        setCurrentTicket({
-            id: ticket.id,
-            title: ticket.title,
-            members: ticket.members,
-            tags: ticket.tags,
-            description: ticket.description
-        })
+    const toggleTicketEdit = async (ticket) => {
+        if (ticket !== null) {
+            setCurrentTicket({
+                id: ticket.id,
+                title: ticket.title,
+                members: ticket.members,
+                tags: ticket.tags,
+                description: ticket.description
+            })
+        }
+        if (editTicketShow) {
+            setTickets(await fetchTickets())
+        }
         setEditTicketShow(!editTicketShow);
     }
 
@@ -96,28 +101,6 @@ function BoardListItem(props) {
         })
 
         await res.json()
-    }
-
-    const editTicket = async (ticket) => {
-        const updateTicketData = {
-            'id': ticket.id,
-            'title': ticket.title,
-            'description': ticket.description,
-            'members': ticket.members,
-            'comments': ticket.comments,
-            'tags': ticket.tags
-        }
-
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key + '/tickets/' + ticket.id, {
-            method: 'PUT',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-            },
-            body: JSON.stringify(updateTicketData)
-        })
-
-        return await res.json()
     }
 
     const deleteTicket = async (id) => {
@@ -134,7 +117,7 @@ function BoardListItem(props) {
     }
 
     const list = tickets.map(item => {
-        return <Ticket data={item} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} editTicket={editTicket} deleteTicket={deleteTicket} />
+        return <Ticket data={item} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} />
     })
 
     return <div className="default_ul">
