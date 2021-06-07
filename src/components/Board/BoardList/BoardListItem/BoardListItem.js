@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import "./board_list_item.css"
 import BoardListMenu from "./BoardListMenu/BoardListMenu";
 import serialize from 'form-serialize';
@@ -18,14 +18,25 @@ function BoardListItem(props) {
     const color = '#6aba96'
     const boardId = props.boardId
 
-    const getTicket = async () => {
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns' + key + 'tickets', {
+    useEffect(() => {
+        const getTickets = async () => {
+            const ticketsFromServer = await fetchTickets()
+            setTickets(ticketsFromServer)
+        }
+        getTickets()
+    }, [])
+
+    const fetchTickets = async () => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key + '/tickets', {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        const data = await res.json()
+        return await res.json()
+    }
+
+    const addTicket = (data) => {
         setTickets([...tickets, data])
     }
 
@@ -45,7 +56,7 @@ function BoardListItem(props) {
 
     const updateBoardList = async (e, key) => {
         e.preventDefault();
-        let object = serialize(document.querySelector("#edit_boardList_form"), {hash: true});
+        let object = serialize(document.querySelector("#edit_boardList_form"), { hash: true });
         await props.setUpdate(object.name, key);
         setToggleMenu(!toggleMenu);
         setEditMenu(!editMenu);
@@ -56,22 +67,22 @@ function BoardListItem(props) {
     }
 
     const list = tickets.map(item => {
-        return <Ticket data={item}/>
+        return <Ticket data={item} />
     })
 
     return <div className="default_ul">
-        <div className="list_header" style={{background: color}}>
+        <div className="list_header" style={{ background: color }}>
             <span>{name}</span>
             <div className="edit_conf">
                 <a onClick={toggleBoardListMenu}>
-                    <i className="fa fa-ellipsis-v"/>
+                    <i className="fa fa-ellipsis-v" />
                     {toggleMenu ?
                         <BoardListMenu color={color} isClickedEdit={toggleEditMenu} deleteItem={props.deleteItem}
-                                       data={props.data}/> : null}
-                    {editMenu ? <ul className="submenu_for_list" style={{border: "1px solid" + color}}>
+                            data={props.data} /> : null}
+                    {editMenu ? <ul className="submenu_for_list" style={{ border: "1px solid" + color }}>
                         <li>
                             <form className="edit_form_board_list" id="edit_boardList_form">
-                                <input type="text" name="name" autoComplete="off" defaultValue={name}/>
+                                <input type="text" name="name" autoComplete="off" defaultValue={name} />
                                 <div className="buttons_container">
                                     <button type="submit" onClick={(e) => updateBoardList(e, key)}>Edit</button>
                                     <button onClick={cancelBtnClickedEditMenu}>Cancel</button>
@@ -91,10 +102,10 @@ function BoardListItem(props) {
         <div className="btn_add_item" onClick={toggleTicket}>
             <a>
                 <span>Add a task</span>
-                <i className="fa fa-plus-square"/>
+                <i className="fa fa-plus-square" />
             </a>
         </div>
-        {addNewTicket ? <TicketCreate ticket={getTicket} cancelBtn={toggleTicket}/> : null}
+        {addNewTicket ? <TicketCreate boardId={boardId} columnId={key} ticket={addTicket} cancelBtn={toggleTicket} /> : null}
     </div>
 }
 
