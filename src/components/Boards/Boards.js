@@ -1,6 +1,6 @@
 import './boards.css';
 import BoardView from '../Boards/BoardView/BoardView';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import InputToAddBoard from "./AddBoard/InputToAddBoard";
 import AddBoard from "./AddBoard/AddBoard";
 
@@ -8,22 +8,22 @@ import AddBoard from "./AddBoard/AddBoard";
 const Boards = () => {
 
     const [showAddBoard, setShowAddBoard] = useState(false)
-    const [boardsViews, setBoardViews] = useState([])
-
-    const ownBoards = Object.values(boardsViews).filter(boardView => boardView.userBoardRelations[0].userBoardRole.name === 'OWNER');
-    const collabBoards = Object.values(boardsViews).filter(boardView => boardView.userBoardRelations[0].userBoardRole.name !== 'OWNER');
+    const [ownBoards, setOwnBoards] = useState([])
+    const [collabBoards, setCollabBoards] = useState([])
 
     // GET Boards
     useEffect(() => {
         const getBoards = async () => {
-            const boardsFromServer = await fetchBoards()
-            setBoardViews(boardsFromServer)
+            const ownBoardsFromServer = await fetchBoardsByRoleId(1)
+            setOwnBoards(ownBoardsFromServer)
+            const collabBoardsFromServer = await fetchBoardsByRoleId(2)
+            setCollabBoards(collabBoardsFromServer)
         }
         getBoards()
     }, [])
 
-    const fetchBoards = async () => {
-        const res = await fetch('http://localhost:9090/users/boards', {
+    const fetchBoardsByRoleId = async (roleId) => {
+        const res = await fetch('http://localhost:9090/users/boards/' + roleId, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
@@ -49,8 +49,9 @@ const Boards = () => {
 
         const data = await res.json()
 
-        setBoardViews([...boardsViews, data])
+        setOwnBoards([...ownBoards, data])
 
+        setShowAddBoard(!showAddBoard)
     }
 
     return (
@@ -67,12 +68,12 @@ const Boards = () => {
                         <>
                             <div className="boards-info">
                                 <div className="new-board-button">
-                                    <AddBoard onAdd={() => setShowAddBoard(!showAddBoard)} showAdd={showAddBoard}/>
-                                    {showAddBoard && <InputToAddBoard onAdd={addBoard}/>}
+                                    <AddBoard onAdd={() => setShowAddBoard(!showAddBoard)} showAdd={showAddBoard} />
+                                    {showAddBoard && <InputToAddBoard onAdd={addBoard} />}
                                 </div>
                             </div>
                             {ownBoards.map((boardView =>
-                                    <BoardView key={boardView.id} boardView={boardView}/>
+                                <BoardView key={boardView.id} boardView={boardView} />
                             ))}
                         </>
                     </div>
@@ -84,7 +85,7 @@ const Boards = () => {
                     <div className="collab-boards-container" id="collab-boards-container">
                         <>
                             {collabBoards.map((boardView =>
-                                    <BoardView key={boardView.id} boardView={boardView}/>
+                                <BoardView key={boardView.id} boardView={boardView} />
                             ))}
                         </>
                     </div>

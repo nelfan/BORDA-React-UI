@@ -19,7 +19,7 @@ function UserHeaderOptions() {
         <div className="alignment_of_items">
             <div className="empty_block"/>
             <div className="general-info">
-                <a href="#" className="user_icon">
+                <a className="user_icon">
                     <i className="fa fa-user-circle" onClick={clickUserMenu}>
                         {userMenu ? <UserHeaderMenu/> : null}
                     </i>
@@ -31,7 +31,7 @@ function UserHeaderOptions() {
                         </i>
                     </div>
                 </a>
-                <a href="#"><i className="fa fa-map"/></a>
+                <a><i className="fa fa-map"/></a>
             </div>
         </div>
     </div>
