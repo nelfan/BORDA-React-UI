@@ -3,7 +3,8 @@ import BoardView from '../Boards/BoardView/BoardView';
 import {useEffect, useState} from "react";
 import InputToAddBoard from "./AddBoard/InputToAddBoard";
 import AddBoard from "./AddBoard/AddBoard";
-
+import React from 'react';
+import Header from '../Header/Header';
 
 const Boards = () => {
 
@@ -56,15 +57,12 @@ const Boards = () => {
     return (
         <div className="main_content">
             <div className="boards_content">
-                <div className="header">
-                    Header
-                </div>
+                <Header></Header>
                 <div className="own-boards-label" id="boards-label">
                     My own boards
                 </div>
                 <div className="own-boards" id="style-scroll">
                     <div className="own-boards-container" id="own-boards-container">
-                        <>
                             <div className="boards-info">
                                 <div className="new-board-button">
                                     <AddBoard onAdd={() => setShowAddBoard(!showAddBoard)} showAdd={showAddBoard}/>
@@ -74,7 +72,6 @@ const Boards = () => {
                             {ownBoards.map((boardView =>
                                     <BoardView key={boardView.id} boardView={boardView}/>
                             ))}
-                        </>
                     </div>
                 </div>
                 <div className="all-boards-label" id="boards-label">
@@ -82,11 +79,9 @@ const Boards = () => {
                 </div>
                 <div className="collaboration-boards" id="style-scroll">
                     <div className="collab-boards-container" id="collab-boards-container">
-                        <>
                             {collabBoards.map((boardView =>
                                     <BoardView key={boardView.id} boardView={boardView}/>
                             ))}
-                        </>
                     </div>
                 </div>
             </div>

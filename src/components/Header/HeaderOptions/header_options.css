@@ -1,6 +1,10 @@
 .general_info {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-end;
+}
+
+.general_info>*{
+    margin-right: 5%;
 }
 
 .general_info a {
