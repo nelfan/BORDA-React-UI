@@ -1,39 +1,67 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./board_list.css"
 import BoardListItem from "./BoardListItem/BoardListItem";
 
-function BoardList() {
+function BoardList(props) {
+
+    const boardId = props.boardId
     const [addNewBoardList, setNewBoardList] = useState(false);
     const [boardColor, setBoardColor] = useState('#6aba96');
     const [items, setItems] = useState([]);
     const [currentItem, setCurrentItem] = useState({
-        color: '',
-        title: '',
+        color: boardColor,
+        name: '',
         key: ''
     })
 
     const handleInput = (e) => {
         setCurrentItem({
             color: boardColor,
-            title: e.target.value,
-            key: Date.now()
+            name: e.target.value
         })
     }
 
-    const addItem = (e) => {
-        e.preventDefault();
-        const data = [...items, currentItem];
-        setItems(data);
+    useEffect(() => {
+        const getBoardLists = async () => {
+            const boardsListsFromServer = await fetchBoardLists()
+            setItems(boardsListsFromServer)
+        }
+        getBoardLists()
+    }, [])
+
+    const fetchBoardLists = async () => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        return await res.json()
+    }
+
+    const addItem = async () => {
+        const createBoardListData = {
+            'name': currentItem.name
+        }
+
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            },
+            body: JSON.stringify(createBoardListData),
+        })
+
+        const data = await res.json()
+
+        setItems([...items, data])
+
         setCurrentItem({
-            color: '',
-            title: '',
+            color: boardColor,
+            name: '',
             key: ''
         })
-    }
-
-    const changeColor = (e) => {
-        setBoardColor(e.target.value)
-        document.getElementById("colorPicker").value = boardColor;
     }
 
     const newBoardList = () => {
@@ -44,26 +72,38 @@ function BoardList() {
         setNewBoardList(false)
     }
 
-    const deleteItem = (key) => {
-        const filteredItems = items.filter(item => item.key !== key);
-        setItems(filteredItems);
-    }
-
-    const setUpdate = (data, key) => {
-        const {title, color} = data
-
-        const filtered = items;
-        filtered.map(item => {
-            if (item.key === key) {
-                item.title = title;
-                item.color = color;
+    const deleteItem = async (key) => {
+        await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        setItems(filtered);
+
+        setItems(await fetchBoardLists());
+    }
+
+    const setUpdate = async (name, key) => {
+        const updateBoardListData = {
+            'id':key,
+            'name': name
+        }
+
+        await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key, {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            },
+            body: JSON.stringify(updateBoardListData),
+        })
+
+        setItems(await fetchBoardLists());
     }
 
     const list = items.map(item => {
-        return <li key={item.key}><BoardListItem data={item} setUpdate={setUpdate} deleteItem={deleteItem}/></li>
+        return <li key={item.id}><BoardListItem boardId={boardId} data={item} setUpdate={setUpdate} deleteItem={deleteItem}/></li>
     })
     return <ul className="default_main" id="defaultMain">
         {list}
@@ -87,7 +127,7 @@ function BoardList() {
                                     <div className="board_title">
                                         <input id="boardList_title" onChange={handleInput} type="text"
                                                placeholder="Enter a column title" autoComplete="off"
-                                               value={currentItem.title} required/>
+                                               value={currentItem.name} required/>
                                     </div>
                                 </div>
                             </div> : null}

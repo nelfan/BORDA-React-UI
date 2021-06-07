@@ -5,7 +5,9 @@ import UserHeaderOptions from "../Header/UserHeader/UserHeaderOptions";
 import BoardList from "./BoardList/BoardList";
 
 function Board(props) {
-    const boardId = props.location.state;
+    
+    const id = props.location.state.id;
+
     return <div className="content">
         <div className="alignment_of_header">
             <div className="header">
@@ -15,7 +17,7 @@ function Board(props) {
         </div>
         <div className="main_content">
             <div className="active_borda_items">
-                <BoardList/>
+                <BoardList boardId={id}/>
             </div>
         </div>
     </div>

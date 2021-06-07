@@ -4,7 +4,7 @@ import "./logo.css"
 function HeaderLogo() {
     return <div className="left_side">
         <div className="logo.logoImage">
-            <a href="#">
+            <a>
                 <i className="fa fa-globe" style={{fontSize: '22px', color: 'rgba(236, 236, 236, 0.788)'}}/>
             </a>
         </div>

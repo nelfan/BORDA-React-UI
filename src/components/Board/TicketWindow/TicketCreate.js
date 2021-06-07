@@ -1,11 +1,11 @@
-import React, { useEffect, useState, setState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./ticket.css"
 import Member from "./Member/Member";
 import Tag from "./Tag/Tag";
-import Comment from "./Comment/Comment";
 import serialize from 'form-serialize';
 
-function TicketWindow(props) {
+function TicketCreate(props) {
+
     const boardId = props.boardId
     const columnId = props.columnId
 
@@ -17,16 +17,6 @@ function TicketWindow(props) {
     const [membersCounter, setMemberCounter] = useState(0);
     const [newTagMenu, setNewTagMenu] = useState(false);
     const [addMemberMenu, setAddMemberMenu] = useState(false);
-    const [currentTicket, setCurrentTicket] = useState({
-        id: props.ticket.id,
-        title: props.ticket.title,
-        members: props.ticket.members,
-        tags: props.ticket.tags,
-        description: props.ticket.description
-    });
-
-    const [member, setMember] = useState({ icon: '', name: '' });
-    const [tag, settag] = useState({ color: '', name: '' });
 
     useEffect(() => {
         const getTags = async () => {
@@ -60,20 +50,19 @@ function TicketWindow(props) {
         }
     }
 
-    const editTicket = async (e) => {
+    const createTicket = async (e) => {
         e.preventDefault();
         const { task_title, description } = serialize(document.querySelector("#taskWindow"), { hash: true });
 
         const createTicketData = {
-            id: props.taskId,
             title: task_title,
             description: description,
             members: membersList,
             tags: tagsList
         }
 
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + columnId + '/tickets/' + props.ticket.id, {
-            method: 'PUT',
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + columnId + '/tickets/', {
+            method: 'POST',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
@@ -118,7 +107,7 @@ function TicketWindow(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-
+        
         const collaborators = await res2.json()
 
         return [...owners, ...collaborators]
@@ -140,12 +129,6 @@ function TicketWindow(props) {
             name: e.currentTarget.querySelector('.label_name span').innerText
         }])
         setNewTagMenu(!newTagMenu);
-    }
-
-    const onInputchange = (e) => {
-        setState({
-            [e.target.name]: e.target.value
-        });
     }
 
     return <div className="align_addNewTask_window">
@@ -171,7 +154,7 @@ function TicketWindow(props) {
                                         <div className="align_textfield_of_task_title">
                                             <div className="textfield_of_taks_title">
                                                 <input type="text" name="task_title" placeholder="Enter title of task"
-                                                    autoComplete="off" required defaultValue={currentTicket.title}/>
+                                                    autoComplete="off" required />
                                                 <i className="fa fa-check icon" />
                                             </div>
                                         </div>
@@ -181,9 +164,9 @@ function TicketWindow(props) {
                                     <div className="task_details">
                                         <Member counter={membersCounter} showUsersMenu={showUsersMenu}
                                             clickAddMember={addMember} isOpen={addMemberMenu}
-                                            data={currentTicket.members} boardMembers={members} />
+                                            data={membersList} boardMembers={members} />
                                         <Tag addNewTag={addNewTag} clickAddLabel={addTag}
-                                            isOpen={newTagMenu} data={currentTicket.tags} boardTags={tags} />
+                                            isOpen={newTagMenu} data={tagsList} boardTags={tags} />
                                     </div>
                                 </div>
 
@@ -194,7 +177,7 @@ function TicketWindow(props) {
                                             <i className="fa fa-edit" />
                                         </div>
                                         <div className="task_desc_area">
-                                            <textarea name="description" >{currentTicket.description}</textarea>
+                                            <textarea name="description" />
                                         </div>
                                     </div>
                                 </div>
@@ -206,7 +189,7 @@ function TicketWindow(props) {
                         onChange={changeTicketBackground} type="file" required />
                     <div className="align_addTask_btn">
                         <div className="addTask_btn">
-                            <input type="submit" onClick={(e) => editTicket(e)} value="Add" />
+                            <input type="submit" onClick={(e) => createTicket(e)} value="Add" />
                         </div>
                     </div>
                 </form>
@@ -215,4 +198,4 @@ function TicketWindow(props) {
     </div>
 }
 
-export default TicketWindow
+export default TicketCreate
