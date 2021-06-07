@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MiniAvatar from '../../../Header/HeaderOptions/MiniAvatar/MiniAvatar';
 import "./ticket.css"
 
 function Ticket(props) {
@@ -9,14 +10,14 @@ function Ticket(props) {
     }
 
     const labels = props.data.tags.map(item => {
-        return <li key={item.name} style={{ background: item.color }}>
-            <span style={{ display: "none" }}>{item.name}</span>
+        return <li key={item.id} style={{ background: item.color }}>
+            <span>{item.text}</span>
         </li>
     });
 
     const members = props.data.members.map(item => {
-        return <li key={item.name} style={{ background: item.color }}>
-            <img src={item.icon} alt={item.icon} />
+        return <li key={item.id} style={{ background: item.color }}>
+            <MiniAvatar user={item} />
             <span style={{ display: "none" }}>{item.name}</span>
         </li>
     });

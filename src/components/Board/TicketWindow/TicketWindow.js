@@ -47,7 +47,7 @@ function TicketWindow(props) {
         document.getElementById("ticketBg").click();
     }
 
-    const createTicket = (e) => {
+    const updateTicket = (e) => {
         e.preventDefault();
         const {created, task_title, description} = serialize(document.querySelector("#taskWindow"), {hash: true});
 
@@ -136,7 +136,7 @@ function TicketWindow(props) {
                            onChange={changeTicketBackground} type="file" required/>
                     <div className="align_addTask_btn">
                         <div className="addTask_btn">
-                            <input type="submit" onClick={(e) => createTicket(e)} value="Add"/>
+                            <input type="submit" onClick={(e) => updateTicket(e)} value="Add"/>
                         </div>
                     </div>
                 </form>

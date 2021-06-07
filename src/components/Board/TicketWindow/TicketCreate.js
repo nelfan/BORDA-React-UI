@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import defaultIMG from "../../../assets/images/default-user.jpg";
+import React, { useEffect, useState } from 'react';
 import "./ticket.css"
 import Member from "./Member/Member";
 import Tag from "./Tag/Tag";
@@ -13,7 +12,9 @@ function TicketCreate(props) {
     const columnId = props.columnId
 
     const background = React.createRef();
+    const [members, setMembers] = useState([]);
     const [membersList, setMembersList] = useState([]);
+    const [tags, setTags] = useState([]);
     const [tagsList, settagsList] = useState([]);
     const [membersCounter, setMemberCounter] = useState(0);
     const [newTagMenu, setNewTagMenu] = useState(false);
@@ -27,6 +28,19 @@ function TicketCreate(props) {
 
     const [member, setMember] = useState({ icon: '', name: '' });
     const [tag, settag] = useState({ color: '', name: '' });
+
+    useEffect(() => {
+        const getTags = async () => {
+            const tagsFromServer = await fetchTags()
+            setTags(tagsFromServer)
+        }
+        getTags()
+        const getMembers = async () => {
+            const membersFromServer = await fetchMembers()
+            setMembers(membersFromServer)
+        }
+        getMembers()
+    }, [])
 
     const addNewTag = () => {
         setNewTagMenu(!newTagMenu);
@@ -54,7 +68,7 @@ function TicketCreate(props) {
     const createTicket = async (e) => {
         e.preventDefault();
         const { task_title, description } = serialize(document.querySelector("#taskWindow"), { hash: true });
-        
+
         const createTicketData = {
             title: task_title,
             description: description,
@@ -83,20 +97,53 @@ function TicketCreate(props) {
         props.cancelBtn();
     }
 
-    const addMember = (e) => {
-        setAddMemberMenu(!addMemberMenu);
+    const fetchTags = async () => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/tags/', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        return await res.json()
+    }
+
+    const fetchMembers = async () => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/roles/' + 1, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        const owners = await res.json()
+
+        const res2 = await fetch('http://localhost:9090/boards/' + boardId + '/roles/' + 2, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        
+        const collaborators = await res2.json()
+
+        return [...owners, ...collaborators]
+    }
+
+    const addMember = (e, userId) => {
         setMembersList([...membersList, {
+            id: userId,
             icon: e.currentTarget.querySelector('.member_avatar img').src,
             name: e.currentTarget.querySelector('.member_name span').innerText
         }])
+        setAddMemberMenu(!addMemberMenu);
     }
 
-    const addtag = (e) => {
-        setNewTagMenu(!newTagMenu);
+    const addTag = (e, tagId) => {
         settagsList([...tagsList, {
-            color: e.currentTarget.querySelector('.tag_value span').style.background,
-            name: e.currentTarget.querySelector('.tag_name span').innerText
+            id: tagId,
+            color: e.currentTarget.querySelector('.label_value span').style.background,
+            name: e.currentTarget.querySelector('.label_name span').innerText
         }])
+        setNewTagMenu(!newTagMenu);
     }
 
     return <div className="align_addNewTask_window">
@@ -132,9 +179,9 @@ function TicketCreate(props) {
                                     <div className="task_details">
                                         <Member counter={membersCounter} showUsersMenu={showUsersMenu}
                                             clickAddMember={addMember} isOpen={addMemberMenu}
-                                            data={membersList} />
-                                        <Tag addNewTag={addNewTag} clickAddtag={addtag}
-                                            isOpen={newTagMenu} data={tagsList} />
+                                            data={membersList} boardMembers={members} />
+                                        <Tag addNewTag={addNewTag} clickAddLabel={addTag}
+                                            isOpen={newTagMenu} data={tagsList} boardTags={tags} />
                                     </div>
                                 </div>
 
