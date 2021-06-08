@@ -149,7 +149,7 @@ const ProfilePage = (props) => {
 
         <div className="btns">
             <button className="edit_btn cancel_btn" onClick={closeForm}>Cancel</button>
-            <button className="edit_btn" onClick={saveUser}>Edit</button>
+            <button className="edit_btn" onClick={saveUser}>Save</button>
         </div>
     </div>
 }
