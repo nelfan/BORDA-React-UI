@@ -1,14 +1,15 @@
 .user_submenu {
     z-index: 2;
     position: absolute;
-    background: #e9e9e923;
+    background: white;
     border-right: 1px solid rgba(56, 109, 216, 0.993);
     border-bottom: 1px solid rgba(56, 109, 216, 0.993);
     border-left: 1px solid rgba(56, 109, 216, 0.993);
     overflow: hidden;
     display: none;
-    width: 20vh;
-    margin-left: -8%;
+    top: 41px;
+    right: 1%;
+    width: 9vw;
 }
 
 .user_alignment{
@@ -42,7 +43,8 @@
 }
 
 .user_submenu ul li:hover {
-    background: rgba(56, 109, 216);
+    color: white;
+    background: rgba(56, 109, 216);;
 }
 
 .user_submenu ul li i {
@@ -50,6 +52,9 @@
     font-size: 16px;
 }
 
-li a {
+.user_submenu ul li a{
     color: dimgray;
+}
+.user_submenu ul li a:hover{
+    color: white;
 }
