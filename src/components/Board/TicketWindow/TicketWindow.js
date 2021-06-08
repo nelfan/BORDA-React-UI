@@ -66,33 +66,35 @@ function TicketWindow(props) {
             body: JSON.stringify(editTicketData),
         })
 
+        const data = await res.json()
+
+        setCurrentTicket(data)
+
         for (let newMember of membersList) {
-            if (!currentTicket.members.some(item => item.id === newMember.id)) {
-                addMemberFetch(currentTicket.id, newMember.id)
+            if (!data.members.some(item => item.id === newMember.id)) {
+                setCurrentTicket(addMemberFetch(currentTicket.id, newMember.id))
             }
         }
 
         for (let removeMember of currentTicket.members) {
             if (!membersList.some(item => item.id === removeMember.id)) {
-                removeMemberFetch(currentTicket.id, removeMember.id)
+                setCurrentTicket(removeMemberFetch(currentTicket.id, removeMember.id))
             }
         }
 
         for (let newTag of tagsList) {
             if (!currentTicket.tags.some(item => item.id === newTag.id)) {
-                addTagFetch(currentTicket.id, newTag.id)
+                setCurrentTicket(addTagFetch(currentTicket.id, newTag.id))
             }
         }
 
         for (let removeTag of currentTicket.tags) {
             if (!tagsList.some(item => item.id === removeTag.id)) {
-                removeTagFetch(currentTicket.id, removeTag.id)
+                setCurrentTicket(removeTagFetch(currentTicket.id, removeTag.id))
             }
         }
 
-        const data = await res.json()
-
-        props.cancelBtn(data)
+        props.cancelBtn(currentTicket)
     }
 
     const addMemberFetch = async (ticketId, userId) => {

@@ -29,11 +29,15 @@ function BoardListItem(props) {
 
     useEffect(() => {
         const getTickets = async () => {
-            const ticketsFromServer = await fetchTickets()
-            setTickets(ticketsFromServer)
+            refreshTickets()
         }
         getTickets()
     }, [])
+
+    const refreshTickets = async () => {
+        const ticketsFromServer = await fetchTickets()
+        setTickets(ticketsFromServer)
+    }
 
     const fetchTickets = async () => {
         const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key + '/tickets', {
@@ -99,8 +103,9 @@ function BoardListItem(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-
         await res.json()
+
+        window.location.reload();
     }
 
     const deleteTicket = async (id) => {
@@ -117,7 +122,7 @@ function BoardListItem(props) {
     }
 
     const list = tickets.map(item => {
-        return <Ticket data={item} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} />
+        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} />
     })
 
     return <div className="default_ul">

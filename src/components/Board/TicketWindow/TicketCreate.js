@@ -8,8 +8,7 @@ function TicketCreate(props) {
 
     const boardId = props.boardId
     const columnId = props.columnId
-
-    const background = React.createRef();
+    
     const [members, setMembers] = useState([]);
     const [membersList, setMembersList] = useState([]);
     const [tags, setTags] = useState([]);
@@ -37,17 +36,6 @@ function TicketCreate(props) {
 
     const showUsersMenu = () => {
         setAddMemberMenu(!addMemberMenu);
-    }
-
-    const changeTicketBackground = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.addEventListener("load", function () {
-            document.getElementById("ticketBackground").src = reader.result
-        }, false);
-        if (file) {
-            reader.readAsDataURL(file);
-        }
     }
 
     const createTicket = async (e) => {
