@@ -1,0 +1,60 @@
+.inviteWrapper{
+    position: fixed;
+    width: 50%;
+    margin-left: 25%;
+    background-color: white;
+    z-index: 999;
+    height: 40vh;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+    align-items: center;
+}
+.userNameField{
+    font-family: inherit;
+    width: 80%;
+    border: 0;
+    border-bottom: 2px solid #9b9b9b;
+    outline: 0;
+    font-size: 1.1rem;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+.form__label {
+    display: block;
+    top: 0;
+    margin-left: 10%;
+    align-self: start;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: #9b9b9b;
+    box-shadow: none;
+}
+
+.inviteOptions{
+    display: flex;
+    flex-direction: row;
+    margin: 2%;
+    padding: 2%;
+}
+
+.userBoardRelational{
+    font-size: 0.9rem;
+    box-shadow: none;
+    height: 2em;
+}
+
+.sendBtn{
+  text-transform: uppercase;
+  background: rgba(56, 109, 216, 0.993);
+  color: #fff;
+  border: none;
+  margin-right: 10%;
+  cursor: pointer;
+  width: 5vw;
+  height: 3.8vh;
+  margin-left: 10%;
+  justify-content: space-around;
+  padding: 2%;
+}

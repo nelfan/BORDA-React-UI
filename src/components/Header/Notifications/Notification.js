@@ -16,7 +16,6 @@ const Notification = () =>{
     useEffect(() => {
         const getInviations = async () => {     
             const nfs = await fetchInviations();
-            console.log(nfs);
             setNotifications(nfs);
             nfs.forEach(
                 function getUnread( val ) {
