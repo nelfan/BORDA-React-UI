@@ -4,8 +4,8 @@ import Avatar from '../../../ProfilePage/Avatar/Avatar';
 
 
 const MiniAvatar = (userGiven) => {
-    const user = userGiven
-    if (userGiven === null) {
+    var user = userGiven;
+    if (Object.getOwnPropertyNames(userGiven).length === 0) {
         user = JSON.parse(sessionStorage.getItem('user'));
     }
     return <Avatar width={user == null || user.avatar == null ? "10%" : "20%"} src={user == null || user.avatar == null ? default_user : "data:image/jpeg;base64, " + user.avatar}></Avatar>
