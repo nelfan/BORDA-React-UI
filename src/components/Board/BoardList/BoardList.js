@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import "./board_list.css"
 import BoardListItem from "./BoardListItem/BoardListItem";
 
@@ -23,11 +23,15 @@ function BoardList(props) {
 
     useEffect(() => {
         const getBoardLists = async () => {
-            const boardsListsFromServer = await fetchBoardLists()
-            setItems(boardsListsFromServer)
+            refreshItems()
         }
         getBoardLists()
     }, [])
+
+    const refreshItems = async () => {
+        const boardsListsFromServer = await fetchBoardLists()
+        setItems(boardsListsFromServer)
+    }
 
     const fetchBoardLists = async () => {
         const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
@@ -81,12 +85,12 @@ function BoardList(props) {
             }
         })
 
-        setItems(await fetchBoardLists());
+        refreshItems()
     }
 
     const setUpdate = async (name, key) => {
         const updateBoardListData = {
-            'id':key,
+            'id': key,
             'name': name
         }
 
@@ -99,25 +103,26 @@ function BoardList(props) {
             body: JSON.stringify(updateBoardListData),
         })
 
-        setItems(await fetchBoardLists());
+        refreshItems()
     }
 
     const list = items.map(item => {
-        return <li key={item.id}><BoardListItem boardId={boardId} data={item} setUpdate={setUpdate} deleteItem={deleteItem}/></li>
+        return <li key={item.id}><BoardListItem boardId={boardId} data={item} setUpdate={setUpdate} refreshItems={refreshItems} deleteItem={deleteItem} /></li>
     })
+
     return <ul className="default_main" id="defaultMain">
         {list}
         <li className="addNewBoardListItem" id="default">
             <div className="align_btn_add_board">
                 <div className="align_add_bord">
-                    <form action="#">
+                    <form>
                         {addNewBoardList ?
                             <div className="add_board_ok_cancel">
                                 <span className="ok_board" onClick={addItem}>Ok</span>
                                 <span className="cancel_board" onClick={cancelAddNewBoardList}> Cancel </span>
                             </div> :
                             <div className="add_board" onClick={newBoardList}>
-                                <span> Add new Column <i className="fa fa-plus"/> </span>
+                                <span> Add new Column <i className="fa fa-plus" /> </span>
                             </div>
                         }
 
@@ -126,8 +131,8 @@ function BoardList(props) {
                                 <div className="align_of_board_content">
                                     <div className="board_title">
                                         <input id="boardList_title" onChange={handleInput} type="text"
-                                               placeholder="Enter a column title" autoComplete="off"
-                                               value={currentItem.name} required/>
+                                            placeholder="Enter a column title" autoComplete="off"
+                                            value={currentItem.name} required />
                                     </div>
                                 </div>
                             </div> : null}

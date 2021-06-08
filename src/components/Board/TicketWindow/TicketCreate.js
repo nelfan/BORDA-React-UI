@@ -8,8 +8,7 @@ function TicketCreate(props) {
 
     const boardId = props.boardId
     const columnId = props.columnId
-
-    const background = React.createRef();
+    
     const [members, setMembers] = useState([]);
     const [membersList, setMembersList] = useState([]);
     const [tags, setTags] = useState([]);
@@ -37,17 +36,6 @@ function TicketCreate(props) {
 
     const showUsersMenu = () => {
         setAddMemberMenu(!addMemberMenu);
-    }
-
-    const changeTicketBackground = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.addEventListener("load", function () {
-            document.getElementById("ticketBackground").src = reader.result
-        }, false);
-        if (file) {
-            reader.readAsDataURL(file);
-        }
     }
 
     const createTicket = async (e) => {
@@ -107,27 +95,27 @@ function TicketCreate(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        
+
         const collaborators = await res2.json()
 
         return [...owners, ...collaborators]
     }
 
     const addMember = (e, userId) => {
-        setMembersList([...membersList, {
-            id: userId,
-            icon: e.currentTarget.querySelector('.member_avatar img').src,
-            name: e.currentTarget.querySelector('.member_name span').innerText
-        }])
+        if (!membersList.some(item => item.id === userId)) {
+            setMembersList([...membersList, members.find(item => item.id === userId)])
+        } else {
+            setMembersList(membersList.filter(item => item.id !== userId))
+        }
         setAddMemberMenu(!addMemberMenu);
     }
 
     const addTag = (e, tagId) => {
-        settagsList([...tagsList, {
-            id: tagId,
-            color: e.currentTarget.querySelector('.label_value span').style.background,
-            name: e.currentTarget.querySelector('.label_name span').innerText
-        }])
+        if (!tagsList.some(item => item.id === tagId)) {
+            settagsList([...tagsList, tags.find(item => item.id === tagId)])
+        } else {
+            settagsList(tagsList.filter(item => item.id !== tagId))
+        }
         setNewTagMenu(!newTagMenu);
     }
 
@@ -185,8 +173,6 @@ function TicketCreate(props) {
                         </div>
                     </div>
 
-                    <input ref={background} id="ticketBg" className="bg_input" name="bg" style={{ display: "none" }}
-                        onChange={changeTicketBackground} type="file" required />
                     <div className="align_addTask_btn">
                         <div className="addTask_btn">
                             <input type="submit" onClick={(e) => createTicket(e)} value="Add" />

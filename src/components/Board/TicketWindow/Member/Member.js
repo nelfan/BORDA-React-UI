@@ -7,7 +7,7 @@ function Member(props) {
     const [counterValue, setCounterValue] = useState();
 
     const list = props.data && props.data.map(item => {
-        return <li key={item.name}><img src={item.icon} alt={item.icon} /></li>
+        return <li key={item.id} ><MiniAvatar user={item} /></li>
     })
 
     const boardMembers = props.boardMembers && props.boardMembers.map(item => {

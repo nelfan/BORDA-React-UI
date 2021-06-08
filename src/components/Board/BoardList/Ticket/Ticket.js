@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import MiniAvatar from '../../../Header/HeaderOptions/MiniAvatar/MiniAvatar';
+import MoveTicket from '../../TicketWindow/MoveTicket/MoveTicket';
 import "./ticket.css"
 
 function Ticket(props) {
     const [editTicket, setEditTicket] = useState(false);
+    const [toggleMenu, setToggleMenu] = useState(false);
 
     const editMenu = () => {
         setEditTicket(!editTicket);
+    }
+
+    const toggleMoveTicketMenu = () => {
+        setToggleMenu(!toggleMenu)
     }
 
     const labels = props.data.tags.map(item => {
@@ -23,17 +29,19 @@ function Ticket(props) {
     });
 
     return <li key={props.data.id} data-draggable="item" data-task="1" className="item">
+        {toggleMenu ?
+            <MoveTicket boardId={props.boardId} columnId={props.columnId} ticketId={props.data.id} moveTicket={props.moveTicket} /> : null}
         <div className="task_header">
             <span>{props.data.title}</span>
             <i className="fa fa-ellipsis-v" onClick={editMenu}>
                 {editTicket ? <ul className="edit_task_window">
-                    <li key={'view'} className="view_task" onClick={() => {props.moveTicket(2, props.data.id)}}><span>Move</span>
-                    <i className="show_task_i fa fa-file" />
+                    <li key={'view'} className="view_task" onClick={() => { toggleMoveTicketMenu() }}><span>Move</span>
+                        <i className="show_task_i fa fa-file" />
                     </li>
-                    <li key={'edit'} className="edit_task" onClick={() => {props.toggleTicketEdit(props.data)}}><span>Edit</span>
-                    <i className="edit_task_i fa fa-edit" /></li>
-                    <li key={'delete'} className="delete_task" onClick={() => {props.deleteTicket(props.data.id)}}><span>Delete</span>
-                    <i className="delete_task_i fa fa-trash" />
+                    <li key={'edit'} className="edit_task" onClick={() => { props.toggleTicketEdit(props.data) }}><span>Edit</span>
+                        <i className="edit_task_i fa fa-edit" /></li>
+                    <li key={'delete'} className="delete_task" onClick={() => { props.deleteTicket(props.data.id) }}><span>Delete</span>
+                        <i className="delete_task_i fa fa-trash" />
                     </li>
                 </ul> : null}
             </i>
