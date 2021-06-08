@@ -24,11 +24,11 @@ const ProfileMenu = () => {
     <div className="user_icon" id="user_icon" >
       <div className="user_alignment">
         <i className="fa fa-bars" onClick={menu_window}></i>
-        <div className="user_submenu" style={{'top':'37px'}}id="user_submenu" >
+        <div className="user_submenu"  id="user_submenu" >
           <ul>
-            <li id="profile"><a onClick={profile_window}><span>Profile</span></a></li>
-            <li id="boards"><Link to="/boards"><span>Boards</span></Link></li>
-            <li id="logout"><Link onClick={clear_token} to="/"><span>Log out</span></Link></li>
+            <li id="profile"><a onClick={profile_window}><span className='spanProfileMenu'>Profile</span></a></li>
+            <li id="boards"><Link to="/boards"><span className='spanProfileMenu'>Boards</span></Link></li>
+            <li id="logout"><Link onClick={clear_token} to="/"><span className='spanProfileMenu'>Log out</span></Link></li>
           </ul>
         </div>
       </div>
