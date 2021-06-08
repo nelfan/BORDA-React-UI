@@ -1,0 +1,20 @@
+.proportiesLine{
+    width: 100%;
+    background-color: teal;
+    height: 5vh;
+    color: white;
+    display: flex;
+    flex-direction: row;
+}
+
+.boardOptions{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 0.5%;
+    color: white;
+    font-size: 1.3em;
+    cursor: pointer;
+}
