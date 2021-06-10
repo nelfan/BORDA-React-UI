@@ -9,7 +9,6 @@ const ProfilePage = (props) => {
     const ref_email = useRef(null);
     const ref_firstName = useRef(null);
     const ref_lastName = useRef(null);
-    const ref_newPassword = useRef(null);
     const user = JSON.parse(sessionStorage.getItem('user'));
     
 
@@ -20,7 +19,7 @@ const ProfilePage = (props) => {
             'firstName': fName,
             'lastName': lName,
             'password': password,
-            'avatar': user.avatar           
+            'avatar': user.avatar,           
         }
 
         const res = await fetch('http://localhost:9090/users/', {
@@ -30,8 +29,14 @@ const ProfilePage = (props) => {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             },
             body: JSON.stringify(update_user),
-        }).then(response => response.json())
-        .then(data => sessionStorage.setItem('user',JSON.stringify(data)));
+        });
+
+        const data = await res;
+        if(await data.ok){
+            sessionStorage.setItem('user', JSON.stringify(await data.json()))
+        }
+        else alert('Invalid data: '+JSON.stringify(await data.json()))    
+
         closeForm();
     }
     const openFile = () => {
@@ -47,9 +52,9 @@ const ProfilePage = (props) => {
         var file = e.target.files[0];
         var reader = new FileReader();
         reader.onloadend = function () {
-            var data = (reader.result).split(',')[1];
-            user.avatar = data;
-            ref_image.current.src = "data:image/jpeg;base64, " + data;
+            var image = (reader.result).split(',')[1];
+            user.avatar = image;
+            ref_image.current.src = "data:image/jpeg;base64, " + image;
         }
         reader.readAsDataURL(file);
     }
@@ -145,7 +150,7 @@ const ProfilePage = (props) => {
         <label htmlFor="newPassword" className="form__label">new password
         {(passwordDirty && passwordError) && <div style={{color: 'red'}}>{passwordError}</div>}
         </label>
-        <input type="password" value={password}  onBlur = {onPassDirty => setPasswordDirty(true)} onChange={changePass => passwordHandler(changePass.target.value)}  ref={ref_newPassword}  className="form__field" name="newPassword" id='newPassword' />
+        <input type="password" value={password}  onBlur = {onPassDirty => setPasswordDirty(true)} onChange={changePass => passwordHandler(changePass.target.value)}  className="form__field" name="newPassword" id='newPassword' />
 
         <div className="btns">
             <button className="edit_btn cancel_btn" onClick={closeForm}>Cancel</button>
