@@ -107,7 +107,7 @@ function BoardList(props) {
     }
 
     const list = items.map(item => {
-        return <li key={item.id}><BoardListItem boardId={boardId} data={item} setUpdate={setUpdate} refreshItems={refreshItems} deleteItem={deleteItem} /></li>
+        return <li key={item.id}><BoardListItem boardId={boardId} data={item} setUpdate={setUpdate} refreshItems={refreshItems} deleteItem={deleteItem} listItems={items} /></li>
     })
 
     return <ul className="default_main" id="defaultMain">

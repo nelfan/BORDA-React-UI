@@ -33,7 +33,7 @@ function BoardListItem(props) {
             refreshTickets()
         }
         getTickets()
-    }, [])
+    }, props.listItems)
 
     const refreshTickets = async () => {
         const ticketsFromServer = await fetchTickets()
