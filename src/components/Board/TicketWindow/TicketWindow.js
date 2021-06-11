@@ -156,7 +156,7 @@ function TicketWindow(props) {
     }
 
     const fetchMembers = async () => {
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/roles/' + 1, {
+        const res = await fetch('http://localhost:9090/boards/users/' + boardId + '/roles/' + 1, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
@@ -164,7 +164,7 @@ function TicketWindow(props) {
         })
         const owners = await res.json()
 
-        const res2 = await fetch('http://localhost:9090/boards/' + boardId + '/roles/' + 2, {
+        const res2 = await fetch('http://localhost:9090/boards/users/' + boardId + '/roles/' + 2, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
