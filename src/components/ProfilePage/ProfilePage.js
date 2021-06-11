@@ -1,7 +1,7 @@
 import './profilePage.css';
 import default_user from '../../assets/images/default-user.jpg';
 import Avatar from './Avatar/Avatar';
-import React, { useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import $ from 'jquery';
 
 const ProfilePage = (props) => {
@@ -10,16 +10,16 @@ const ProfilePage = (props) => {
     const ref_firstName = useRef(null);
     const ref_lastName = useRef(null);
     const user = JSON.parse(sessionStorage.getItem('user'));
-    
+
 
     const saveUser = async () => {
 
         const update_user = {
-            'email':  email,
+            'email': email,
             'firstName': fName,
             'lastName': lName,
             'password': password,
-            'avatar': user.avatar,           
+            'avatar': user.avatar,
         }
 
         const res = await fetch('http://localhost:9090/users/', {
@@ -32,10 +32,17 @@ const ProfilePage = (props) => {
         });
 
         const data = await res;
-        if(await data.ok){
+        if (await data.ok) {
             sessionStorage.setItem('user', JSON.stringify(await data.json()))
         }
-        else alert('Invalid data: '+JSON.stringify(await data.json()))    
+        else {
+            var message = 'Invalid data:\n';
+            const jsonData = JSON.parse(JSON.stringify(await data.json()));
+            for (var key in jsonData)
+                message += jsonData[key]+'\n';
+
+            alert(message);
+        }
 
         closeForm();
     }
@@ -129,28 +136,28 @@ const ProfilePage = (props) => {
     return <div className="wrapper">
         <input className="file-input" type="file" style={{ display: 'none' }} onChange={renderImage} />
         <Avatar ref={ref_image} onClick={openFile} width="20%" src={user.avatar === null ? default_user : "data:image/jpeg;base64, " + user.avatar}></Avatar>
-        
+
         <label htmlFor="username" className="form__label">username</label><input disabled type="text" className="form__field" value={user.username} name="username" id='username' />
-        
+
         <label htmlFor="email" className="form__label">e-mail
-        {(emailDirty && emailError) && <p style={{color: 'red'}}>{emailError}</p>}
+            {(emailDirty && emailError) && <p style={{ color: 'red' }}>{emailError}</p>}
         </label>
-        <input type="text" onBlur = {onDirtyEmail => setEmailDirty(true)} ref={ref_email} onChange={changeEmail => emailHandler(changeEmail.target.value)} className="form__field" name="email" id='email' value={email} />
+        <input type="text" onBlur={onDirtyEmail => setEmailDirty(true)} ref={ref_email} onChange={changeEmail => emailHandler(changeEmail.target.value)} className="form__field" name="email" id='email' value={email} />
 
         <label htmlFor="firstName" className="form__label">first name
-        {(firstNameDirty && firstNameError) && <p style={{color: 'red'}}>{firstNameError}</p>}
-        </label> 
-        <input type="text" onBlur = {onDirtyFirstName => setFirstNameDirty(true)} ref={ref_firstName} onChange={changeFName => firstNameHandler(changeFName.target.value)} value={fName} className="form__field" name="firstName" id='firstName' />
-       
+            {(firstNameDirty && firstNameError) && <p style={{ color: 'red' }}>{firstNameError}</p>}
+        </label>
+        <input type="text" onBlur={onDirtyFirstName => setFirstNameDirty(true)} ref={ref_firstName} onChange={changeFName => firstNameHandler(changeFName.target.value)} value={fName} className="form__field" name="firstName" id='firstName' />
+
         <label htmlFor="lastname" className="form__label">last name
-        {(lastNameDirty && lastNameError) && <p style={{color: 'red'}}>{lastNameError}</p>}
+            {(lastNameDirty && lastNameError) && <p style={{ color: 'red' }}>{lastNameError}</p>}
         </label>
-        <input type="text" onBlur = {onDirtyLastName => setLastNameDirty(true)} ref={ref_lastName} value={lName} onChange={changeLName => lastNameHandler(changeLName.target.value)} className="form__field" name="lastname" id='lastname' />
-        
+        <input type="text" onBlur={onDirtyLastName => setLastNameDirty(true)} ref={ref_lastName} value={lName} onChange={changeLName => lastNameHandler(changeLName.target.value)} className="form__field" name="lastname" id='lastname' />
+
         <label htmlFor="newPassword" className="form__label">new password
-        {(passwordDirty && passwordError) && <div style={{color: 'red'}}>{passwordError}</div>}
+            {(passwordDirty && passwordError) && <div style={{ color: 'red' }}>{passwordError}</div>}
         </label>
-        <input type="password" value={password}  onBlur = {onPassDirty => setPasswordDirty(true)} onChange={changePass => passwordHandler(changePass.target.value)}  className="form__field" name="newPassword" id='newPassword' />
+        <input type="password" value={password} onBlur={onPassDirty => setPasswordDirty(true)} onChange={changePass => passwordHandler(changePass.target.value)} className="form__field" name="newPassword" id='newPassword' />
 
         <div className="btns">
             <button className="edit_btn cancel_btn" onClick={closeForm}>Cancel</button>
