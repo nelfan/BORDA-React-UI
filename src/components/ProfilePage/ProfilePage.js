@@ -11,10 +11,10 @@ const ProfilePage = (props) => {
     const ref_lastName = useRef(null);
     const user = JSON.parse(sessionStorage.getItem('user'));
 
-    const fieldHandling=(field, value)=>{
-        if(field!=null)
-        return (value.length===0 || user[field]===value)?null:value;
-        else return value.length===0?null:value;
+    const fieldHandling = (field, value) => {
+        if (field != null)
+            return (value.length === 0 || user[field] === value) ? null : value;
+        else return value.length === 0 ? null : value;
     }
 
     const saveUser = async () => {
@@ -45,7 +45,7 @@ const ProfilePage = (props) => {
             var message = 'Invalid data:\n';
             const jsonData = JSON.parse(JSON.stringify(await data.json()));
             for (var key in jsonData)
-                message += jsonData[key]+'\n';
+                message += jsonData[key] + '\n';
 
             alert(message);
         }
