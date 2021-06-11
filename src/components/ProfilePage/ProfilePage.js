@@ -11,14 +11,20 @@ const ProfilePage = (props) => {
     const ref_lastName = useRef(null);
     const user = JSON.parse(sessionStorage.getItem('user'));
 
+    const fieldHandling=(field, value)=>{
+        if(field!=null)
+        return (value.length===0 || user[field]===value)?null:value;
+        else return value.length===0?null:value;
+    }
 
     const saveUser = async () => {
 
+        console.log(user);
         const update_user = {
-            'email': email,
-            'firstName': fName,
-            'lastName': lName,
-            'password': password,
+            'email': fieldHandling("email", email),
+            'firstName': fieldHandling("firstName", fName),
+            'lastName': fieldHandling("lastName", lName),
+            'password': fieldHandling(null, password),
             'avatar': user.avatar,
         }
 
