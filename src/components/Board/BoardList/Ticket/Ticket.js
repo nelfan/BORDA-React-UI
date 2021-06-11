@@ -30,7 +30,7 @@ function Ticket(props) {
 
     return <li key={props.data.id} data-draggable="item" data-task="1" className="item">
         {toggleMenu ?
-            <MoveTicket boardId={props.boardId} columnId={props.columnId} ticketId={props.data.id} moveTicket={props.moveTicket} /> : null}
+            <MoveTicket boardId={props.boardId} columnId={props.columnId} ticketId={props.data.id} moveTicket={props.moveTicket} toggleMenu={toggleMoveTicketMenu} refreshLists={props.refreshLists} /> : null}
         <div className="task_header">
             <span>{props.data.title}</span>
             <i className="fa fa-ellipsis-v" onClick={editMenu}>

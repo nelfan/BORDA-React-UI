@@ -4,7 +4,11 @@ const MoveTicket = (props) => {
     const [items, setItems] = useState([]);
 
     const list = items.map(item => {
-        return <li key={item.id} onClick={() => { props.moveTicket(item.id, props.ticketId) }}><span>{item.name}</span></li>
+        return <li key={item.id} onClick={() => {
+            props.moveTicket(item.id, props.ticketId);
+            props.toggleMenu()
+            props.refreshLists()
+        }}><span>{item.name}</span></li>
     })
 
     useEffect(() => {

@@ -23,7 +23,7 @@ function BoardList(props) {
 
     useEffect(() => {
         const getBoardLists = async () => {
-            refreshItems()
+            await refreshItems()
         }
         getBoardLists()
     }, [])
