@@ -38,7 +38,7 @@ const ProfilePage = (props) => {
         });
 
         const data = await res;
-        if (await data.ok) {
+        if (await data.status===200) {
             sessionStorage.setItem('user', JSON.stringify(await data.json()))
         }
         else {
