@@ -33,7 +33,7 @@ function BoardListItem(props) {
             refreshTickets()
         }
         getTickets()
-    }, props.listItems)
+    }, [props.updateItemTickets])
 
     const refreshTickets = async () => {
         const ticketsFromServer = await fetchTickets()
@@ -105,6 +105,8 @@ function BoardListItem(props) {
             }
         })
         await res.json()
+
+        props.toggleUpdateItemTickets()
     }
 
     const deleteTicket = async (id) => {
