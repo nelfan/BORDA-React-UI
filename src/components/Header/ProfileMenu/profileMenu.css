@@ -11,7 +11,7 @@
     width: 9vw;
 }
 
-.user_alignment{
+.user_alignment {
     cursor: pointer;
 }
 
@@ -43,7 +43,8 @@
 
 .user_submenu ul li:hover {
     color: white;
-    background: rgba(56, 109, 216);;
+    background: rgba(56, 109, 216);
+    ;
 }
 
 .user_submenu ul li i {
@@ -51,9 +52,10 @@
     font-size: 16px;
 }
 
-.user_submenu ul li a{
+.user_submenu ul li a {
     color: dimgray;
 }
-.user_submenu ul li a:hover{
+
+.user_submenu ul li a:hover {
     color: white;
 }
