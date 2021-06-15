@@ -173,9 +173,6 @@ function TicketWindow(props) {
 
         const collaborators = await res2.json()
 
-        console.log(owners)
-        console.log(collaborators)
-
         return [...owners, ...collaborators]
     }
 
