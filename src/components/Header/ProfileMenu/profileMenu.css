@@ -1,18 +1,17 @@
 .user_submenu {
     z-index: 2;
     position: absolute;
-    background: white;
+    background: transparent;
     border-right: 1px solid rgba(56, 109, 216, 0.993);
     border-bottom: 1px solid rgba(56, 109, 216, 0.993);
     border-left: 1px solid rgba(56, 109, 216, 0.993);
     overflow: hidden;
     display: none;
-    top: 41px;
     right: 1%;
     width: 9vw;
 }
 
-.user_alignment{
+.user_alignment {
     cursor: pointer;
 }
 
@@ -33,7 +32,7 @@
 
 .user_submenu ul li {
     width: 100%;
-    background: white;
+    background: transparent;
     color: black;
     opacity: 1;
     padding: 5%;
@@ -44,7 +43,8 @@
 
 .user_submenu ul li:hover {
     color: white;
-    background: rgba(56, 109, 216);;
+    background: rgba(56, 109, 216);
+    ;
 }
 
 .user_submenu ul li i {
@@ -52,9 +52,10 @@
     font-size: 16px;
 }
 
-.user_submenu ul li a{
+.user_submenu ul li a {
     color: dimgray;
 }
-.user_submenu ul li a:hover{
+
+.user_submenu ul li a:hover {
     color: white;
 }
