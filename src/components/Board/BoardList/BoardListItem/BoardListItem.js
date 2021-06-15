@@ -26,13 +26,14 @@ function BoardListItem(props) {
     const name = props.data.name
     const color = '#6aba96'
     const boardId = props.boardId
+    const refreshLists = async () => props.refreshItems
 
     useEffect(() => {
         const getTickets = async () => {
             refreshTickets()
         }
         getTickets()
-    }, [])
+    }, [props.updateItemTickets])
 
     const refreshTickets = async () => {
         const ticketsFromServer = await fetchTickets()
@@ -105,7 +106,7 @@ function BoardListItem(props) {
         })
         await res.json()
 
-        window.location.reload();
+        props.toggleUpdateItemTickets()
     }
 
     const deleteTicket = async (id) => {
@@ -122,7 +123,7 @@ function BoardListItem(props) {
     }
 
     const list = tickets.map(item => {
-        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} />
+        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} refreshLists={refreshLists} />
     })
 
     return <div className="default_ul">

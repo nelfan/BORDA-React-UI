@@ -8,6 +8,7 @@ function BoardList(props) {
     const [addNewBoardList, setNewBoardList] = useState(false);
     const [boardColor, setBoardColor] = useState('#6aba96');
     const [items, setItems] = useState([]);
+    const [updateItemTickets, setUpdateItemTickets] = useState(false);
     const [currentItem, setCurrentItem] = useState({
         color: boardColor,
         name: '',
@@ -23,7 +24,7 @@ function BoardList(props) {
 
     useEffect(() => {
         const getBoardLists = async () => {
-            refreshItems()
+            await refreshItems()
         }
         getBoardLists()
     }, [])
@@ -106,8 +107,15 @@ function BoardList(props) {
         refreshItems()
     }
 
+    const toggleUpdateItemTickets = () => {
+        setUpdateItemTickets(!updateItemTickets)
+    }
+
     const list = items.map(item => {
-        return <li key={item.id}><BoardListItem boardId={boardId} data={item} setUpdate={setUpdate} refreshItems={refreshItems} deleteItem={deleteItem} /></li>
+        return <li key={item.id}><BoardListItem boardId={boardId} data={item} 
+            setUpdate={setUpdate} refreshItems={refreshItems} 
+            deleteItem={deleteItem} toggleUpdateItemTickets={toggleUpdateItemTickets}
+            updateItemTickets={updateItemTickets} /></li>
     })
 
     return <ul className="default_main" id="defaultMain">
