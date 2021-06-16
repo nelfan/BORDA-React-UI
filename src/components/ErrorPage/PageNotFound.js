@@ -10,7 +10,7 @@ const PageNotFound = () => {
     return (
         <>
             <div>
-                {(isTokenExist) && <Header></Header>}
+                {(isTokenExist) && <Header/>}
             </div>
             {(!isTokenExist) && <div className="links">
                 <Link to="/auth">
