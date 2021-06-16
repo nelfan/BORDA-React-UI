@@ -3,6 +3,7 @@ import Home from '../Home/Home';
 import Auth from '../Auth/Auth';
 import Boards from '../Boards/Boards';
 import Board from '../Board/Board';
+import PageNotFound from "../ErrorPage/PageNotFound";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Route path='/auth' exact={true} component={Auth} />
         <Route path='/boards' exact={true} component={Boards} />
         <Route path='/board' exact={true} component={Board} />
+        <Route component={PageNotFound}/>
       </Switch>
     </Router>
   );
