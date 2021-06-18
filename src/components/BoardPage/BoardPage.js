@@ -1,11 +1,11 @@
 import React from 'react';
 import "./board_page.css"
-import BoardList from "./BoardList/BoardList";
+import Board from "./Board/Board";
 import Header from '../Header/Header';
 import Proporties from './Proporties/Proporties';
 
 
-function Board(props) {
+function BoardPage(props) {
     
     const id = props.location.state.id;
     return <div className="content">
@@ -13,10 +13,10 @@ function Board(props) {
         <Proporties id = {id}></Proporties>
         <div className="main_content">
             <div className="active_borda_items">
-                <BoardList boardId={id}/>
+                <Board boardId={id}/>
             </div>
         </div>
     </div>
 }
 
-export default Board
+export default BoardPage
