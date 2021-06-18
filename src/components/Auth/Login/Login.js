@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import '../auth.css'
+import Swal from "sweetalert2";
 
 const Login = ({onSubmitAuth}) => {
     const [username, setUsername] = useState('')
@@ -41,7 +42,13 @@ const Login = ({onSubmitAuth}) => {
         const check = await res
 
         if (check.status === 401) {
-            alert('username or password is invalid')
+            Swal.fire({
+                title: 'Error!',
+                text: 'Username or Password is invalid',
+                icon: 'error',
+                confirmButtonText: 'Try again',
+                confirmButtonColor: '#386DD8'
+            })
         }
 
         const data = await check.json()
