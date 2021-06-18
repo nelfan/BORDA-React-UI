@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from '../Home/Home';
 import Auth from '../Auth/Auth';
 import Boards from '../Boards/Boards';
-import Board from '../Board/Board';
+import BoardPage from '../BoardPage/BoardPage';
 
 function App() {
 
@@ -12,7 +12,7 @@ function App() {
         <Route path='/' exact={true} component={Home} />
         <Route path='/auth' exact={true} component={Auth} />
         <Route path='/boards' exact={true} component={Boards} />
-        <Route path='/board' exact={true} component={Board} />
+        <Route path='/board' exact={true} component={BoardPage} />
       </Switch>
     </Router>
   );

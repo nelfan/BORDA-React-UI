@@ -7,19 +7,19 @@ const MoveTicket = (props) => {
         return <li key={item.id} onClick={() => {
             props.moveTicket(item.id, props.ticketId);
             props.toggleMenu()
-            props.refreshLists()
+            props.refreshColumns()
         }}><span>{item.name}</span></li>
     })
 
     useEffect(() => {
-        const getBoardLists = async () => {
-            const boardsListsFromServer = await fetchBoardLists()
-            setItems(boardsListsFromServer)
+        const getBoardColumns = async () => {
+            const boardsColumnsFromServer = await fetchBoardColumns()
+            setItems(boardsColumnsFromServer)
         }
-        getBoardLists()
+        getBoardColumns()
     }, [])
 
-    const fetchBoardLists = async () => {
+    const fetchBoardColumns = async () => {
         const res = await fetch('http://localhost:9090/boards/' + props.boardId + '/columns', {
             method: 'GET',
             headers: {
