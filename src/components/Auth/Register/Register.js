@@ -111,6 +111,7 @@ const Register = ({onSubmitAuth}) => {
         switch (e.target.name) {
             case 'userName':
                 setUserNameDirty(true)
+                checkUserExistingByUsername()
                 break
             case 'firstName':
                 setFirstNameDirty(true)
@@ -136,25 +137,30 @@ const Register = ({onSubmitAuth}) => {
         setUserName(e.target.value)
         const re = /^(?!.*[_]{2})[a-zA-Z0-9_]+(?<![_.])$/;
 
-        // Check username on existing
-        const res = await fetch('http://localhost:9090/usernames/' + e.target.value, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json'
-            }
-        })
-        const checkResult = await res.json()
-
         if (e.target.value.length < 3) {
             setUserNameError('Username cannot be less than 3 characters ')
         } else if (e.target.value.length > 30) {
             setUserNameError('Username cannot be more than 30 characters ')
         } else if (!re.test(String(e.target.value))) {
             setUserNameError('Username can only contain letters, numbers and "_" ')
-        } else if (checkResult === true) {
-            setUserNameError('This username is already taken')
         } else {
             setUserNameError('')
+        }
+    }
+
+    const checkUserExistingByUsername = async () => {
+        if (userNameError === '') {
+            const res = await fetch('http://localhost:9090/usernames/' + userName, {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+            const checkResult = await res.json()
+
+            if (checkResult === true) {
+                setUserNameError('This username is already taken')
+            }
         }
     }
 
@@ -244,7 +250,7 @@ const Register = ({onSubmitAuth}) => {
                     <input
                         type="text"
                         id="firstName"
-                        utocomplete="off"
+                        autoComplete="off"
                         name="firstName"
                         placeholder="Enter first name.."
                         value={firstName}
