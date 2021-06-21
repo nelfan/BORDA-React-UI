@@ -1,9 +1,8 @@
 import './boards.css';
 import BoardView from '../Boards/BoardView/BoardView';
-import { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import InputToAddBoard from "./AddBoard/InputToAddBoard";
 import AddBoard from "./AddBoard/AddBoard";
-import React from 'react';
 import Header from '../Header/Header';
 
 const Boards = () => {
