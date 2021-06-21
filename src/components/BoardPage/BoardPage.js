@@ -1,12 +1,12 @@
 import React from 'react';
 import "./board_page.css"
-import BoardList from "./BoardList/BoardList";
+import Board from "./Board/Board";
 import Header from '../Header/Header';
 import Proporties from './Proporties/Proporties';
 import {Redirect} from "react-router-dom";
 
 
-function Board(props) {
+function BoardPage(props) {
 
     if (props.location.state && props.location.state.id) {
         const id = props.location.state.id;
@@ -15,7 +15,7 @@ function Board(props) {
             <Proporties id={id}></Proporties>
             <div className="main_content">
                 <div className="active_borda_items">
-                    <BoardList boardId={id}/>
+                    <Board boardId={id}/>
                 </div>
             </div>
         </div>
@@ -24,4 +24,4 @@ function Board(props) {
     }
 }
 
-export default Board
+export default BoardPage

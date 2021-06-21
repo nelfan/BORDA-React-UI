@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import "./board_list_item.css"
-import BoardListMenu from "./BoardListMenu/BoardListMenu";
+import "./board_column.css"
+import BoardColumnMenu from "./BoardColumnMenu/BoardColumnMenu";
 import serialize from 'form-serialize';
 import TicketCreate from "../../TicketWindow/TicketCreate";
 import TicketWindow from "../../TicketWindow/TicketWindow";
 import Ticket from "../Ticket/Ticket";
 
-function BoardListItem(props) {
-
-    const background = React.createRef();
+function BoardColumn (props) {
+    
     const [toggleMenu, setToggleMenu] = useState(false);
     const [editMenu, setEditMenu] = useState(false);
     const [addNewTicket, setNewTicket] = useState(false);
@@ -26,14 +25,14 @@ function BoardListItem(props) {
     const name = props.data.name
     const color = '#6aba96'
     const boardId = props.boardId
-    const refreshLists = async () => props.refreshItems
+    const refreshColumns = async () => props.refreshBoardColumns
 
     useEffect(() => {
         const getTickets = async () => {
             refreshTickets()
         }
         getTickets()
-    }, [props.updateItemTickets])
+    }, [props.updateBoardColumnTickets])
 
     const refreshTickets = async () => {
         const ticketsFromServer = await fetchTickets()
@@ -54,7 +53,7 @@ function BoardListItem(props) {
         setTickets([...tickets, data])
     }
 
-    const toggleBoardListMenu = () => {
+    const toggleBoardColumnMenu = () => {
         setToggleMenu(!toggleMenu)
     }
 
@@ -68,10 +67,10 @@ function BoardListItem(props) {
         setToggleMenu(false);
     }
 
-    const updateBoardList = async (e, key) => {
+    const updateBoardColumn = async (e, key) => {
         e.preventDefault();
-        let object = serialize(document.querySelector("#edit_boardList_form"), { hash: true });
-        await props.setUpdate(object.name, key);
+        let object = serialize(document.querySelector("#edit_boardColumn_form"), { hash: true });
+        await props.updateBoardColumn(object.name, key);
         setToggleMenu(!toggleMenu);
         setEditMenu(!editMenu);
     }
@@ -106,7 +105,7 @@ function BoardListItem(props) {
         })
         await res.json()
 
-        props.toggleUpdateItemTickets()
+        props.toggleUpdateBoardColumnTickets()
     }
 
     const deleteTicket = async (id) => {
@@ -123,24 +122,24 @@ function BoardListItem(props) {
     }
 
     const list = tickets.map(item => {
-        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} refreshLists={refreshLists} />
+        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} refreshColumns={refreshColumns} />
     })
 
     return <div className="default_ul">
         <div className="list_header" style={{ background: color }}>
             <span>{name}</span>
             <div className="edit_conf">
-                <a onClick={toggleBoardListMenu}>
+                <a onClick={toggleBoardColumnMenu}>
                     <i className="fa fa-ellipsis-v" />
                     {toggleMenu ?
-                        <BoardListMenu color={color} isClickedEdit={toggleEditMenu} deleteItem={props.deleteItem}
+                        <BoardColumnMenu color={color} isClickedEdit={toggleEditMenu} deleteBoardColumn={props.deleteBoardColumn}
                             data={props.data} /> : null}
                     {editMenu ? <ul className="submenu_for_list" style={{ border: "1px solid" + color }}>
                         <li>
-                            <form className="edit_form_board_list" id="edit_boardList_form">
+                            <form className="edit_form_board_list" id="edit_boardColumn_form">
                                 <input type="text" name="name" autoComplete="off" defaultValue={name} />
                                 <div className="buttons_container">
-                                    <button type="submit" onClick={(e) => updateBoardList(e, key)}>Edit</button>
+                                    <button type="submit" onClick={(e) => updateBoardColumn(e, key)}>Edit</button>
                                     <button onClick={cancelBtnClickedEditMenu}>Cancel</button>
                                 </div>
                             </form>
@@ -167,4 +166,4 @@ function BoardListItem(props) {
 }
 
 
-export default BoardListItem
+export default BoardColumn
