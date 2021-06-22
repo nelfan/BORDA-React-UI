@@ -38,7 +38,29 @@ function Board(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        return await res.json()
+        const reader = res.body.getReader();
+        const eventSource = new EventSource()
+        eventSource.addEventListener()
+        // const body = JSON.parse((await res.text()).replace('data:', ''))
+        // console.log(body.body)
+        // return body.body
+        return new ReadableStream({
+            start(controller) {
+                return pump();
+                function pump() {
+                    return reader.read().then(({ done, value }) => {
+                        // When no more data needs to be consumed, close the stream
+                        if (done) {
+                            controller.close();
+                            return;
+                        }
+                        // Enqueue the next data chunk into our target stream
+                        controller.enqueue(value);
+                        return pump();
+                    });
+                }
+            }
+        })
     }
 
     const addBoardColumn = async () => {
@@ -108,8 +130,8 @@ function Board(props) {
     }
 
     const list = boardColumns.map(boardColumn => {
-        return <li key={boardColumn.id}><BoardColumn boardId={boardId} data={boardColumn} 
-            updateBoardColumn={updateBoardColumn} refreshBoardColumns={refreshBoardColumns} 
+        return <li key={boardColumn.id}><BoardColumn boardId={boardId} data={boardColumn}
+            updateBoardColumn={updateBoardColumn} refreshBoardColumns={refreshBoardColumns}
             deleteBoardColumn={deleteBoardColumn} toggleUpdateBoardColumnTickets={toggleUpdateBoardColumnTickets}
             updateBoardColumnTickets={updateBoardColumnTickets} /></li>
     })

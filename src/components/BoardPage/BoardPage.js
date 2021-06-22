@@ -4,7 +4,6 @@ import Board from "./Board/Board";
 import Header from '../Header/Header';
 import Proporties from './Proporties/Proporties';
 
-
 function BoardPage(props) {
     
     const id = props.location.state.id;

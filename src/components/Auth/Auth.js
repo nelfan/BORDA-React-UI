@@ -16,16 +16,16 @@ class Auth extends Component {
         redirect: false
     }
 
-  getUser = async () => {
-            const res = await fetch('http://localhost:9090/users/', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-                }
-            })
-            const data = await res.json();    
+    getUser = async () => {
+        const res = await fetch('http://localhost:9090/users/', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        const data = await res.json();
         sessionStorage.setItem('user', JSON.stringify(data));
-   }
+    }
 
     onSubmit = (token) => {
         if (token) {
