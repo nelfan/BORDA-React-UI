@@ -10,7 +10,6 @@ const Filter = (props) => {
     useEffect(() => {
         const getTags = async () => {
             const tagsFromServer = await fetchTags()
-            console.log(tagsFromServer);
             setTags(tagsFromServer)
         }
         getTags()
@@ -28,26 +27,22 @@ const Filter = (props) => {
 
     const sendFilters = async ()=>{
         var checkboxes = document.getElementsByClassName('tagsCheckBox');
-        var checkboxesChecked = [];
+        var tagsId = [];
         for (var index = 0; index < checkboxes.length; index++) {
            if (checkboxes[index].checked) {
-              checkboxesChecked.push(checkboxes[index].value);
+            tagsId.push(checkboxes[index].value);
              
            }
         }
-        var body = {
-            'tagsId': checkboxesChecked
-        }
-        const res = await fetch('http://localhost:9090/boards/'+props.id+'/filterTagsOption', {
-            method: 'PUT',
+        const res = await fetch('http://localhost:9090/boards/'+props.id+'/filteredTickets?tagsId='+tagsId.map(i=>Number(i)).join(','), {
+            method: 'GET',
             headers: {
-                'Content-type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             },
-            body: JSON.stringify(body),
         });
 
-        var data = await res;
+        var data = await res.json();
+        console.log(await data);
     }
 
 
