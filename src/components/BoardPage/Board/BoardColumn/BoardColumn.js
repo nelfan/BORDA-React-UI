@@ -28,27 +28,7 @@ function BoardColumn(props) {
 
     useEffect(() => {
         setTickets(props.tickets)
-        // fetchTickets();
     }, [props.tickets])
-
-    // const fetchTickets = async () => {
-    //     const eventSource = new EventSource('http://localhost:9090/boards/' + boardId + '/columns/' + key + '/tickets', {
-    //         method: 'GET',
-    //         headers: {
-    //             'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-    //         }
-    //     })
-
-    //     eventSource.onmessage = (event) => {
-    //         console.log(event.data)
-    //         const data = JSON.parse(event.data);
-    //         setTickets(data);
-    //     };
-
-    //     return () => {
-    //         eventSource.close();
-    //     };
-    // }
 
     const addTicket = (data) => {
         setTickets([...tickets, data])
@@ -121,7 +101,7 @@ function BoardColumn(props) {
         return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} deleteTicket={deleteTicket} boardColumns={props.boardColumns} moveTicket={moveTicket} />
     })
 
-    return <div className="default_ul">
+    return <div className="default_ul" ref={props.innerRef}>
         <div className="list_header" style={{ background: color }}>
             <span>{name}</span>
             <div className="edit_conf">
