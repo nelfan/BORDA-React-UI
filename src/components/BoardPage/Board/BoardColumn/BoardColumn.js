@@ -25,7 +25,6 @@ function BoardColumn (props) {
     const name = props.data.name
     const color = '#6aba96'
     const boardId = props.boardId
-    const refreshColumns = async () => props.refreshBoardColumns
 
     useEffect(() => {
         const getTickets = async () => {
@@ -122,7 +121,7 @@ function BoardColumn (props) {
     }
 
     const list = tickets.map(item => {
-        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} refreshColumns={refreshColumns} />
+        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} boardColumns={props.boardColumns} />
     })
 
     return <div className="default_ul">

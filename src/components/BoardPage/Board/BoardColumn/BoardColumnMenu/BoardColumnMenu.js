@@ -9,7 +9,7 @@ function BoardColumnMenu(props) {
                 <span>Edit</span>
                 <i style={{color: props.color}} className="delete fa fa-edit"/>
             </li>
-            <li key={2} onClick={() => {props.deleteBoardList(id)}}>
+            <li key={2} onClick={() => {props.deleteBoardColumn(id)}}>
                 <span>Delete</span>
                 <i style={{color: props.color}} className="delete fa fa-trash"/>
             </li>
