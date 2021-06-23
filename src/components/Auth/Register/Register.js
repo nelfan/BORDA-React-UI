@@ -1,78 +1,89 @@
 import {useState} from 'react'
 import '../auth.css';
+import Swal from "sweetalert2";
 
 const Register = ({onSubmitAuth}) => {
     const [userName, setUserName] = useState('')
     const [userNameDirty, setUserNameDirty] = useState(false)
-    const [userNameError, setUserNameError] = useState('username cannot be empty')
+    const [userNameError, setUserNameError] = useState('Username cannot be empty')
 
     const [firstName, setFirstName] = useState('')
     const [firstNameDirty, setFirstNameDirty] = useState(false)
-    const [firstNameError, setFirstNameError] = useState('first name cannot be empty')
+    const [firstNameError, setFirstNameError] = useState('First name cannot be empty')
 
     const [lastName, setLastName] = useState('')
     const [lastNameDirty, setLastNameDirty] = useState(false)
-    const [lastNameError, setLastNameError] = useState('last name cannot be empty')
+    const [lastNameError, setLastNameError] = useState('Last name cannot be empty')
 
     const [email, setEmail] = useState('')
     const [emailDirty, setEmailDirty] = useState(false)
-    const [emailError, setEmailError] = useState('email cannot be empty')
+    const [emailError, setEmailError] = useState('Email cannot be empty')
 
     const [password, setPassword] = useState('')
     const [passwordDirty, setPasswordDirty] = useState(false)
-    const [passwordError, setPasswordError] = useState('password cannot be empty')
+    const [passwordError, setPasswordError] = useState('Password cannot be empty')
 
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [passwordConfirmationDirty, setPasswordConfirmationDirty] = useState(false)
-    const [passwordConfirmationError, setPasswordConfirmationError] = useState('please confirm your password')
+    const [passwordConfirmationError, setPasswordConfirmationError] = useState('Please confirm your password')
+
+    const showAlert = (title, text) => {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'warning',
+            confirmButtonText: 'Try again',
+            confirmButtonColor: '#386DD8'
+        })
+    }
 
     const onRegister = (e) => {
         e.preventDefault()
         if (!userName) {
-            alert('Please add a username')
+            showAlert('Invalid username', userNameError)
             return
         } else if (userNameError !== '') {
-            alert('Invalid username')
+            showAlert('Invalid username', userNameError)
             return;
         }
 
         if (!firstName) {
-            alert('Please add a first name')
+            showAlert('Invalid first name', firstNameError)
             return
         } else if (firstNameError !== '') {
-            alert('Invalid first name')
+            showAlert('Invalid first name', firstNameError)
             return;
         }
 
         if (!lastName) {
-            alert('Please add a last name')
+            showAlert('Invalid last name', lastNameError)
             return
         } else if (lastNameError !== '') {
-            alert('Invalid last name')
+            showAlert('Invalid last name', lastNameError)
             return;
         }
 
         if (!email) {
-            alert('Please add an email')
+            showAlert('Invalid email', emailError)
             return
         } else if (emailError !== '') {
-            alert('Invalid email')
+            showAlert('Invalid email', emailError)
             return;
         }
 
         if (!password) {
-            alert('Please add a password')
+            showAlert('Invalid password', passwordError)
             return
         } else if (passwordError !== '') {
-            alert('Invalid password')
+            showAlert('Invalid password', passwordError)
             return;
         }
 
         if (!passwordConfirmation) {
-            alert('Please confirm password')
+            showAlert('Password confirmation cannot be empty', passwordConfirmationError)
             return
         } else if (passwordConfirmationError !== '') {
-            alert('The entered passwords  do not match')
+            showAlert('Password confirmation error', passwordConfirmationError)
             return;
         }
 
@@ -206,11 +217,11 @@ const Register = ({onSubmitAuth}) => {
         setPassword(e.target.value)
         const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/;
         if (e.target.value.length < 6) {
-            setPasswordError('password cannot be less than 6 characters ')
+            setPasswordError('Password cannot be less than 6 characters ')
         } else if (e.target.value.length > 30) {
-            setPasswordError('password cannot be more than 30 characters ')
+            setPasswordError('Password cannot be more than 30 characters ')
         } else if (!re.test(String(e.target.value))) {
-            setPasswordError('password should have at least one uppercase letter, one lowercase letter and one number')
+            setPasswordError('Password should have at least one uppercase letter, one lowercase letter and one number')
         } else {
             setPasswordError('')
         }
@@ -219,7 +230,7 @@ const Register = ({onSubmitAuth}) => {
     const passwordConfirmationHandler = (e) => {
         setPasswordConfirmation(e.target.value)
         if (e.target.value !== password) {
-            setPasswordConfirmationError('the entered passwords must match')
+            setPasswordConfirmationError('The entered passwords must match')
         } else {
             setPasswordConfirmationError('')
         }
