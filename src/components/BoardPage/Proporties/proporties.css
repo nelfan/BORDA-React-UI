@@ -18,3 +18,8 @@
     font-size: 1.3em;
     cursor: pointer;
 }
+
+.boardName{
+    padding: 1%;
+    margin-right: 2%;
+}
