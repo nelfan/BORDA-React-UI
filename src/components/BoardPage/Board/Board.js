@@ -131,11 +131,12 @@ function Board(props) {
 
     return (
         <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="columns">
+            <Droppable droppableId="columns" direction="horizontal">
                 {(provided) => (
                     <ul className="default_main" id="defaultMain" {...provided.droppableProps} ref={provided.innerRef}>
                         {list}
-                        <li ref={provided.innerRef} key={0} className="addNewBoardColumn" id="default" >
+                        {provided.placeholder}
+                        <li key={0} className="addNewBoardColumn" id="default"  ref={provided.innerRef}>
                             <div className="align_btn_add_board">
                                 <div className="align_add_bord">
                                     <form>
