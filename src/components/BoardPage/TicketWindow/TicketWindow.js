@@ -72,25 +72,25 @@ function TicketWindow(props) {
 
         for (let newMember of membersList) {
             if (!data.members.some(item => item.id === newMember.id)) {
-                setCurrentTicket(await addMemberFetch(currentTicket.id, newMember.id))
+                await addMemberFetch(currentTicket.id, newMember.id)
             }
         }
 
         for (let removeMember of currentTicket.members) {
             if (!membersList.some(item => item.id === removeMember.id)) {
-                setCurrentTicket(await removeMemberFetch(currentTicket.id, removeMember.id))
+                await removeMemberFetch(currentTicket.id, removeMember.id)
             }
         }
 
         for (let newTag of tagsList) {
             if (!currentTicket.tags.some(item => item.id === newTag.id)) {
-                setCurrentTicket(await addTagFetch(currentTicket.id, newTag.id))
+                await addTagFetch(currentTicket.id, newTag.id)
             }
         }
 
         for (let removeTag of currentTicket.tags) {
             if (!tagsList.some(item => item.id === removeTag.id)) {
-                setCurrentTicket(await removeTagFetch(currentTicket.id, removeTag.id))
+                await removeTagFetch(currentTicket.id, removeTag.id)
             }
         }
 
@@ -106,7 +106,7 @@ function TicketWindow(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        return await res.json()
+        return res
     }
 
     const removeMemberFetch = async (ticketId, userId) => {
@@ -118,7 +118,7 @@ function TicketWindow(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        return await res.json()
+        return res
     }
 
     const addTagFetch = async (ticketId, tagId) => {
@@ -130,7 +130,7 @@ function TicketWindow(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        return await res.json()
+        return res
     }
 
     const removeTagFetch = async (ticketId, tagId) => {
@@ -142,7 +142,7 @@ function TicketWindow(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        return await res.json()
+        return res
     }
 
     const fetchTags = async () => {

@@ -5,7 +5,6 @@ import Header from '../Header/Header';
 import Proporties from './Proporties/Proporties';
 import {Redirect} from "react-router-dom";
 
-
 function BoardPage(props) {
 
     if (props.location.state && props.location.state.id) {
