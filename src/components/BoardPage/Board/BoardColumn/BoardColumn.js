@@ -90,9 +90,6 @@ function BoardColumn(props) {
                 description: ticket.description
             })
         }
-        // if (editTicketShow) {
-        //     setTickets(await fetchTickets())
-        // }
         setEditTicketShow(!editTicketShow);
     }
 
@@ -118,8 +115,6 @@ function BoardColumn(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-
-        // setTickets(await fetchTickets())
     }
 
     const list = tickets.map(item => {
