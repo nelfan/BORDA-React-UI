@@ -19,11 +19,18 @@ const Invite = (props) => {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             },
         }, {});
+        hide();
+    }
+
+    const hide =()=>{
         props.close(false);
     }
 
 
     return <div className="inviteWrapper">
+        <div className="closeInviteButton">
+        <i className="fa fa-times" aria-hidden="true"  onClick={hide}></i>
+        </div>
         <label htmlFor="userNameField" className="form__label">Collaborator's username</label>
         <input type="text" ref={usernameRef} className="userNameField" />
 
