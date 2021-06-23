@@ -6,8 +6,8 @@ import TicketCreate from "../../TicketWindow/TicketCreate";
 import TicketWindow from "../../TicketWindow/TicketWindow";
 import Ticket from "../Ticket/Ticket";
 
-function BoardColumn (props) {
-    
+function BoardColumn(props) {
+
     const [toggleMenu, setToggleMenu] = useState(false);
     const [editMenu, setEditMenu] = useState(false);
     const [addNewTicket, setNewTicket] = useState(false);
@@ -27,26 +27,28 @@ function BoardColumn (props) {
     const boardId = props.boardId
 
     useEffect(() => {
-        const getTickets = async () => {
-            refreshTickets()
-        }
-        getTickets()
-    }, [props.updateBoardColumnTickets])
+        setTickets(props.tickets)
+        // fetchTickets();
+    }, [props.tickets])
 
-    const refreshTickets = async () => {
-        const ticketsFromServer = await fetchTickets()
-        setTickets(ticketsFromServer)
-    }
+    // const fetchTickets = async () => {
+    //     const eventSource = new EventSource('http://localhost:9090/boards/' + boardId + '/columns/' + key + '/tickets', {
+    //         method: 'GET',
+    //         headers: {
+    //             'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+    //         }
+    //     })
 
-    const fetchTickets = async () => {
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key + '/tickets', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-            }
-        })
-        return await res.json()
-    }
+    //     eventSource.onmessage = (event) => {
+    //         console.log(event.data)
+    //         const data = JSON.parse(event.data);
+    //         setTickets(data);
+    //     };
+
+    //     return () => {
+    //         eventSource.close();
+    //     };
+    // }
 
     const addTicket = (data) => {
         setTickets([...tickets, data])
@@ -88,9 +90,9 @@ function BoardColumn (props) {
                 description: ticket.description
             })
         }
-        if (editTicketShow) {
-            setTickets(await fetchTickets())
-        }
+        // if (editTicketShow) {
+        //     setTickets(await fetchTickets())
+        // }
         setEditTicketShow(!editTicketShow);
     }
 
@@ -117,11 +119,11 @@ function BoardColumn (props) {
             }
         })
 
-        setTickets(await fetchTickets())
+        // setTickets(await fetchTickets())
     }
 
     const list = tickets.map(item => {
-        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} moveTicket={moveTicket} deleteTicket={deleteTicket} boardColumns={props.boardColumns} />
+        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} deleteTicket={deleteTicket} boardColumns={props.boardColumns} moveTicket={moveTicket} />
     })
 
     return <div className="default_ul">

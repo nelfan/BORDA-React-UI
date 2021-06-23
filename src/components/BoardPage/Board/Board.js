@@ -32,7 +32,6 @@ function Board(props) {
         })
 
         eventSource.onmessage = (event) => {
-            console.log(event.data)
             const data = JSON.parse(event.data);
             setBoardColumns(data);
         };
@@ -108,7 +107,7 @@ function Board(props) {
         return <li key={boardColumn.id}><BoardColumn boardId={boardId} data={boardColumn}
             updateBoardColumn={updateBoardColumn}
             deleteBoardColumn={deleteBoardColumn} toggleUpdateBoardColumnTickets={toggleUpdateBoardColumnTickets}
-            updateBoardColumnTickets={updateBoardColumnTickets} boardColumns={boardColumns} /></li>
+            updateBoardColumnTickets={updateBoardColumnTickets} boardColumns={boardColumns} tickets={boardColumn.tickets} /></li>
     })
 
     return <ul className="default_main" id="defaultMain">
