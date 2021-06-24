@@ -77,15 +77,6 @@ function Board(props) {
             'positionIndex': index
         }
 
-        await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-            },
-            body: JSON.stringify(createBoardColumnData),
-        })
-
         setCurrentBoardColumn({
             name: '',
             key: '',
