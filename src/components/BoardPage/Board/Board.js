@@ -82,6 +82,7 @@ function Board(props) {
             key: '',
             positionIndex: 0.0
         })
+
         if (columnTitleError !== '') {
             Swal.fire({
                 title: 'Invalid column title',
@@ -109,6 +110,7 @@ function Board(props) {
                 key: '',
                 positionIndex: 0.0
             })
+
             setColumnTitleError('Title cannot be empty')
         }
     }
@@ -317,7 +319,6 @@ function Board(props) {
                                         {addNewBoardColumn ?
                                             <div className="textfield_of_newboard">
                                                 <div className="align_of_board_content">
-
                                                     <div className="board_title">
                                                         <input id="board_title" onBlur={e => {
                                                             blurHandler(e)
