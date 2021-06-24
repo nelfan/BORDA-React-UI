@@ -14,7 +14,7 @@ const Proporties = (props) => {
 
     return <div className='proportiesLine'>
         <div className="boardOptions">
-        <i class="fa fa-user-plus" aria-hidden="true" onClick={showInvite}></i>
+        <i className="fa fa-user-plus" aria-hidden="true" onClick={showInvite}></i>
         </div>
         {(seen)&&<Invite id={id} close={showInvite}></Invite>}
     </div>

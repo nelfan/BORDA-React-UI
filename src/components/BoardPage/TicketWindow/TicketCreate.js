@@ -8,7 +8,7 @@ function TicketCreate(props) {
 
     const boardId = props.boardId
     const columnId = props.columnId
-    
+
     const [members, setMembers] = useState([]);
     const [membersList, setMembersList] = useState([]);
     const [tags, setTags] = useState([]);
@@ -41,10 +41,13 @@ function TicketCreate(props) {
     const createTicket = async (e) => {
         e.preventDefault();
         const { task_title, description } = serialize(document.querySelector("#taskWindow"), { hash: true });
-
+        let index = props.tickets.length > 0 ?
+            (props.tickets[props.tickets.length - 1].positionIndex + 1) :
+            1;
         const createTicketData = {
             title: task_title,
             description: description,
+            positionIndex: index,
             members: membersList,
             tags: tagsList
         }
@@ -64,6 +67,7 @@ function TicketCreate(props) {
             id: data.id,
             title: data.title,
             description: data.description,
+            positionIndex: data.positionIndex,
             members: data.members,
             tags: data.tags
         });
