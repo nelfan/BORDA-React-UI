@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import "./board.css"
 import BoardColumn from "./BoardColumn/BoardColumn";
+import Swal from "sweetalert2";
 import EventSource from 'eventsource';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function Board(props) {
 
@@ -11,10 +13,14 @@ function Board(props) {
     const [updateBoardColumnTickets, setUpdateBoardColumnTickets] = useState(false);
     const [currentBoardColumn, setCurrentBoardColumn] = useState({
         name: '',
-        key: ''
+        key: '',
+        positionIndex: 0.0
     })
+    const [columnTitleError, setColumnTitleError] = useState('Title cannot be empty')
+    const columnTitleDirty = false
 
     const handleInput = (e) => {
+        columnTitleHandler(e.target.value)
         setCurrentBoardColumn({
             name: e.target.value
         })
@@ -41,28 +47,72 @@ function Board(props) {
         };
     }
 
-    const addBoardColumn = async () => {
-        const createBoardColumnData = {
-            'name': currentBoardColumn.name
+    const blurHandler = (e) => {
+        if (e.target.name === 'board_title') {
+            columnTitleDirty(true)
         }
+    }
 
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-            },
-            body: JSON.stringify(createBoardColumnData),
-        })
+    const columnTitleHandler = async (e) => {
+        const re = /^[\s~`!@#$%^&*()_+=[\]\\{}|;':",.\/<>?a-zA-Z0-9-]+$/;
+        if (e === '') {
+            setColumnTitleError('Title cannot be empty')
+        } else if (e.length > 25) {
+            setColumnTitleError('Title cannot be more than 25 characters')
+        } else if (e.trim().length === 0) {
+            setColumnTitleError('Title cannot contain only whitespace characters')
+        } else if (!re.test(String(e))) {
+            setColumnTitleError('Title can contain only english letters')
+        } else {
+            setColumnTitleError('')
+        }
+    }
 
-        const data = await res.json()
-
-        setBoardColumns([...boardColumns, data])
+    const addBoardColumn = async () => {
+        let index = boardColumns.length > 0 ?
+            (boardColumns[boardColumns.length - 1].positionIndex + 1) :
+            1;
+        const createBoardColumnData = {
+            'name': currentBoardColumn.name,
+            'positionIndex': index
+        }
 
         setCurrentBoardColumn({
             name: '',
-            key: ''
+            key: '',
+            positionIndex: 0.0
         })
+
+        if (columnTitleError !== '') {
+            Swal.fire({
+                title: 'Invalid column title',
+                text: columnTitleError,
+                icon: 'warning',
+                confirmButtonText: 'Try again',
+                confirmButtonColor: '#386DD8'
+            })
+        } else {
+            const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+                },
+                body: JSON.stringify(createBoardColumnData),
+            })
+
+            const data = await res.json()
+
+            setBoardColumns([...boardColumns, data])
+
+            setCurrentBoardColumn({
+                name: '',
+                key: '',
+                positionIndex: 0.0
+            })
+
+            setColumnTitleError('Title cannot be empty')
+        }
     }
 
     const newBoardColumn = () => {
@@ -83,10 +133,11 @@ function Board(props) {
         })
     }
 
-    const updateBoardColumn = async (name, key) => {
+    const updateBoardColumn = async (name, key, position) => {
         const updateBoardColumnData = {
             'id': key,
-            'name': name
+            'name': name,
+            'positionIndex': position
         }
 
         await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key, {
@@ -103,44 +154,188 @@ function Board(props) {
         setUpdateBoardColumnTickets(!updateBoardColumnTickets)
     }
 
+    const moveTicket = async (oldColumnId, newColumnId, ticketId, positionIndex) => {
+        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + oldColumnId + '/move/'
+            + newColumnId + '/tickets/' + ticketId + "/position/" + positionIndex, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+            }
+        })
+        await res.json()
+    }
+
+    function handleOnDragEnd(result) {
+        if (!result.destination) return;
+        if (sessionStorage.getItem('isFiltered')) return;
+
+        if (result.type === "columns") {
+            const destinationColumnIndex = result.destination.index;
+            const index = boardColumns[destinationColumnIndex].positionIndex
+
+            boardColumns.map(boardColumn => {
+                if (("column" + boardColumn.id) === result.draggableId) {
+                    var newIndex;
+                    if (boardColumn.positionIndex > index) {
+                        if (destinationColumnIndex == 0) {
+                            newIndex = boardColumns[destinationColumnIndex].positionIndex / 2;
+                        } else {
+                            newIndex = boardColumns[destinationColumnIndex - 1].positionIndex +
+                                ((boardColumns[destinationColumnIndex].positionIndex -
+                                    boardColumns[destinationColumnIndex - 1].positionIndex) / 2);
+                        }
+                    } else if (boardColumn.positionIndex < index) {
+                        if (destinationColumnIndex == boardColumns.length - 1) {
+                            newIndex = boardColumns[destinationColumnIndex].positionIndex + 1;
+                        } else {
+                            newIndex = boardColumns[destinationColumnIndex].positionIndex +
+                                ((boardColumns[destinationColumnIndex + 1].positionIndex -
+                                    boardColumns[destinationColumnIndex].positionIndex) / 2);
+                        }
+                    }
+                    updateBoardColumn(boardColumn.name, boardColumn.id, newIndex);
+                }
+            })
+        } else if (result.type === "tickets") {
+            var destinationTicketIndex = result.destination.index;
+            const sourceParentId = parseInt(result.source.droppableId.replaceAll("tickets", ""));
+            const destParentId = parseInt(result.destination.droppableId.replaceAll("tickets", ""));
+            const ticketId = parseInt(result.draggableId.replaceAll("ticket", ""));
+            var newIndex;
+
+            if (sourceParentId === destParentId) {
+                boardColumns.map(boardColumn => {
+                    if (boardColumn.id === sourceParentId) {
+                        const tickets = boardColumn.tickets;
+                        tickets.map(ticket => {
+                            const index = tickets[destinationTicketIndex].positionIndex;
+                            if (ticket.id === ticketId) {
+                                if (ticket.positionIndex > index) {
+                                    if (destinationTicketIndex == 0) {
+                                        newIndex = tickets[destinationTicketIndex].positionIndex / 2;
+                                    } else {
+                                        newIndex = tickets[destinationTicketIndex - 1].positionIndex +
+                                            ((tickets[destinationTicketIndex].positionIndex -
+                                                tickets[destinationTicketIndex - 1].positionIndex) / 2);
+                                    }
+                                } else if (ticket.positionIndex < index) {
+                                    if (destinationTicketIndex == tickets.length - 1) {
+                                        newIndex = tickets[destinationTicketIndex].positionIndex + 1;
+                                    } else {
+                                        newIndex = tickets[destinationTicketIndex].positionIndex +
+                                            ((tickets[destinationTicketIndex + 1].positionIndex -
+                                                tickets[destinationTicketIndex].positionIndex) / 2);
+                                    }
+                                }
+                            }
+                        })
+                    }
+                })
+            } else {
+                boardColumns.map(boardColumn => {
+                    if (boardColumn.id === sourceParentId) {
+                        const oldTickets = boardColumn.tickets;
+                        oldTickets.map(thisTicket => {
+                            if (thisTicket.id === ticketId) {
+                                const ticketPosition = thisTicket.positionIndex;
+                                boardColumns.map(boardColumn => {
+                                    if (boardColumn.id === destParentId) {
+                                        const tickets = boardColumn.tickets;
+                                        if (tickets.length === 0) {
+                                            newIndex = 1;
+                                        } else if (destinationTicketIndex >= tickets.length) {
+                                            newIndex = tickets[destinationTicketIndex - 1].positionIndex + 1;
+                                        } else {
+                                            tickets.map(ticket => {
+                                                const index = tickets[destinationTicketIndex].positionIndex;
+                                                if (ticket.positionIndex === index) {
+                                                    if (ticketPosition >= index) {
+                                                        if (destinationTicketIndex == 0) {
+                                                            newIndex = tickets[destinationTicketIndex].positionIndex / 2;
+                                                        } else {
+                                                            newIndex = tickets[destinationTicketIndex - 1].positionIndex +
+                                                                ((tickets[destinationTicketIndex].positionIndex -
+                                                                    tickets[destinationTicketIndex - 1].positionIndex) / 2);
+                                                        }
+                                                    } else if (ticketPosition < index) {
+                                                        if (destinationTicketIndex == tickets.length - 1) {
+                                                            newIndex = tickets[destinationTicketIndex].positionIndex + 1;
+                                                        } else {
+                                                            newIndex = tickets[destinationTicketIndex].positionIndex +
+                                                                ((tickets[destinationTicketIndex + 1].positionIndex -
+                                                                    tickets[destinationTicketIndex].positionIndex) / 2);
+                                                        }
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+            moveTicket(sourceParentId, destParentId, ticketId, newIndex);
+        }
+    }
+
     const list = boardColumns.map(boardColumn => {
-        return <li key={boardColumn.id}><BoardColumn boardId={boardId} data={boardColumn}
-            updateBoardColumn={updateBoardColumn}
-            deleteBoardColumn={deleteBoardColumn} toggleUpdateBoardColumnTickets={toggleUpdateBoardColumnTickets}
-            updateBoardColumnTickets={updateBoardColumnTickets} boardColumns={boardColumns} tickets={boardColumn.tickets} /></li>
+        var id = boardColumn.id;
+        return <Draggable key={boardColumn.id} draggableId={"column" + id.toString()} index={boardColumns.indexOf(boardColumn)}>
+            {(provided) => (
+                <li {...provided.draggableProps} {...provided.innerRef}>
+                    <BoardColumn boardId={boardId} data={boardColumn}
+                        updateBoardColumn={updateBoardColumn}
+                        deleteBoardColumn={deleteBoardColumn} toggleUpdateBoardColumnTickets={toggleUpdateBoardColumnTickets}
+                        updateBoardColumnTickets={updateBoardColumnTickets} boardColumns={boardColumns}
+                        tickets={boardColumn.tickets} innerRef={provided.innerRef} dragHandleProps={provided.dragHandleProps} />
+                </li>)}
+        </Draggable>
     })
 
-    return <ul className="default_main" id="defaultMain">
-        {list}
-        <li className="addNewBoardColumn" id="default">
-            <div className="align_btn_add_board">
-                <div className="align_add_bord">
-                    <form>
-                        {addNewBoardColumn ?
-                            <div className="add_board_ok_cancel">
-                                <span className="ok_board" onClick={addBoardColumn}>Ok</span>
-                                <span className="cancel_board" onClick={cancelAddNewBoardColumn}> Cancel </span>
-                            </div> :
-                            <div className="add_board" onClick={newBoardColumn}>
-                                <span> Add new Column <i className="fa fa-plus" /> </span>
-                            </div>
-                        }
+    return (
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="columns" type="columns" direction="horizontal">
+                {(provided) => (
+                    <ul className="default_main" id="defaultMain" {...provided.droppableProps} ref={provided.innerRef}>
+                        {list}
+                        {provided.placeholder}
+                        <li key={0} className="addNewBoardColumn" id="default" ref={provided.innerRef}>
+                            <div className="align_btn_add_board">
+                                <div className="align_add_bord">
+                                    <form>
+                                        {addNewBoardColumn ?
+                                            <div className="add_board_ok_cancel">
+                                                <span className="ok_board" onClick={addBoardColumn}>Ok</span>
+                                                <span className="cancel_board" onClick={cancelAddNewBoardColumn}> Cancel </span>
+                                            </div> :
+                                            <div className="add_board" onClick={newBoardColumn}>
+                                                <span> Add new Column <i className="fa fa-plus" /> </span>
+                                            </div>
+                                        }
 
-                        {addNewBoardColumn ?
-                            <div className="textfield_of_newboard">
-                                <div className="align_of_board_content">
-                                    <div className="board_title">
-                                        <input id="board_title" onChange={handleInput} type="text"
-                                            placeholder="Enter a column title" autoComplete="off"
-                                            value={currentBoardColumn.name} required />
-                                    </div>
+                                        {addNewBoardColumn ?
+                                            <div className="textfield_of_newboard">
+                                                <div className="align_of_board_content">
+                                                    <div className="board_title">
+                                                        <input id="board_title" onBlur={e => {
+                                                            blurHandler(e)
+                                                        }} onChange={handleInput} type="text"
+                                                            placeholder="Enter a column title" autoComplete="off"
+                                                            value={currentBoardColumn.name} required />
+                                                    </div>
+                                                </div>
+                                            </div> : null}
+                                    </form>
                                 </div>
-                            </div> : null}
-                    </form>
-                </div>
-            </div>
-        </li>
-    </ul>
+                            </div>
+                        </li>
+                    </ul>
+                )}
+            </Droppable>
+        </DragDropContext>)
 }
 
 export default Board

@@ -5,6 +5,7 @@ import serialize from 'form-serialize';
 import TicketCreate from "../../TicketWindow/TicketCreate";
 import TicketWindow from "../../TicketWindow/TicketWindow";
 import Ticket from "../Ticket/Ticket";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function BoardColumn(props) {
 
@@ -27,28 +28,8 @@ function BoardColumn(props) {
     const boardId = props.boardId
 
     useEffect(() => {
-        setTickets(props.tickets)
-        // fetchTickets();
+        setTickets(props.tickets.sort((a, b) => (a.positionIndex - b.positionIndex)))
     }, [props.tickets])
-
-    // const fetchTickets = async () => {
-    //     const eventSource = new EventSource('http://localhost:9090/boards/' + boardId + '/columns/' + key + '/tickets', {
-    //         method: 'GET',
-    //         headers: {
-    //             'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-    //         }
-    //     })
-
-    //     eventSource.onmessage = (event) => {
-    //         console.log(event.data)
-    //         const data = JSON.parse(event.data);
-    //         setTickets(data);
-    //     };
-
-    //     return () => {
-    //         eventSource.close();
-    //     };
-    // }
 
     const addTicket = (data) => {
         setTickets([...tickets, data])
@@ -93,19 +74,6 @@ function BoardColumn(props) {
         setEditTicketShow(!editTicketShow);
     }
 
-    const moveTicket = async (newColumnId, ticketId) => {
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key + '/move/' + newColumnId + '/tickets/' + ticketId, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-            }
-        })
-        await res.json()
-
-        props.toggleUpdateBoardColumnTickets()
-    }
-
     const deleteTicket = async (id) => {
         const ticketId = id
         const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + key + '/tickets/' + ticketId, {
@@ -117,12 +85,21 @@ function BoardColumn(props) {
         })
     }
 
-    const list = tickets.map(item => {
-        return <Ticket data={item} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit} deleteTicket={deleteTicket} boardColumns={props.boardColumns} moveTicket={moveTicket} />
+    const list = tickets.map(ticket => {
+        return <Draggable key={ticket.id} draggableId={"ticket" + ticket.id.toString()} index={tickets.indexOf(ticket)}>
+            {(provided) => (
+                <li key={ticket.id} data-draggable="item" data-task="1" className="item"
+                    {...provided.draggableProps} {...provided.dragHandleProps} {...provided.innerRef}>
+                    <Ticket data={ticket} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit}
+                        deleteTicket={deleteTicket} boardColumns={props.boardColumns}
+                        dragHandleProps={provided.dragHandleProps} innerRef={provided.innerRef} />
+                </li>
+            )}
+        </Draggable>
     })
 
-    return <div className="default_ul">
-        <div className="list_header" style={{ background: color }}>
+    return <div className="default_ul" ref={props.innerRef}>
+        <div className="list_header" style={{ background: color }} {...props.dragHandleProps}>
             <span>{name}</span>
             <div className="edit_conf">
                 <a onClick={toggleBoardColumnMenu}>
@@ -144,19 +121,24 @@ function BoardColumn(props) {
                 </a>
             </div>
         </div>
-        <ul data-draggable="target" className="target">
-            {list}
-            <div className="btn_new_activity">
+        <Droppable droppableId={"tickets" + key} type="tickets">
+            {(provided) => (
+                <ul data-draggable="target" className="target" {...provided.droppableProps} ref={provided.innerRef}>
+                    {list}
+                    {provided.placeholder}
+                    <div className="btn_new_activity" ref={provided.innerRef}>
 
-            </div>
-        </ul>
+                    </div>
+                </ul>
+            )}
+        </Droppable>
         <div className="btn_add_item" onClick={toggleTicket}>
             <a>
                 <span>Add a task</span>
                 <i className="fa fa-plus-square" />
             </a>
         </div>
-        {addNewTicket ? <TicketCreate boardId={boardId} columnId={key} ticket={addTicket} cancelBtn={toggleTicket} /> : null}
+        {addNewTicket ? <TicketCreate boardId={boardId} columnId={key} ticket={addTicket} cancelBtn={toggleTicket} tickets={tickets} /> : null}
         {editTicketShow ? <TicketWindow boardId={boardId} columnId={key} ticket={currentTicket} cancelBtn={toggleTicketEdit} /> : null}
     </div>
 }

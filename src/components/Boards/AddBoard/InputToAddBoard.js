@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import Swal from "sweetalert2";
 
 const InputToAddBoard = ({onAdd}) => {
     const [boardName, setBoardName] = useState('')
@@ -9,10 +10,22 @@ const InputToAddBoard = ({onAdd}) => {
         e.preventDefault()
 
         if (!boardName) {
-            alert('Please enter a board name')
+            Swal.fire({
+                title: 'Please enter a board name!',
+                text: boardNameError,
+                icon: 'warning',
+                confirmButtonText: 'Try again',
+                confirmButtonColor: '#386DD8'
+            })
             return
         } else if (boardNameError !== '') {
-            alert('Invalid board name')
+            Swal.fire({
+                title: 'Invalid board name!',
+                text: boardNameError,
+                icon: 'warning',
+                confirmButtonText: 'Try again',
+                confirmButtonColor: '#386DD8'
+            })
             return;
         }
 

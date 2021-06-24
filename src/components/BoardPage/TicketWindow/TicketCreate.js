@@ -3,12 +3,13 @@ import "./ticket.css"
 import Member from "./Member/Member";
 import Tag from "./Tag/Tag";
 import serialize from 'form-serialize';
+import Swal from "sweetalert2";
 
 function TicketCreate(props) {
 
     const boardId = props.boardId
     const columnId = props.columnId
-    
+
     const [members, setMembers] = useState([]);
     const [membersList, setMembersList] = useState([]);
     const [tags, setTags] = useState([]);
@@ -16,6 +17,8 @@ function TicketCreate(props) {
     const [membersCounter, setMemberCounter] = useState(0);
     const [newTagMenu, setNewTagMenu] = useState(false);
     const [addMemberMenu, setAddMemberMenu] = useState(false);
+    const [taskTitleDirty, setTaskTitleDirty] = useState(false);
+    const [taskTitleError, setTaskTitleError] = useState('Title cannot be empty')
 
     useEffect(() => {
         const getTags = async () => {
@@ -41,33 +44,49 @@ function TicketCreate(props) {
     const createTicket = async (e) => {
         e.preventDefault();
         const { task_title, description } = serialize(document.querySelector("#taskWindow"), { hash: true });
+        let index = props.tickets.length > 0 ?
+            (props.tickets[props.tickets.length - 1].positionIndex + 1) :
+            1;
 
         const createTicketData = {
             title: task_title,
             description: description,
+            positionIndex: index,
             members: membersList,
             tags: tagsList
         }
 
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + columnId + '/tickets/', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
-            },
-            body: JSON.stringify(createTicketData),
-        })
+        if (taskTitleError !== '') {
+            Swal.fire({
+                title: 'Invalid task title',
+                text: taskTitleError,
+                icon: 'warning',
+                confirmButtonText: 'Try again',
+                confirmButtonColor: '#386DD8',
+                position: "bottom"
+            })
+        } else {
+            const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + columnId + '/tickets/', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+                },
+                body: JSON.stringify(createTicketData),
+            })
 
-        const data = await res.json()
+            const data = await res.json()
 
-        props.ticket({
-            id: data.id,
-            title: data.title,
-            description: data.description,
-            members: data.members,
-            tags: data.tags
-        });
-        props.cancelBtn();
+            props.ticket({
+                id: data.id,
+                title: data.title,
+                description: data.description,
+                positionIndex: data.positionIndex,
+                members: data.members,
+                tags: data.tags
+            });
+            props.cancelBtn();
+        }
     }
 
     const fetchTags = async () => {
@@ -119,6 +138,31 @@ function TicketCreate(props) {
         setNewTagMenu(!newTagMenu);
     }
 
+    const handleInput = (e) => {
+        taskTitleHandler(e.target.value)
+    }
+
+    const blurHandler = (e) => {
+        if (e.target.name === 'task_title') {
+            setTaskTitleDirty(true)
+        }
+    }
+
+    const taskTitleHandler = async (e) => {
+        const re = /^[\s~`!@#$%^&*()_+=[\]\\{}|;':",.\/<>?a-zA-Z0-9-]+$/;
+        if (e === '') {
+            setTaskTitleError('Title cannot be empty')
+        } else if (e.length > 25) {
+            setTaskTitleError('Title cannot be more than 25 characters')
+        } else if (e.trim().length === 0) {
+            setTaskTitleError('Title cannot contain only whitespace characters')
+        } else if (!re.test(String(e))) {
+            setTaskTitleError('Title can contain only english letters')
+        } else {
+            setTaskTitleError('')
+        }
+    }
+
     return <div className="align_addNewTask_window">
         <div className="add_new_task_toBoard">
             <div className="header_align_new">
@@ -141,7 +185,10 @@ function TicketCreate(props) {
                                         </div>
                                         <div className="align_textfield_of_task_title">
                                             <div className="textfield_of_taks_title">
-                                                <input type="text" name="task_title" placeholder="Enter title of task"
+                                                <input onBlur={e => {
+                                                    blurHandler(e)
+                                                }} onChange={handleInput} type="text" name="task_title"
+                                                    placeholder="Enter title of task"
                                                     autoComplete="off" required />
                                                 <i className="fa fa-check icon" />
                                             </div>
