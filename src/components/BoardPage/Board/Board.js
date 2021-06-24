@@ -14,14 +14,13 @@ function Board(props) {
         key: ''
     })
     const [columnTitleError, setColumnTitleError] = useState('Title cannot be empty')
-    const ColumnTitleDirty = false
+    const columnTitleDirty = false
 
     const handleInput = (e) => {
         columnTitleHandler(e.target.value)
         setCurrentBoardColumn({
             name: e.target.value
         })
-
     }
 
     useEffect(() => {
@@ -48,7 +47,7 @@ function Board(props) {
 
     const blurHandler = (e) => {
         if (e.target.name === 'board_title') {
-            ColumnTitleDirty(true)
+            columnTitleDirty(true)
         }
     }
 
