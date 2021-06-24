@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./board.css"
 import BoardColumn from "./BoardColumn/BoardColumn";
+import Swal from "sweetalert2";
 import EventSource from 'eventsource';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -15,8 +16,11 @@ function Board(props) {
         key: '',
         positionIndex: 0.0
     })
+    const [columnTitleError, setColumnTitleError] = useState('Title cannot be empty')
+    const columnTitleDirty = false
 
     const handleInput = (e) => {
+        columnTitleHandler(e.target.value)
         setCurrentBoardColumn({
             name: e.target.value
         })
@@ -43,6 +47,27 @@ function Board(props) {
         };
     }
 
+    const blurHandler = (e) => {
+        if (e.target.name === 'board_title') {
+            columnTitleDirty(true)
+        }
+    }
+
+    const columnTitleHandler = async (e) => {
+        const re = /^[\s~`!@#$%^&*()_+=[\]\\{}|;':",.\/<>?a-zA-Z0-9-]+$/;
+        if (e === '') {
+            setColumnTitleError('Title cannot be empty')
+        } else if (e.length > 25) {
+            setColumnTitleError('Title cannot be more than 25 characters')
+        } else if (e.trim().length === 0) {
+            setColumnTitleError('Title cannot contain only whitespace characters')
+        } else if (!re.test(String(e))) {
+            setColumnTitleError('Title can contain only english letters')
+        } else {
+            setColumnTitleError('')
+        }
+    }
+
     const addBoardColumn = async () => {
         let index = boardColumns.length > 0 ?
             (boardColumns[boardColumns.length - 1].positionIndex + 1) :
@@ -66,6 +91,35 @@ function Board(props) {
             key: '',
             positionIndex: 0.0
         })
+        if (columnTitleError !== '') {
+            Swal.fire({
+                title: 'Invalid column title',
+                text: columnTitleError,
+                icon: 'warning',
+                confirmButtonText: 'Try again',
+                confirmButtonColor: '#386DD8'
+            })
+        } else {
+            const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
+                },
+                body: JSON.stringify(createBoardColumnData),
+            })
+
+            const data = await res.json()
+
+            setBoardColumns([...boardColumns, data])
+
+            setCurrentBoardColumn({
+                name: '',
+                key: '',
+                positionIndex: 0.0
+            })
+            setColumnTitleError('Title cannot be empty')
+        }
     }
 
     const newBoardColumn = () => {
@@ -121,7 +175,7 @@ function Board(props) {
 
     function handleOnDragEnd(result) {
         if (!result.destination) return;
-        if(sessionStorage.getItem('isFiltered')) return;
+        if (sessionStorage.getItem('isFiltered')) return;
 
         if (result.type === "columns") {
             const destinationColumnIndex = result.destination.index;
@@ -272,8 +326,11 @@ function Board(props) {
                                         {addNewBoardColumn ?
                                             <div className="textfield_of_newboard">
                                                 <div className="align_of_board_content">
+
                                                     <div className="board_title">
-                                                        <input id="board_title" onChange={handleInput} type="text"
+                                                        <input id="board_title" onBlur={e => {
+                                                            blurHandler(e)
+                                                        }} onChange={handleInput} type="text"
                                                             placeholder="Enter a column title" autoComplete="off"
                                                             value={currentBoardColumn.name} required />
                                                     </div>
