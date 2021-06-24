@@ -121,7 +121,6 @@ function Board(props) {
 
     function handleOnDragEnd(result) {
         if (!result.destination) return;
-        console.log(result)
 
         if (result.type === "columns") {
             const destinationColumnIndex = result.destination.index;
@@ -185,7 +184,6 @@ function Board(props) {
                         })
                     }
                 })
-
             } else {
                 boardColumns.map(boardColumn => {
                     if (boardColumn.id === sourceParentId) {
