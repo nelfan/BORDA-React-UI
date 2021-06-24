@@ -1,7 +1,7 @@
 .filterWrapper{
     display: flex;
     position: fixed;
-    background-color: blueviolet;
+    background-color: rgba(56, 109, 216, 0.993);
     right: 0;
     width: 15vw;
     height: 100%;

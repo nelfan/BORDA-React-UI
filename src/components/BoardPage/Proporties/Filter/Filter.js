@@ -91,8 +91,8 @@ const Filter = (props) => {
     }
 
     const dropFilters = () => {
-        sessionStorage.setItem('isFiltered', false);
-            sessionStorage.setItem('filteredTickets', JSON.stringify([]));
+        sessionStorage.removeItem('isFiltered');
+            sessionStorage.removeItem('filteredTickets');
     }
 
     var tagsList = tags.map((tag) => <div key={tag.id}><input className="tagsCheckBox" type="checkbox" name="tags[]" value={tag.id} /><label for={tag.id}>{tag.text}</label></div>);
