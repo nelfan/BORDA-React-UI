@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import "./board.css"
 import BoardColumn from "./BoardColumn/BoardColumn";
 import Swal from "sweetalert2";
@@ -97,6 +97,7 @@ function Board(props) {
                 name: '',
                 key: ''
             })
+            setColumnTitleError('Title cannot be empty')
         }
     }
 
@@ -140,9 +141,11 @@ function Board(props) {
 
     const list = boardColumns.map(boardColumn => {
         return <li key={boardColumn.id}><BoardColumn boardId={boardId} data={boardColumn}
-            updateBoardColumn={updateBoardColumn}
-            deleteBoardColumn={deleteBoardColumn} toggleUpdateBoardColumnTickets={toggleUpdateBoardColumnTickets}
-            updateBoardColumnTickets={updateBoardColumnTickets} boardColumns={boardColumns} tickets={boardColumn.tickets} /></li>
+                                                     updateBoardColumn={updateBoardColumn}
+                                                     deleteBoardColumn={deleteBoardColumn}
+                                                     toggleUpdateBoardColumnTickets={toggleUpdateBoardColumnTickets}
+                                                     updateBoardColumnTickets={updateBoardColumnTickets}
+                                                     boardColumns={boardColumns} tickets={boardColumn.tickets}/></li>
     })
 
     return <ul className="default_main" id="defaultMain">

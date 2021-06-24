@@ -53,14 +53,14 @@ function TicketCreate(props) {
         }
 
         if (taskTitleError !== '') {
-            alert(taskTitleError)
-            // Swal.fire({
-            //     title: 'Invalid task title',
-            //     text: taskTitleError,
-            //     icon: 'warning',
-            //     confirmButtonText: 'Try again',
-            //     confirmButtonColor: '#386DD8'
-            // })
+            Swal.fire({
+                title: 'Invalid task title',
+                text: taskTitleError,
+                icon: 'warning',
+                confirmButtonText: 'Try again',
+                confirmButtonColor: '#386DD8',
+                position: "bottom"
+            })
         } else {
             const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns/' + columnId + '/tickets/', {
                 method: 'POST',
