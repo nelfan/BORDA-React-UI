@@ -121,6 +121,7 @@ function Board(props) {
 
     function handleOnDragEnd(result) {
         if (!result.destination) return;
+        if(sessionStorage.getItem('isFiltered')) return;
 
         if (result.type === "columns") {
             const destinationColumnIndex = result.destination.index;
