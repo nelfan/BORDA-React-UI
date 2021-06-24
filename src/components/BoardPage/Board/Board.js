@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./board.css"
 import BoardColumn from "./BoardColumn/BoardColumn";
+import EventSource from 'eventsource';
 
 function Board(props) {
 
@@ -20,25 +21,24 @@ function Board(props) {
     }
 
     useEffect(() => {
-        const getBoardColumns = async () => {
-            await refreshBoardColumns()
-        }
-        getBoardColumns()
+        fetchBoardColumns();
     }, [])
 
-    const refreshBoardColumns = async () => {
-        const boardsColumnsFromServer = await fetchBoardColumns()
-        setBoardColumns(boardsColumnsFromServer)
-    }
-
     const fetchBoardColumns = async () => {
-        const res = await fetch('http://localhost:9090/boards/' + boardId + '/columns', {
-            method: 'GET',
+        const eventSource = new EventSource('http://localhost:9090/boards/' + boardId + '/columns', {
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-        return await res.json()
+
+        eventSource.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            setBoardColumns(data);
+        };
+
+        return () => {
+            eventSource.close();
+        };
     }
 
     const addBoardColumn = async () => {
@@ -81,8 +81,6 @@ function Board(props) {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('jwtToken')
             }
         })
-
-        refreshBoardColumns()
     }
 
     const updateBoardColumn = async (name, key) => {
@@ -99,8 +97,6 @@ function Board(props) {
             },
             body: JSON.stringify(updateBoardColumnData),
         })
-
-        refreshBoardColumns()
     }
 
     const toggleUpdateBoardColumnTickets = () => {
@@ -108,10 +104,10 @@ function Board(props) {
     }
 
     const list = boardColumns.map(boardColumn => {
-        return <li key={boardColumn.id}><BoardColumn boardId={boardId} data={boardColumn} 
-            updateBoardColumn={updateBoardColumn} refreshBoardColumns={refreshBoardColumns} 
+        return <li key={boardColumn.id}><BoardColumn boardId={boardId} data={boardColumn}
+            updateBoardColumn={updateBoardColumn}
             deleteBoardColumn={deleteBoardColumn} toggleUpdateBoardColumnTickets={toggleUpdateBoardColumnTickets}
-            updateBoardColumnTickets={updateBoardColumnTickets} /></li>
+            updateBoardColumnTickets={updateBoardColumnTickets} boardColumns={boardColumns} tickets={boardColumn.tickets} /></li>
     })
 
     return <ul className="default_main" id="defaultMain">
