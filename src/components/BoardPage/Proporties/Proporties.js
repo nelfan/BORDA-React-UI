@@ -9,6 +9,7 @@ const Proporties = (props) => {
     const id = props.id;
     const[seenInvite, setSeenInvite] = useState(false);
     const[seenFilter, setSeenFilter] = useState(false);
+
     const showInvite = () => {
         setSeenInvite(!seenInvite);
     };
@@ -23,7 +24,7 @@ const Proporties = (props) => {
         <i class="fa fa-filter" aria-hidden="true" onClick={showFilter}></i>
         </div>
         {(seenInvite)&&<Invite id={id} close={showInvite}></Invite>}
-        {(seenFilter)&&<Filter id={id} close={showFilter}></Filter>}
+        {(seenFilter)&&<Filter id={id} close={showFilter} ></Filter>}
     </div>
 }
 

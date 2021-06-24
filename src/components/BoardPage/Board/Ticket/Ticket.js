@@ -28,7 +28,24 @@ function Ticket(props) {
         </li>
     });
 
-    return <li key={props.data.id} data-draggable="item" data-task="1" className="item">
+    const checkProps=()=>{
+       if(sessionStorage.getItem('isFiltered')=='undefined') return true;
+       if(!sessionStorage.getItem('isFiltered')) return true;
+       var t = JSON.parse(sessionStorage.getItem('filteredTickets'));
+       var isValid = t.filter(
+        function (el) {
+            return el.id==props.data.id;
+          }
+       ).length == 1;
+
+       return isValid;
+    }
+
+    return <li key={props.data.id} 
+    
+    style={{display: checkProps() ? 'block':'none'}}
+    
+    data-draggable="item" data-task="1" className="item">
         {toggleMenu ?
             <MoveTicket boardId={props.boardId} columnId={props.columnId} ticketId={props.data.id} moveTicket={props.moveTicket} toggleMenu={toggleMoveTicketMenu} boardColumns={props.boardColumns} /> : null}
         <div className="task_header">
