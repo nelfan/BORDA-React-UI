@@ -7,9 +7,9 @@ import Filter from './Filter/Filter';
 const Proporties = (props) => {
 
     const id = props.id;
-    const[seenInvite, setSeenInvite] = useState(false);
-    const[seenFilter, setSeenFilter] = useState(false);
-    const[boardData, setBoardData] = useState([]);
+    const [seenInvite, setSeenInvite] = useState(false);
+    const [seenFilter, setSeenFilter] = useState(false);
+    const [boardData, setBoardData] = useState([]);
 
     const showInvite = () => {
         setSeenInvite(!seenInvite);
@@ -40,12 +40,15 @@ const Proporties = (props) => {
     return <div className='proportiesLine'>
         <div className="boardOptions">
             <div className="boardName">{boardData.name}</div>
-        <i class="fa fa-user-plus" aria-hidden="true" onClick={showInvite}></i>
-        <i class="fa fa-filter" aria-hidden="true" onClick={showFilter}></i>
+            <i className="fa fa-user-plus" aria-hidden="true" onClick={showInvite}></i>
+            <i className="fa fa-filter" aria-hidden="true" onClick={showFilter}></i>
         </div>
-        {(seenInvite)&&<Invite id={id} close={showInvite}></Invite>}
-        {(seenFilter)&&<Filter id={id} close={showFilter} ></Filter>}
-        </div>
+        {(seenInvite) && <Invite id={id} close={showInvite}></Invite>}
+        {(seenFilter) && <Filter id={id} close={showFilter} isFiltered={props.isFiltered} setFiltered={props.setFiltered}
+            filteredTickets={props.filteredTickets} setFilteredTickets={props.setFilteredTickets}
+            getUpdatedTickets={props.getUpdatedTickets} updateTickets={props.updateTickets} 
+            isTriggered={props.isTriggered} setTriggered={props.setTriggered} ></Filter>}
+    </div>
 }
 
 export default Proporties;

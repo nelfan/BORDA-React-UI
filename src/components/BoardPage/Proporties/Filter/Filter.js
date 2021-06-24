@@ -6,8 +6,6 @@ const Filter = (props) => {
 
     const [tags, setTags] = useState([]);
     const [members, setMembers] = useState([]);
-    const [isFiltered, setIsFiltered] = useState(false);
-    const [filteredTickets, setFilteredTickets] = useState([]);
 
     useEffect(() => {
         const getTags = async () => {
@@ -61,7 +59,6 @@ const Filter = (props) => {
         for (var index = 0; index < checkboxes.length; index++) {
             if (checkboxes[index].checked) {
                 tagsId.push(checkboxes[index].value);
-
             }
         }
         var membersCheckboxes = document.getElementsByClassName('membersCheckBox');
@@ -85,14 +82,16 @@ const Filter = (props) => {
 
         if (res.status == 200) {
             const data = await res.json();
-            sessionStorage.setItem('isFiltered', true);
-            sessionStorage.setItem('filteredTickets', JSON.stringify(await data));
+            props.setFiltered(true);
+            props.updateTickets(await data);
+            props.setTriggered(!props.isTriggered);
         }
     }
 
     const dropFilters = () => {
-        sessionStorage.removeItem('isFiltered');
-            sessionStorage.removeItem('filteredTickets');
+        props.setFiltered(false);
+        props.updateTickets([]);
+        props.setTriggered(!props.isTriggered);
     }
 
     var tagsList = tags.map((tag) => <div key={tag.id}><input className="tagsCheckBox" type="checkbox" name="tags[]" value={tag.id} /><label for={tag.id}>{tag.text}</label></div>);

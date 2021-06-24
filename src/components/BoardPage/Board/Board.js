@@ -168,7 +168,7 @@ function Board(props) {
 
     function handleOnDragEnd(result) {
         if (!result.destination) return;
-        if (sessionStorage.getItem('isFiltered')) return;
+        if (props.isFiltered) return;
 
         if (result.type === "columns") {
             const destinationColumnIndex = result.destination.index;
@@ -290,7 +290,9 @@ function Board(props) {
                         updateBoardColumn={updateBoardColumn}
                         deleteBoardColumn={deleteBoardColumn} toggleUpdateBoardColumnTickets={toggleUpdateBoardColumnTickets}
                         updateBoardColumnTickets={updateBoardColumnTickets} boardColumns={boardColumns}
-                        tickets={boardColumn.tickets} innerRef={provided.innerRef} dragHandleProps={provided.dragHandleProps} />
+                        tickets={boardColumn.tickets} innerRef={provided.innerRef} dragHandleProps={provided.dragHandleProps}
+                        isFiltered={props.isFiltered} getUpdatedTickets={props.getUpdatedTickets}
+                        isTriggered={props.isTriggered} />
                 </li>)}
         </Draggable>
     })

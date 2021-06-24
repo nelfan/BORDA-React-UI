@@ -88,11 +88,12 @@ function BoardColumn(props) {
     const list = tickets.map(ticket => {
         return <Draggable key={ticket.id} draggableId={"ticket" + ticket.id.toString()} index={tickets.indexOf(ticket)}>
             {(provided) => (
-                    <Ticket data={ticket} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit}
-                        deleteTicket={deleteTicket} boardColumns={props.boardColumns}
-                        dragHandleProps={provided.dragHandleProps} innerRef={provided.innerRef} 
-                        draggableProps={provided.draggableProps} dragHandleProps={provided.dragHandleProps} 
-                        ref={provided.innerRef}/>
+                <Ticket data={ticket} boardId={boardId} columnId={key} toggleTicketEdit={toggleTicketEdit}
+                    deleteTicket={deleteTicket} boardColumns={props.boardColumns}
+                    dragHandleProps={provided.dragHandleProps} innerRef={provided.innerRef}
+                    draggableProps={provided.draggableProps} dragHandleProps={provided.dragHandleProps}
+                    isFiltered={props.isFiltered} getUpdatedTickets={props.getUpdatedTickets} 
+                    isTriggered={props.isTriggered} />
             )}
         </Draggable>
     })

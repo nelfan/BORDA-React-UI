@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MiniAvatar from '../../../Header/HeaderOptions/MiniAvatar/MiniAvatar';
 import "./ticket.css"
 
 function Ticket(props) {
     const [editTicket, setEditTicket] = useState(false);
+    const [isFiltered, setFiltered] = useState(false);
+
+    useEffect(() => {
+        if (props.isFiltered) {
+            setFiltered(!checkProps())
+        } else {
+            setFiltered(false);
+        }
+    }, [props.isTriggered])
 
     const editMenu = () => {
         setEditTicket(!editTicket);
@@ -23,12 +32,12 @@ function Ticket(props) {
     });
 
     const checkProps = () => {
-        if (sessionStorage.getItem('isFiltered') == 'undefined') return true;
-        if (!sessionStorage.getItem('isFiltered')) return true;
-        var t = JSON.parse(sessionStorage.getItem('filteredTickets'));
-        var isValid = t.filter(
+        if (!props.isFiltered) return true;
+        var tickets = props.getUpdatedTickets();
+        const ticketId = props.data.id;
+        var isValid = tickets.filter(
             function (el) {
-                return el.id == props.data.id;
+                return el.id === ticketId;
             }
         ).length == 1;
 
@@ -36,9 +45,9 @@ function Ticket(props) {
     }
 
     return (
-        checkProps() ? <li key={props.data.id} data-draggable="item" data-task="1" className="item"
-            {...props.draggableProps} {...props.dragHandleProps} {...props.ref} >
-            <div ref={props.innerRef} >
+        !isFiltered ? <li key={props.data.id} data-draggable="item" data-task="1" className="item"
+            {...props.draggableProps} {...props.dragHandleProps} ref={props.innerRef} >
+            <div>
                 <div className="task_header">
                     <span>{props.data.title}</span>
                     <i className="fa fa-ellipsis-v" onClick={editMenu}>
@@ -74,8 +83,8 @@ function Ticket(props) {
                 </div>
             </div>
         </li>
-        :
-        null
+            :
+            null
     )
 }
 
