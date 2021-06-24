@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import '../auth.css';
+import * as regExpUtil from '../../../utils/regExpUtil'
 
 const Register = ({onSubmitAuth}) => {
     const [userName, setUserName] = useState('')
@@ -135,13 +136,11 @@ const Register = ({onSubmitAuth}) => {
 
     const userNameHandler = async (e) => {
         setUserName(e.target.value)
-        const re = /^(?!.*[_]{2})[a-zA-Z0-9_]+(?<![_.])$/;
-
         if (e.target.value.length < 3) {
             setUserNameError('Username cannot be less than 3 characters ')
         } else if (e.target.value.length > 30) {
             setUserNameError('Username cannot be more than 30 characters ')
-        } else if (!re.test(String(e.target.value))) {
+        } else if (!regExpUtil.USER_NAME_REG_EXP.test(String(e.target.value))) {
             setUserNameError('Username can only contain letters, numbers and "_" ')
         } else {
             setUserNameError('')
@@ -166,12 +165,11 @@ const Register = ({onSubmitAuth}) => {
 
     const firstNameHandler = (e) => {
         setFirstName(e.target.value)
-        const re = /^[A-Z][a-z]*([-][A-Z][a-z]*)?$/;
         if (e.target.value.length < 2) {
             setFirstNameError('First name cannot be less than 2 characters ')
         } else if (e.target.value.length > 30) {
             setFirstNameError('First name cannot be more than 30 characters ')
-        } else if (!re.test(String(e.target.value))) {
+        } else if (!regExpUtil.FIRST_NAME_REG_EXP.test(String(e.target.value))) {
             setFirstNameError('First name can only contain letters and should start with Upper case')
         } else {
             setFirstNameError('')
@@ -180,12 +178,11 @@ const Register = ({onSubmitAuth}) => {
 
     const lastNameHandler = (e) => {
         setLastName(e.target.value)
-        const re = /^[A-Z][a-z]*([-][A-Z][a-z]*)?$/;
         if (e.target.value.length < 2) {
             setLastNameError('Last name cannot be less than 2 characters ')
         } else if (e.target.value.length > 30) {
             setLastNameError('Last name cannot be more than 30 characters ')
-        } else if (!re.test(String(e.target.value))) {
+        } else if (!regExpUtil.LAST_NAME_REG_EXP.test(String(e.target.value))) {
             setLastNameError('Last name can only contain letters and should start with Upper case')
         } else {
             setLastNameError('')
@@ -194,8 +191,7 @@ const Register = ({onSubmitAuth}) => {
 
     const emailHandler = (e) => {
         setEmail(e.target.value)
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!re.test(String(e.target.value))) {
+        if (!regExpUtil.EMAIL_REG_EXP.test(String(e.target.value))) {
             setEmailError('Invalid email format')
         } else {
             setEmailError('')
@@ -204,12 +200,11 @@ const Register = ({onSubmitAuth}) => {
 
     const passwordHandler = (e) => {
         setPassword(e.target.value)
-        const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/;
         if (e.target.value.length < 6) {
             setPasswordError('password cannot be less than 6 characters ')
         } else if (e.target.value.length > 30) {
             setPasswordError('password cannot be more than 30 characters ')
-        } else if (!re.test(String(e.target.value))) {
+        } else if (!regExpUtil.PASSWORD_REG_EXP.test(String(e.target.value))) {
             setPasswordError('password should have at least one uppercase letter, one lowercase letter and one number')
         } else {
             setPasswordError('')
@@ -224,7 +219,6 @@ const Register = ({onSubmitAuth}) => {
             setPasswordConfirmationError('')
         }
     }
-
 
     return (
         <div id="signup" className="signUpContent">
