@@ -19,7 +19,6 @@ const ProfilePage = (props) => {
 
     const saveUser = async () => {
 
-        console.log(user);
         const update_user = {
             'email': fieldHandling("email", email),
             'firstName': fieldHandling("firstName", fName),

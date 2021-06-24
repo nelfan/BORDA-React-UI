@@ -4,7 +4,7 @@
   background-color: #fff;
   width: 30%;
   display: flex;
-  min-height: 70vh;
+  height: 80vh;
   align-self: center;
   flex-direction: column;
   z-index: 1;

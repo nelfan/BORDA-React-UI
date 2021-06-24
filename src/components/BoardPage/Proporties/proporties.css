@@ -19,6 +19,9 @@
     cursor: pointer;
 }
 
+.boardOptions>*{
+    margin-right: 1em;
+}
 .boardName{
     padding: 1%;
     margin-right: 2%;

@@ -1,0 +1,14 @@
+.filterWrapper{
+    display: flex;
+    position: fixed;
+    background-color: rgba(56, 109, 216, 0.993);
+    right: 0;
+    width: 15vw;
+    height: 100%;
+    z-index: 8;
+    top: 0;
+    padding: 2%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    flex-direction: column;
+}
