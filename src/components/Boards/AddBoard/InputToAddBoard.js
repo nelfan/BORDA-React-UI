@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import * as regExpUtil from '../../../utils/regExpUtil'
 
 const InputToAddBoard = ({onAdd}) => {
     const [boardName, setBoardName] = useState('')
@@ -28,12 +29,11 @@ const InputToAddBoard = ({onAdd}) => {
 
     const boardNameHandler = (e) => {
         setBoardName(e.target.value)
-        const re = /^[\s~`!@#$%^&*()_+=[\]\\{}|;':",.\/<>?a-zA-Z0-9-]+$/;
         if (e.target.value.trim().length === 0) {
             setBoardNameError('Board name cannot contain only whitespace characters')
         } else if (e.target.value.length > 255) {
             setBoardNameError('Board name cannot be more than 255 characters ')
-        } else if (!re.test(String(e.target.value))) {
+        } else if (!regExpUtil.BOARD_NAME_REG_EXP.test(String(e.target.value))) {
             setBoardNameError('Board name can contain only english letters')
         } else {
             setBoardNameError('')

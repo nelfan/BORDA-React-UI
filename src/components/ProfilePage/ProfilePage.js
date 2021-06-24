@@ -1,8 +1,9 @@
 import './profilePage.css';
 import default_user from '../../assets/images/default-user.jpg';
 import Avatar from './Avatar/Avatar';
-import React, { useRef, useState } from 'react';
+import React, {useRef, useState} from 'react';
 import $ from 'jquery';
+import * as regExpUtil from '../../utils/regExpUtil'
 
 const ProfilePage = (props) => {
     const ref_image = React.createRef();
@@ -89,8 +90,7 @@ const ProfilePage = (props) => {
 
     const emailHandler = (e) => {
         setEmail(e);
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!re.test(String(e))) {
+        if (!regExpUtil.EMAIL_REG_EXP.test(String(e))) {
             setEmailError('Invalid email format')
         } else {
             setEmailError('')
@@ -98,12 +98,11 @@ const ProfilePage = (props) => {
     }
     const firstNameHandler = (e) => {
         setFName(e);
-        const re = /^[A-Z][a-z]*$/;
         if (e.length < 2) {
             setFirstNameError('First name cannot be less than 2 characters ')
         } else if (e.length > 30) {
             setFirstNameError('First name cannot be more than 30 characters ')
-        } else if (!re.test(String(e))) {
+        } else if (!regExpUtil.FIRST_NAME_REG_EXP.test(String(e))) {
             setFirstNameError('First name can only contain letters and should start with Upper case')
         } else {
             setFirstNameError('')
@@ -112,12 +111,11 @@ const ProfilePage = (props) => {
 
     const lastNameHandler = (e) => {
         setLName(e);
-        const re = /^[A-Z][a-z]*([-][A-Z][a-z]*)?$/;
         if (e.length < 2) {
             setLastNameError('Last name cannot be less than 2 characters ')
         } else if (e.length > 30) {
             setLastNameError('Last name cannot be more than 30 characters ')
-        } else if (!re.test(String(e))) {
+        } else if (!regExpUtil.LAST_NAME_REG_EXP.test(String(e))) {
             setLastNameError('Last name can only contain letters and should start with Upper case')
         } else {
             setLastNameError('')
@@ -126,12 +124,11 @@ const ProfilePage = (props) => {
 
     const passwordHandler = (e) => {
         setPassword(e)
-        const re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/;
         if (e.length < 6) {
             setPasswordError('password cannot be less than 6 characters ')
         } else if (e.length > 30) {
             setPasswordError('password cannot be more than 30 characters ')
-        } else if (!re.test(String(e))) {
+        } else if (!regExpUtil.PASSWORD_REG_EXP.test(String(e))) {
             setPasswordError('password should have at least one uppercase letter, one lowercase letter and one number')
         } else {
             setPasswordError('')
